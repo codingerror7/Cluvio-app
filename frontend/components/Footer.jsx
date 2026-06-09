@@ -1,13 +1,13 @@
 import React from "react";
-import { Layers, Github, Twitter, Linkedin } from "lucide-react";
+import { Layers, Mail, Share2, ExternalLink } from "lucide-react";
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const socialLinks = [
-    { icon: <Twitter className="w-4 h-4" />, href: "#" },
-    { icon: <Github className="w-4 h-4" />, href: "#" },
-    { icon: <Linkedin className="w-4 h-4" />, href: "#" }
+    { icon: <Share2 className="w-4 h-4" />, href: "#" },
+    { icon: <Mail className="w-4 h-4" />, href: "#" },
+    { icon: <ExternalLink className="w-4 h-4" />, href: "#" }
   ];
 
   return (

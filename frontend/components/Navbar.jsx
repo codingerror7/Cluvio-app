@@ -35,11 +35,10 @@ export const Navbar = () => {
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className={`w-full max-w-6xl flex items-center justify-between px-6 py-3 rounded-2xl transition-all duration-300 ${
-            scrolled
-              ? "glass-panel shadow-premium bg-opacity-70 border-white/[0.08]"
-              : "border border-transparent bg-transparent"
-          }`}
+          className={`w-full max-w-6xl flex items-center justify-between px-6 py-3 rounded-2xl transition-all duration-300 ${scrolled
+            ? "glass-panel shadow-premium bg-opacity-70 border-white/[0.08]"
+            : "border border-transparent bg-transparent"
+            }`}
         >
           {/* Logo */}
           <a href="#home" className="flex items-center gap-2 group">

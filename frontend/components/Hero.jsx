@@ -27,7 +27,7 @@ export const Hero = () => {
       <div className="absolute top-1/3 left-1/3 w-[400px] h-[400px] rounded-full bg-glow-radial-secondary opacity-50 pointer-events-none" />
 
       <div className="w-full max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center z-10">
-        
+
         {/* Left Side: Copy & Actions */}
         <div className="lg:col-span-6 flex flex-col justify-center text-left">
           <motion.div
@@ -102,7 +102,7 @@ export const Hero = () => {
 
         {/* Right Side: Creative Visual Composition of Floating Elements */}
         <div className="lg:col-span-6 relative h-[450px] sm:h-[550px] w-full flex items-center justify-center">
-          
+
           {/* Main Workspace Frame Backdrop */}
           <div className="absolute inset-0 bg-white/[0.01] border border-white/[0.04] rounded-3xl pointer-events-none" />
 
@@ -120,16 +120,15 @@ export const Hero = () => {
               </div>
               <h4 className="text-2xl font-bold text-white tracking-tight">482 Members</h4>
               <p className="text-xs text-text-muted mt-1 mb-4">Active registrations this semester</p>
-              
+
               {/* Fake Micro-Chart Bars */}
               <div className="flex items-end justify-between gap-1.5 h-16 pt-2">
                 {[40, 55, 35, 60, 80, 50, 75, 95, 70, 85].map((height, i) => (
                   <div key={i} className="flex-1 rounded-t-sm bg-neutral-800 relative overflow-hidden group h-full">
-                    <div 
-                      style={{ height: `${height}%` }} 
-                      className={`absolute bottom-0 w-full transition-all duration-500 rounded-t-sm ${
-                        i === 7 ? "bg-brand-primary" : "bg-neutral-600 hover:bg-neutral-500"
-                      }`} 
+                    <div
+                      style={{ height: `${height}%` }}
+                      className={`absolute bottom-0 w-full transition-all duration-500 rounded-t-sm ${i === 7 ? "bg-brand-primary" : "bg-neutral-600 hover:bg-neutral-500"
+                        }`}
                     />
                   </div>
                 ))}
@@ -175,12 +174,12 @@ export const Hero = () => {
               <p className="text-xs text-text-muted mb-4 line-clamp-2">
                 Join over 200 developers, designers, and creators to build the future of AI.
               </p>
-              
+
               <div className="flex items-center justify-between border-t border-white/[0.04] pt-4">
                 <div className="flex -space-x-2">
                   {[1, 2, 3, 4].map((num) => (
-                    <div 
-                      key={num} 
+                    <div
+                      key={num}
                       className="w-6 h-6 rounded-full border border-card bg-neutral-700 flex items-center justify-center text-[10px] font-medium text-white"
                       style={{
                         backgroundImage: `url('https://images.unsplash.com/photo-${1500000000000 + num * 1000}?auto=format&fit=crop&w=32&h=32&q=80')`,

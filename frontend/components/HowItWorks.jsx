@@ -34,7 +34,7 @@ export const HowItWorks = () => {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] rounded-full bg-glow-radial opacity-20 pointer-events-none" />
 
       <div className="w-full max-w-6xl mx-auto px-6 relative">
-        
+
         {/* Header */}
         <div className="text-center max-w-xl mx-auto mb-20">
           <Badge variant="primary" className="mb-4">
@@ -50,7 +50,7 @@ export const HowItWorks = () => {
 
         {/* Timeline Grid */}
         <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 mt-16">
-          
+
           {/* Connector Line (Desktop Only) */}
           <div className="hidden md:block absolute top-[50px] left-[10%] right-[10%] h-[1px] bg-gradient-to-r from-brand-primary/20 via-brand-secondary/35 to-emerald-500/20 z-0" />
 
@@ -79,11 +79,11 @@ export const HowItWorks = () => {
                       {step.number}
                     </span>
                   </div>
-                  
+
                   <h3 className="text-lg font-bold text-white mb-2 group-hover:text-brand-primary transition-colors">
                     {step.title}
                   </h3>
-                  
+
                   <p className="text-xs text-text-muted leading-relaxed">
                     {step.description}
                   </p>
