@@ -1,8 +1,12 @@
 import React from "react";
-import Home from "../pages/Home";
+import Home from "../Components/Landing/Home.js";
 
 const Page = () => {
-  return <Home />;
+  return (
+    <div>
+      <Home />
+    </div>
+  );
 };
 
 export default Page;

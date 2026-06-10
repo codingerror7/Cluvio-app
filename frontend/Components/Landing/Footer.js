@@ -5,9 +5,6 @@ import { motion } from "framer-motion";
 import {
   Layers3,
   Mail,
-  Twitter,
-  Github,
-  Linkedin,
   ArrowUpRight,
 } from "lucide-react";
 
@@ -27,20 +24,6 @@ const Footer = () => {
     },
   ];
 
-  const socials = [
-    {
-      icon: Twitter,
-      label: "Twitter",
-    },
-    {
-      icon: Github,
-      label: "GitHub",
-    },
-    {
-      icon: Linkedin,
-      label: "LinkedIn",
-    },
-  ];
 
   return (
     <footer className="relative pt-24 pb-10 border-t border-white/10 bg-[#0B0F19]">
@@ -124,30 +107,6 @@ const Footer = () => {
               Social
             </h4>
 
-            <div className="space-y-3">
-              {socials.map((social) => {
-                const Icon = social.icon;
-
-                return (
-                  <div
-                    key={social.label}
-                    className="
-                      flex
-                      items-center
-                      gap-2
-                      text-white/60
-                      hover:text-white
-                      cursor-pointer
-                      transition-colors
-                      text-sm
-                    "
-                  >
-                    <Icon size={16} />
-                    {social.label}
-                  </div>
-                );
-              })}
-            </div>
           </div>
         </div>
 

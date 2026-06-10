@@ -29,8 +29,8 @@ const Hero = () => {
             h-[450px]
             w-[450px]
             rounded-full
-            bg-violet-600/15
-            blur-[120px]
+            bg-black/10
+            blur-[140px]
           "
         />
 
