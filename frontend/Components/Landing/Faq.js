@@ -2,10 +2,10 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Plus,
-  Minus,
-} from "lucide-react";
+import { Plus, Minus } from "lucide-react";
+import Button from "../UI/Button";
+import Card from "../UI/Card";
+import SectionHeading from "../UI/SectionHeading";
 
 const faqs = [
   {
@@ -43,262 +43,84 @@ const faqs = [
 const Faq = () => {
   const [active, setActive] = useState(0);
 
-  const toggleFAQ = (index) => {
-    setActive(active === index ? null : index);
-  };
-
   return (
-    <section
-      id="faq"
-      className="relative py-32 overflow-hidden"
-    >
-      {/* Background Glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div
-          className="
-            absolute
-            left-1/2
-            top-20
-            -translate-x-1/2
-            h-[350px]
-            w-[650px]
-            bg-violet-600/10
-            blur-[140px]
-          "
-        />
-      </div>
-
-      <div className="relative z-10 max-w-4xl mx-auto px-5 sm:px-6 lg:px-8">
-
-        {/* Header */}
+    <section id="faq" className="section-panel">
+      <div className="relative z-10 mx-auto w-[min(100%-2rem,880px)]">
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center"
         >
-          <span
-            className="
-              inline-flex
-              items-center
-              px-4
-              py-2
-              rounded-full
-              border
-              border-violet-500/20
-              bg-violet-500/10
-              text-violet-300
-              text-sm
-            "
+          <SectionHeading
+            eyebrow="Frequently Asked Questions"
+            title="Everything You Need"
+            accent="To Know About Cluvio"
           >
-            Frequently Asked Questions
-          </span>
-
-          <h2
-            className="
-              mt-6
-              text-4xl
-              md:text-5xl
-              font-bold
-              tracking-tight
-              text-white
-            "
-          >
-            Everything You Need
-            <span className="block text-violet-400">
-              To Know About Cluvio
-            </span>
-          </h2>
-
-          <p
-            className="
-              mt-6
-              text-lg
-              leading-relaxed
-              text-white/60
-            "
-          >
-            Quick answers to the most common questions
-            about managing clubs with Cluvio.
-          </p>
+            Quick answers to the most common questions about managing clubs with Cluvio.
+          </SectionHeading>
         </motion.div>
 
-        {/* FAQ List */}
-        <div className="mt-16 space-y-4">
-
+        <div className="mt-12 space-y-3">
           {faqs.map((faq, index) => {
             const isOpen = active === index;
-
             return (
               <motion.div
                 key={faq.question}
-                initial={{
-                  opacity: 0,
-                  y: 20,
-                }}
-                whileInView={{
-                  opacity: 1,
-                  y: 0,
-                }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{
-                  delay: index * 0.05,
-                }}
-                className="
-                  rounded-3xl
-                  border
-                  border-white/10
-                  bg-white/[0.03]
-                  overflow-hidden
-                "
+                transition={{ delay: index * 0.04 }}
               >
-                <button
-                  onClick={() => toggleFAQ(index)}
-                  className="
-                    w-full
-                    flex
-                    items-center
-                    justify-between
-                    gap-6
-                    px-6
-                    py-5
-                    text-left
-                  "
-                >
-                  <span
-                    className="
-                      text-white
-                      font-medium
-                      text-base
-                    "
+                <Card interactive={false} className="overflow-hidden">
+                  <button
+                    onClick={() => setActive(isOpen ? null : index)}
+                    className="flex w-full items-center justify-between gap-6 px-5 py-5 text-left transition hover:bg-white/[0.035] sm:px-6"
+                    aria-expanded={isOpen}
                   >
-                    {faq.question}
-                  </span>
-
-                  <div
-                    className="
-                      flex
-                      items-center
-                      justify-center
-                      shrink-0
-                    "
-                  >
-                    {isOpen ? (
-                      <Minus
-                        size={18}
-                        className="text-violet-400"
-                      />
-                    ) : (
-                      <Plus
-                        size={18}
-                        className="text-white/50"
-                      />
-                    )}
-                  </div>
-                </button>
-
-                <AnimatePresence>
-                  {isOpen && (
-                    <motion.div
-                      initial={{
-                        height: 0,
-                        opacity: 0,
-                      }}
-                      animate={{
-                        height: "auto",
-                        opacity: 1,
-                      }}
-                      exit={{
-                        height: 0,
-                        opacity: 0,
-                      }}
-                      transition={{
-                        duration: 0.25,
-                      }}
-                    >
-                      <div
-                        className="
-                          px-6
-                          pb-6
-                          text-white/60
-                          leading-relaxed
-                        "
+                    <span className="font-semibold text-white">{faq.question}</span>
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04]">
+                      {isOpen ? (
+                        <Minus size={18} className="text-[var(--accent)]" />
+                      ) : (
+                        <Plus size={18} className="text-white/55" />
+                      )}
+                    </span>
+                  </button>
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.22 }}
                       >
-                        {faq.answer}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                        <div className="px-5 pb-6 leading-relaxed text-white/62 sm:px-6">
+                          {faq.answer}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </Card>
               </motion.div>
             );
           })}
-
         </div>
 
-        {/* Bottom Help Card */}
         <motion.div
-          initial={{
-            opacity: 0,
-            y: 25,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{
-            delay: 0.2,
-          }}
-          className="
-            mt-12
-            rounded-3xl
-            border
-            border-white/10
-            bg-gradient-to-b
-            from-white/[0.05]
-            to-transparent
-            p-8
-            text-center
-          "
+          transition={{ delay: 0.2 }}
         >
-          <h3
-            className="
-              text-xl
-              font-semibold
-              text-white
-            "
-          >
-            Still have questions?
-          </h3>
-
-          <p
-            className="
-              mt-3
-              text-white/60
-            "
-          >
-            We're happy to help you understand how Cluvio
-            can support your club and community.
-          </p>
-
-          <button
-            className="
-              mt-6
-              px-6
-              py-3
-              rounded-xl
-              bg-violet-600
-              hover:bg-violet-500
-              text-white
-              font-medium
-              transition-all
-            "
-          >
-            Contact Us
-          </button>
+          <Card interactive={false} className="mt-10 p-8 text-center">
+            <h3 className="text-xl font-semibold text-white">Still have questions?</h3>
+            <p className="mx-auto mt-3 max-w-xl text-white/62">
+              We're happy to help you understand how Cluvio can support your club and community.
+            </p>
+            <Button className="mt-6 sm:w-auto">Contact Us</Button>
+          </Card>
         </motion.div>
-
       </div>
     </section>
   );

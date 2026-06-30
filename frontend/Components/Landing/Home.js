@@ -12,38 +12,18 @@ import Footer from "./Footer.js";
 
 const Home = () => {
   return (
-    <>
-        <div>
-            <Navbar />
-        </div>
-        <div>
-            <Hero />
-        </div>
-        <div>
-            <TrustSection />
-        </div>
-        <div>
-            <Features />
-        </div>
-        <div>
-            <HowItworks />
-        </div>
-        <div>
-            <ProductPreview />
-        </div>
-        <div>
-            <Benefits />
-        </div>
-        <div>
-            <Faq />
-        </div>
-        <div>
-            <Cta />
-        </div>
-        <div>
-            <Footer />
-        </div>
-    </>
+    <main className="app-shell">
+      <Navbar />
+      <Hero />
+      <TrustSection />
+      <Features />
+      <HowItworks />
+      <ProductPreview />
+      <Benefits />
+      <Faq />
+      <Cta />
+      <Footer />
+    </main>
   )
 }
 

@@ -71,6 +71,8 @@ web_modules/
 
 # dotenv environment variables file
 .env
+.env*
+.env.local
 .env.test
 .env.production
 /node_modules
@@ -117,5 +119,3 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-
-# End of https://mrkandreev.name/snippets/gitignore-generator/#Node

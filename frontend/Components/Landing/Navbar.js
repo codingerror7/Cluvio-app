@@ -8,6 +8,7 @@ import {
   ArrowRight,
   Layers3,
 } from "lucide-react";
+import Button from "../UI/Button";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -56,28 +57,26 @@ const Navbar = () => {
           duration-300
           ${
             scrolled
-              ? "bg-[#0B0F19]/80 backdrop-blur-xl border-b border-white/10"
+              ? "bg-[#080d16]/78 backdrop-blur-2xl border-b border-white/10 shadow-[0_16px_48px_rgba(2,6,23,0.22)]"
               : "bg-transparent"
           }
         `}
       >
-        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
-          <div className="h-20 flex items-center justify-between">
+        <div className="container-page">
+          <div className="h-[72px] sm:h-20 flex items-center justify-between">
 
             {/* Logo */}
             <a
               href="/"
               className="flex items-center gap-3"
+              aria-label="Cluvio home"
             >
               <div
                 className="
                   w-10
                   h-10
-                  rounded-xl
-                  bg-violet-600
-                  flex
-                  items-center
-                  justify-center
+                  rounded-2xl
+                  brand-mark
                 "
               >
                 <Layers3
@@ -90,9 +89,8 @@ const Navbar = () => {
                 <span
                   className="
                     text-white
-                    font-semibold
+                    font-bold
                     text-lg
-                    tracking-tight
                   "
                 >
                   Cluvio
@@ -101,7 +99,9 @@ const Navbar = () => {
                 <span
                   className="
                     text-xs
-                    text-white/40
+                    text-white/48
+                    hidden
+                    sm:block
                   "
                 >
                   Club Management Platform
@@ -144,42 +144,17 @@ const Navbar = () => {
                 gap-3
               "
             >
-              <button
-                className="
-                  px-4
-                  py-2
-                  text-sm
-                  text-white/70
-                  hover:text-white
-                  transition-colors
-                "
-              >
+              <Button variant="ghost" size="sm">
                 Sign In
-              </button>
+              </Button>
 
-              <button
-                className="
-                  flex
-                  items-center
-                  gap-2
-                  px-5
-                  py-2.5
-                  rounded-xl
-                  bg-violet-600
-                  hover:bg-violet-500
-                  text-white
-                  text-sm
-                  font-medium
-                  transition-all
-                  duration-200
-                "
-              >
+              <Button size="sm">
                 Get Started
 
                 <ArrowRight
                   size={16}
                 />
-              </button>
+              </Button>
             </div>
 
             {/* Mobile Menu Button */}
@@ -197,9 +172,13 @@ const Navbar = () => {
                 rounded-xl
                 border
                 border-white/10
-                bg-white/[0.03]
+                bg-white/[0.052]
                 text-white
+                transition
+                hover:bg-white/[0.09]
               "
+              aria-label="Toggle navigation menu"
+              aria-expanded={mobileOpen}
             >
               {mobileOpen ? (
                 <X size={20} />
@@ -260,12 +239,13 @@ const Navbar = () => {
             >
               <div
                 className="
-                  bg-[#111827]
+                  bg-[#0f1726]/95
                   border
                   border-white/10
-                  rounded-3xl
+                  rounded-[24px]
                   p-4
-                  shadow-2xl
+                  shadow-soft
+                  backdrop-blur-2xl
                 "
               >
                 <nav className="flex flex-col">
@@ -278,11 +258,11 @@ const Navbar = () => {
                       }
                       className="
                         px-4
-                        py-4
-                        rounded-2xl
+                        py-3.5
+                        rounded-xl
                         text-white/70
                         hover:text-white
-                        hover:bg-white/[0.04]
+                        hover:bg-white/[0.06]
                         transition-all
                       "
                     >
@@ -294,31 +274,13 @@ const Navbar = () => {
                 <div className="h-px bg-white/10 my-4" />
 
                 <div className="space-y-3">
-                  <button
-                    className="
-                      w-full
-                      py-3
-                      rounded-xl
-                      border
-                      border-white/10
-                      text-white
-                    "
-                  >
+                  <Button variant="secondary" className="w-full">
                     Sign In
-                  </button>
+                  </Button>
 
-                  <button
-                    className="
-                      w-full
-                      py-3
-                      rounded-xl
-                      bg-violet-600
-                      text-white
-                      font-medium
-                    "
-                  >
+                  <Button className="w-full">
                     Get Started
-                  </button>
+                  </Button>
                 </div>
               </div>
             </motion.div>
