@@ -9,7 +9,7 @@ import Card from "../UI/Card";
 
 const benefits = ["Member Management", "Event Operations", "Announcements", "Role-Based Access"];
 
-const CTA = () => {
+const CTA = ({ onEnterDashboard }) => {
   return (
     <section id="contact" className="section-panel section-muted">
       <div className="container-page relative z-10 max-w-6xl">
@@ -45,11 +45,11 @@ const CTA = () => {
               </div>
 
               <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
-                <Button size="lg" className="sm:w-auto">
+                <Button size="lg" className="sm:w-auto" onClick={onEnterDashboard}>
                   Get Started
                   <ArrowRight size={16} />
                 </Button>
-                <Button variant="secondary" size="lg" className="sm:w-auto">
+                <Button variant="secondary" size="lg" className="sm:w-auto" onClick={onEnterDashboard}>
                   Schedule Demo
                 </Button>
               </div>

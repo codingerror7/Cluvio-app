@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import Button from "../UI/Button";
 
-const Navbar = () => {
+const Navbar = ({ onEnterDashboard }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -144,11 +144,11 @@ const Navbar = () => {
                 gap-3
               "
             >
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" onClick={onEnterDashboard}>
                 Sign In
               </Button>
 
-              <Button size="sm">
+              <Button size="sm" onClick={onEnterDashboard}>
                 Get Started
 
                 <ArrowRight
@@ -274,11 +274,11 @@ const Navbar = () => {
                 <div className="h-px bg-white/10 my-4" />
 
                 <div className="space-y-3">
-                  <Button variant="secondary" className="w-full">
+                  <Button variant="secondary" className="w-full" onClick={onEnterDashboard}>
                     Sign In
                   </Button>
 
-                  <Button className="w-full">
+                  <Button className="w-full" onClick={onEnterDashboard}>
                     Get Started
                   </Button>
                 </div>

@@ -9,10 +9,10 @@ const variantClass = {
 };
 
 const sizeClass = {
-  sm: "min-h-10 px-4 py-2 text-sm",
-  md: "",
-  lg: "min-h-12 px-6 py-3.5",
-  icon: "btn-icon",
+  sm: "h-8 px-3 text-xs rounded-[var(--radius-sm)]",
+  md: "h-9 px-4 text-sm rounded-[var(--radius-sm)]",
+  lg: "h-11 px-6 text-sm font-medium rounded-[var(--radius-md)]",
+  icon: "h-9 w-9 p-0 flex items-center justify-center btn-icon rounded-[var(--radius-sm)]",
 };
 
 const Button = ({

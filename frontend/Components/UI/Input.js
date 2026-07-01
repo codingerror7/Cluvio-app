@@ -5,10 +5,10 @@ const Input = ({ label, hint, error, id, className = "", ...props }) => {
 
   return (
     <label className={`block ${className}`} htmlFor={inputId}>
-      {label && <span className="mb-2 block text-sm font-semibold text-white/72">{label}</span>}
+      {label && <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">{label}</span>}
       <input id={inputId} className="input-surface" aria-invalid={error ? "true" : undefined} {...props} />
       {(hint || error) && (
-        <span className={`mt-2 block text-xs ${error ? "text-[var(--danger)]" : "text-white/46"}`}>
+        <span className={`mt-1.5 block text-xs ${error ? "text-[var(--danger)]" : "text-[var(--muted-soft)]"}`}>
           {error || hint}
         </span>
       )}

@@ -21,12 +21,10 @@ const stats = [
   ["100%", "Cloud Based"],
 ];
 
-const Hero = () => {
+const Hero = ({ onEnterDashboard }) => {
   return (
     <section id="home" className="section-panel relative overflow-hidden pt-32 sm:pt-36">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="ambient-lattice" />
-      </div>
+      
 
       <div className="container-page relative z-10">
         <div className="grid items-center gap-12 lg:grid-cols-[1fr_0.92fr] xl:gap-20">
@@ -68,11 +66,11 @@ const Hero = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mt-9 flex flex-wrap gap-4"
             >
-              <Button size="lg">
+              <Button size="lg" onClick={onEnterDashboard}>
                 Get Started
                 <ArrowRight size={16} />
               </Button>
-              <Button variant="secondary" size="lg">
+              <Button variant="secondary" size="lg" onClick={onEnterDashboard}>
                 <Play size={16} />
                 Watch Demo
               </Button>
@@ -99,7 +97,7 @@ const Hero = () => {
             transition={{ duration: 0.7 }}
             className="relative"
           >
-            <Card interactive={false} className="relative p-4 shadow-glow sm:p-6">
+            <Card interactive={true} onClick={onEnterDashboard} className="relative p-4 shadow-glow sm:p-6 cursor-pointer hover:border-[var(--accent)] hover:scale-[1.01] transition-all">
               <div className="mb-7 flex items-center justify-between gap-4">
                 <div>
                   <h3 className="font-semibold text-white">Cluvio Dashboard</h3>
