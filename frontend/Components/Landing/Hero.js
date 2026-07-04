@@ -1,217 +1,131 @@
 "use client";
 
 import React from "react";
-import {
-  FaArrowRight,
-  FaPlay,
-  FaUsers,
-  FaCalendarAlt,
-  FaBell,
-  FaChartLine,
-  FaCheckCircle,
-} from "react-icons/fa";
+import { HiOutlineUserGroup } from "react-icons/hi2";
 
-const Hero = ({ onEnterDashboard }) => {
+const clubs = [
+  {
+    title: "Coding Club",
+    description:
+      "Build real-world software projects, participate in hackathons, and sharpen your development skills.",
+    category: "Technology",
+    admin: "Alex Johnson",
+    avatar: "https://i.pravatar.cc/150?img=12",
+    color: "from-cyan-500/20 to-blue-600/5",
+  },
+  {
+    title: "Design Society",
+    description:
+      "Explore UI/UX, branding, illustrations, and collaborate on creative campus initiatives.",
+    category: "Design",
+    admin: "Sophia Lee",
+    avatar: "https://i.pravatar.cc/150?img=32",
+    color: "from-pink-500/20 to-purple-600/5",
+  },
+  {
+    title: "AI & ML Community",
+    description:
+      "Learn artificial intelligence, machine learning, deep learning, and build impactful projects.",
+    category: "Artificial Intelligence",
+    admin: "David Kim",
+    avatar: "https://i.pravatar.cc/150?img=18",
+    color: "from-violet-500/20 to-indigo-600/5",
+  },
+  {
+    title: "Photography Club",
+    description:
+      "Capture moments, organize photo walks, editing sessions, and creative storytelling workshops.",
+    category: "Creative",
+    admin: "Emma Wilson",
+    avatar: "https://i.pravatar.cc/150?img=45",
+    color: "from-orange-500/20 to-red-500/5",
+  },
+  {
+    title: "Entrepreneurship Cell",
+    description:
+      "Pitch startup ideas, network with founders, and participate in innovation challenges.",
+    category: "Startup",
+    admin: "James Miller",
+    avatar: "https://i.pravatar.cc/150?img=55",
+    color: "from-emerald-500/20 to-green-600/5",
+  },
+  {
+    title: "Robotics Club",
+    description:
+      "Design autonomous robots, IoT devices, and compete in national robotics competitions.",
+    category: "Engineering",
+    admin: "Noah Carter",
+    avatar: "https://i.pravatar.cc/150?img=24",
+    color: "from-sky-500/20 to-cyan-600/5",
+  },
+];
+
+export default function ClubsGrid() {
   return (
-    <section
-      id="home"
-      className="relative overflow-hidden pt-32 pb-20 lg:pt-36"
-    >
-      <div className="container-page">
-        <div className="grid items-center gap-16 lg:grid-cols-[1fr_0.95fr]">
-
-          {/* Left Content */}
-
-          <div>
-
-            {/* Heading */}
-
-            <h1 className="mt-8 text-5xl font-bold leading-tight text-white md:text-6xl xl:text-7xl">
-              The Operating System
-              <span className="block text-[var(--accent)]">
-                for Student Clubs
-              </span>
-            </h1>
-
-            {/* Description */}
-
-            <p className="mt-6 max-w-xl text-lg leading-8 text-white/65">
-              Manage members, events, announcements, attendance and every club
-              activity from one beautifully designed platform built exclusively
-              for colleges.
-            </p>
-
-            {/* Buttons */}
-
-            <div className="mt-10 flex flex-wrap gap-4">
-
-              <button
-                onClick={onEnterDashboard}
-                className="flex items-center gap-2 rounded-xl bg-[var(--accent)] px-6 py-3.5 font-medium text-black transition hover:scale-[1.02]"
-              >
-                Get Started
-                <FaArrowRight className="text-sm" />
-              </button>
-
-              <button
-                onClick={onEnterDashboard}
-                className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-6 py-3.5 font-medium text-white transition hover:bg-white/10"
-              >
-                <FaPlay className="text-sm" />
-                Watch Demo
-              </button>
-
-            </div>
-
-          </div>
-
-          {/* Right Dashboard */}
-
-          <div className="relative">
-
-            <div
-              onClick={onEnterDashboard}
-              className="cursor-pointer rounded-3xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-xl transition duration-300 hover:border-[var(--accent)]/50 hover:-translate-y-1"
-            >
-
-              {/* Header */}
-
-              <div className="mb-8 flex items-center justify-between">
-
-                <div>
-                  <h3 className="text-lg font-semibold text-white">
-                    Cluvio Dashboard
-                  </h3>
-
-                  <p className="mt-1 text-sm text-white/50">
-                    Club Management Workspace
-                  </p>
-                </div>
-
-                <div className="flex gap-2">
-                  <span className="h-3 w-3 rounded-full bg-red-500" />
-                  <span className="h-3 w-3 rounded-full bg-yellow-500" />
-                  <span className="h-3 w-3 rounded-full bg-green-500" />
-                </div>
-
-              </div>
-
-              {/* Stats */}
-
-              <div className="grid grid-cols-2 gap-4">
-
-                <div className="rounded-2xl bg-white/5 p-5">
-
-                  <FaUsers className="mb-4 text-xl text-[var(--accent)]" />
-
-                  <h2 className="text-3xl font-bold text-white">
-                    482
-                  </h2>
-
-                  <p className="mt-1 text-sm text-white/50">
-                    Active Members
-                  </p>
-
-                </div>
-
-                <div className="rounded-2xl bg-white/5 p-5">
-
-                  <FaCalendarAlt className="mb-4 text-xl text-yellow-400" />
-
-                  <h2 className="text-3xl font-bold text-white">
-                    12
-                  </h2>
-
-                  <p className="mt-1 text-sm text-white/50">
-                    Upcoming Events
-                  </p>
-
-                </div>
-
-              </div>
-
-              {/* Activity */}
-
-              <div className="mt-5 rounded-2xl bg-white/5 p-5">
-
-                <div className="mb-5 flex items-center gap-3">
-
-                  <FaChartLine className="text-[var(--accent)]" />
-
-                  <h4 className="font-medium text-white">
-                    Recent Activity
-                  </h4>
-
-                </div>
-
-                <div className="space-y-4">
-
-                  {[
-                    {
-                      title: "New member joined",
-                      time: "2 min ago",
-                    },
-                    {
-                      title: "Event registration approved",
-                      time: "15 min ago",
-                    },
-                    {
-                      title: "Announcement published",
-                      time: "1 hour ago",
-                    },
-                  ].map((item) => (
-                    <div
-                      key={item.title}
-                      className="flex items-center justify-between border-b border-white/5 pb-3 last:border-none last:pb-0"
-                    >
-                      <span className="text-sm text-white/65">
-                        {item.title}
-                      </span>
-
-                      <span className="text-xs text-white/40">
-                        {item.time}
-                      </span>
-                    </div>
-                  ))}
-
-                </div>
-
-              </div>
-
-            </div>
-
-            {/* Floating Notification */}
-
-            <div className="absolute -left-8 bottom-12 hidden rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-xl lg:block">
-
-              <div className="flex items-center gap-3">
-
-                <div className="rounded-xl bg-[var(--accent)]/15 p-3">
-                  <FaBell className="text-[var(--accent)]" />
-                </div>
-
-                <div>
-
-                  <p className="text-sm font-medium text-white">
-                    New Event Created
-                  </p>
-
-                  <p className="text-xs text-white/50">
-                    AI Workshop • Tomorrow
-                  </p>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
+    <section className="rounded-[32px] border border-white/10 bg-[#0F172A]/70 p-6 shadow-[0_20px_80px_rgba(2,8,23,0.25)] sm:p-8 lg:p-10">
+      <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div className="max-w-2xl">
+          <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm font-medium text-[var(--accent)]">
+            Featured Clubs
+          </span>
+          <h2 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">
+            Discover active communities ready to grow.
+          </h2>
+          <p className="mt-3 text-base leading-7 text-white/60">
+            Each club card is now aligned with the rest of the dashboard so the experience feels structured and balanced.
+          </p>
         </div>
+
+        <button className="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white/80 transition hover:bg-white/10 hover:text-white">
+          Explore all
+        </button>
+      </div>
+
+      <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {clubs.map((club) => (
+          <div
+            key={club.title}
+            className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-[#111827] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--accent)]/40"
+          >
+            <div className={`absolute inset-0 bg-gradient-to-br ${club.color} opacity-100`} />
+
+            <div className="relative flex h-full flex-col p-6 sm:p-7">
+              <span className="inline-flex w-fit rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-white/70">
+                {club.category}
+              </span>
+
+              <h3 className="mt-5 text-2xl font-bold text-white">{club.title}</h3>
+              <p className="mt-3 flex-1 leading-7 text-white/60">{club.description}</p>
+
+              <div className="my-6 h-px bg-white/10" />
+
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <img
+                    src={club.avatar}
+                    alt={club.admin}
+                    className="h-12 w-12 rounded-2xl object-cover ring-2 ring-white/10"
+                  />
+
+                  <div>
+                    <p className="text-sm font-semibold text-white">{club.admin}</p>
+                    <div className="mt-1 flex items-center gap-1 text-xs text-white/45">
+                      <HiOutlineUserGroup />
+                      Club Admin
+                    </div>
+                  </div>
+                </div>
+
+                <button className="rounded-2xl bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-black transition hover:scale-105">
+                  Join
+                </button>
+              </div>
+            </div>
+
+            <div className="absolute inset-x-8 bottom-0 h-px bg-gradient-to-r from-transparent via-[var(--accent)]/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+          </div>
+        ))}
       </div>
     </section>
   );
-};
-
-export default Hero;
+}

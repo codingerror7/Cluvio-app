@@ -1,10 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  HiOutlinePlus,
-  HiOutlineMinus,
-} from "react-icons/hi2";
+import { HiOutlinePlus, HiOutlineMinus } from "react-icons/hi2";
 
 const faqs = [
   {
@@ -47,16 +44,9 @@ const Faq = () => {
   };
 
   return (
-    <section
-      id="faq"
-      className="py-24"
-    >
-      <div className="mx-auto max-w-4xl px-6">
-
-        {/* Heading */}
-
+    <section id="faq" className="mt-8 rounded-[32px] border border-white/10 bg-[#0F172A]/70 p-6 shadow-[0_20px_80px_rgba(2,8,23,0.2)] sm:p-8 lg:p-10">
+      <div className="mx-auto max-w-4xl">
         <div className="text-center">
-
           <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-[var(--accent)]">
             Frequently Asked Questions
           </span>
@@ -66,63 +56,52 @@ const Faq = () => {
           </h2>
 
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-white/60">
-            Find answers to the most common questions about managing student
-            clubs with Cluvio.
+            Find answers to the most common questions about managing student clubs with Cluvio.
           </p>
-
         </div>
 
-        {/* Accordion */}
-
         <div className="mt-16 space-y-4">
-
           {faqs.map((faq, index) => {
             const isOpen = active === index;
 
             return (
-              <div
-                key={faq.question}
-                className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]"
-              >
-
+              <div key={faq.question} className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
                 <button
                   onClick={() => toggleFAQ(index)}
                   aria-expanded={isOpen}
                   className="flex w-full items-center justify-between px-6 py-5 text-left transition hover:bg-white/[0.04]"
                 >
-
-                  <span className="text-lg font-medium text-white">
-                    {faq.question}
-                  </span>
+                  <span className="text-lg font-medium text-white">{faq.question}</span>
 
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5">
-
                     {isOpen ? (
                       <HiOutlineMinus className="text-lg text-[var(--accent)]" />
                     ) : (
                       <HiOutlinePlus className="text-lg text-white/60" />
                     )}
-
                   </div>
-
                 </button>
 
                 {isOpen && (
                   <div className="border-t border-white/10 px-6 py-5">
-
-                    <p className="leading-8 text-white/60">
-                      {faq.answer}
-                    </p>
-
+                    <p className="leading-8 text-white/60">{faq.answer}</p>
                   </div>
                 )}
-
               </div>
             );
           })}
-
         </div>
 
+        <div className="mt-20 rounded-3xl border border-white/10 bg-white/[0.03] px-8 py-12 text-center">
+          <h3 className="text-3xl font-bold text-white">Still have questions?</h3>
+          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-white/60">
+            We'd love to help you learn how Cluvio can simplify your club management and improve your campus community.
+          </p>
+
+          <button className="mt-8 rounded-xl bg-[var(--accent)] px-7 py-3.5 font-medium text-black transition hover:opacity-90">
+            Contact Us
+          </button>
+        </div>
       </div>
     </section>
   );

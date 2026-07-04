@@ -1,12 +1,12 @@
-import React from "react";
-import Home from "../Components/Landing/Home.js";
+import React from 'react'
+import Home from '../Components/Landing/Home.js'
 
-const Page = () => {
+const page = () => {
   return (
-    <div>
-      <Home />
-    </div>
-  );
-};
+    <>
+    <Home/>
+    </>
+  )
+}
 
-export default Page;
+export default page
