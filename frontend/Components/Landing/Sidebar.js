@@ -36,7 +36,7 @@ const menuItems = [
 
 const Sidebar = () => {
   return (
-    <aside className="flex h-full w-full flex-col overflow-hidden border-r border-white/10 bg-[#0B1120]">
+    <aside className="flex h-full w-full flex-col overflow-hidden border-r border-white/10 bg-transparent backdrop-blur-lg">
       <div className="flex items-center gap-3 border-b border-white/10 px-6 py-6">
         <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--accent)]/10">
           <HiOutlineSquares2X2 className="text-2xl text-[var(--accent)]" />

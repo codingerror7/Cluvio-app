@@ -37,7 +37,7 @@ const steps = [
 
 const HowItWorks = () => {
   return (
-    <section id="how-it-works" className="mt-8 rounded-[32px] border border-white/10 bg-[#0F172A]/70 p-6 shadow-[0_20px_80px_rgba(2,8,23,0.2)] sm:p-8 lg:p-10">
+    <section id="how-it-works" className="mt-8 rounded-[32px] border border-white/10 bg-transparent p-6 shadow-[0_20px_80px_rgba(2,8,23,0.2)] sm:p-8 lg:p-10">
       <div className="mx-auto max-w-6xl">
         <div className="mx-auto max-w-3xl text-center">
           <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-[var(--accent)]">

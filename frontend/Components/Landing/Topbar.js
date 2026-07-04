@@ -9,7 +9,7 @@ import {
 
 const Topbar = () => {
   return (
-    <header className="flex h-24 w-full items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+    <header className="flex h-24 w-full items-center justify-between px-4 py-4 sm:px-6 lg:px-8 bg-transparent backdrop-blur-lg border-b border-white/10">
       <div>
         <h1 className="text-xl font-bold text-white sm:text-2xl">
           Good Morning,
