@@ -1,132 +1,151 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
-import { Building2, Users, Rocket, ArrowRight, CheckCircle2 } from "lucide-react";
-import Card from "../UI/Card";
-import SectionHeading from "../UI/SectionHeading";
+import {
+  HiOutlineBuildingOffice2,
+  HiOutlineUsers,
+  HiOutlineRocketLaunch,
+  HiOutlineCheckCircle,
+} from "react-icons/hi2";
 
 const steps = [
   {
-    icon: Building2,
-    step: "01",
-    title: "Create Your Club Workspace",
+    number: "01",
+    icon: HiOutlineBuildingOffice2,
+    title: "Create Your Club",
     description:
-      "Set up your club in minutes. Customize roles, committees, and structure according to your organization's needs.",
-    points: ["Create club profile", "Assign leadership roles", "Configure permissions"],
+      "Set up your club workspace, define leadership roles, committees, and customize permissions within minutes.",
+    points: [
+      "Create club profile",
+      "Assign leadership roles",
+      "Configure permissions",
+    ],
   },
   {
-    icon: Users,
-    step: "02",
-    title: "Invite & Organize Members",
+    number: "02",
+    icon: HiOutlineUsers,
+    title: "Invite Members",
     description:
-      "Build your community by inviting members, managing teams, and keeping everyone connected in one place.",
-    points: ["Invite members instantly", "Create committees", "Manage participation"],
+      "Bring students into your community, organize committees, and manage participation effortlessly.",
+    points: [
+      "Invite members",
+      "Create committees",
+      "Manage participation",
+    ],
   },
   {
-    icon: Rocket,
-    step: "03",
-    title: "Run Events & Operations",
+    number: "03",
+    icon: HiOutlineRocketLaunch,
+    title: "Run Your Club",
     description:
-      "Manage events, announcements, registrations, attendance, and club activities from a centralized dashboard.",
-    points: ["Launch events", "Track attendance", "Share announcements"],
+      "Manage events, attendance, announcements, and every daily club activity from one dashboard.",
+    points: [
+      "Launch events",
+      "Track attendance",
+      "Publish announcements",
+    ],
   },
 ];
 
 const HowItWorks = () => {
   return (
-    <section id="how-it-works" className="section-panel section-muted">
-      <div className="container-page relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <SectionHeading
-            eyebrow="How It Works"
-            title="From Setup To"
-            accent="Successful Club Management"
-          >
-            Cluvio simplifies every stage of club management, allowing student organizations to
-            focus on growth, engagement, and impact.
-          </SectionHeading>
-        </motion.div>
+    <section
+      id="how-it-works"
+      className="py-24"
+    >
+      <div className="container-page">
 
-        <div className="relative mt-16">
-          <div className="absolute left-0 right-0 top-8 hidden h-px bg-gradient-to-r from-transparent via-white/12 to-transparent lg:block" />
-          <div className="grid gap-6 lg:grid-cols-3">
-            {steps.map((step, index) => {
-              const Icon = step.icon;
-              return (
-                <motion.div
-                  key={step.step}
-                  initial={{ opacity: 0, y: 35 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.12 }}
-                  className="relative"
-                >
-                  <div className="mb-6 flex justify-center">
-                    <div className="brand-mark relative z-10 flex h-16 w-16 items-center justify-center rounded-2xl">
-                      <Icon size={26} className="text-white" />
-                    </div>
-                  </div>
-                  <Card className="h-full p-7">
-                    <span className="text-sm font-semibold text-[var(--accent)]">STEP {step.step}</span>
-                    <h3 className="mt-3 text-2xl font-semibold text-white">{step.title}</h3>
-                    <p className="mt-4 leading-relaxed text-white/62">{step.description}</p>
-                    <div className="mt-7 space-y-3">
-                      {step.points.map((point) => (
-                        <div key={point} className="flex items-center gap-3">
-                          <CheckCircle2 size={18} className="shrink-0 text-[var(--accent)]" />
-                          <span className="text-white/80">{point}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </Card>
-                  {index !== steps.length - 1 && (
-                    <ArrowRight
-                      className="absolute right-[-1rem] top-5 z-20 hidden text-white/24 lg:block"
-                      size={26}
-                    />
-                  )}
-                </motion.div>
-              );
-            })}
-          </div>
+        {/* Heading */}
+
+        <div className="mx-auto max-w-3xl text-center">
+
+          <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-[var(--accent)]">
+            How It Works
+          </span>
+
+          <h2 className="mt-6 text-4xl font-bold text-white md:text-5xl">
+            From Setup to
+            <span className="block text-[var(--accent)]">
+              Successful Club Management
+            </span>
+          </h2>
+
+          <p className="mt-6 text-lg leading-8 text-white/60">
+            Cluvio simplifies every stage of club management so your team can
+            focus on building stronger student communities instead of managing
+            scattered tools.
+          </p>
+
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-        >
-          <Card interactive={false} className="mt-16 p-8 md:p-10">
-            <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-              <div>
-                <span className="text-sm font-semibold text-[var(--accent)]">Unified Workflow</span>
-                <h3 className="mt-2 text-3xl font-bold text-white">Everything Connected In One Place</h3>
-                <p className="mt-4 max-w-2xl leading-relaxed text-white/62">
-                  No spreadsheets, scattered chats, or disconnected tools. Cluvio brings every
-                  aspect of club management together into a single, streamlined platform.
-                </p>
+        {/* Timeline */}
+
+        <div className="mx-auto mt-24 max-w-5xl">
+
+          {steps.map((step, index) => {
+            const Icon = step.icon;
+
+            return (
+              <div
+                key={step.number}
+                className="relative flex gap-8 pb-16 last:pb-0"
+              >
+                {/* Timeline */}
+
+                <div className="flex flex-col items-center">
+
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--accent)]/10">
+                    <Icon className="text-3xl text-[var(--accent)]" />
+                  </div>
+
+                  {index !== steps.length - 1 && (
+                    <div className="mt-4 h-full w-px bg-white/10" />
+                  )}
+
+                </div>
+
+                {/* Content */}
+
+                <div className="flex-1 rounded-3xl border border-white/10 bg-white/[0.03] p-8">
+
+                  <span className="text-sm font-semibold tracking-wider text-[var(--accent)]">
+                    STEP {step.number}
+                  </span>
+
+                  <h3 className="mt-3 text-2xl font-semibold text-white">
+                    {step.title}
+                  </h3>
+
+                  <p className="mt-4 max-w-2xl leading-8 text-white/60">
+                    {step.description}
+                  </p>
+
+                  <div className="mt-8 grid gap-4 sm:grid-cols-3">
+
+                    {step.points.map((point) => (
+                      <div
+                        key={point}
+                        className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3"
+                      >
+                        <HiOutlineCheckCircle className="text-lg text-[var(--accent)]" />
+
+                        <span className="text-sm text-white/80">
+                          {point}
+                        </span>
+
+                      </div>
+                    ))}
+
+                  </div>
+
+                </div>
+
               </div>
-              <div className="flex flex-wrap items-center gap-3">
-                {["Members", "Events", "Communication"].map((item) => (
-                  <React.Fragment key={item}>
-                    <span className="chip rounded-xl">{item}</span>
-                    <ArrowRight className="hidden text-white/30 sm:block" size={18} />
-                  </React.Fragment>
-                ))}
-                <span className="chip rounded-xl border-[var(--accent-line)] bg-[var(--accent-soft)] text-white">
-                  Growth
-                </span>
-              </div>
-            </div>
-          </Card>
-        </motion.div>
+            );
+          })}
+
+        </div>
+
       </div>
     </section>
   );

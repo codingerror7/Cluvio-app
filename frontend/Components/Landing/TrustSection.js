@@ -1,128 +1,145 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
 import {
-  Users,
-  CalendarDays,
-  BellRing,
-  ShieldCheck,
-  GraduationCap,
-  Trophy,
-} from "lucide-react";
-import Card from "../UI/Card";
-import SectionHeading from "../UI/SectionHeading";
+  HiOutlineUsers,
+  HiOutlineCalendarDays,
+  HiOutlineBellAlert,
+  HiOutlineShieldCheck,
+  HiOutlineAcademicCap,
+  HiOutlineTrophy,
+} from "react-icons/hi2";
 
 const pillars = [
   {
-    icon: Users,
+    icon: HiOutlineUsers,
     title: "Member Management",
-    description: "Organize members, roles, committees, and participation from one place.",
+    description:
+      "Manage members, leadership roles, committees, and participation from one centralized workspace.",
   },
   {
-    icon: CalendarDays,
-    title: "Event Operations",
-    description: "Plan, manage, and track events with streamlined workflows.",
+    icon: HiOutlineCalendarDays,
+    title: "Event Management",
+    description:
+      "Plan, organize, and execute club events with registrations, attendance, and schedules.",
   },
   {
-    icon: BellRing,
-    title: "Communication",
-    description: "Keep everyone informed through centralized announcements.",
+    icon: HiOutlineBellAlert,
+    title: "Announcements",
+    description:
+      "Keep every member updated through announcements, notices, and important club communications.",
   },
   {
-    icon: ShieldCheck,
+    icon: HiOutlineShieldCheck,
     title: "Administrative Control",
-    description: "Manage permissions, leadership teams, and club operations securely.",
+    description:
+      "Securely manage permissions, approvals, executive teams, and club settings.",
   },
 ];
 
 const clubTypes = [
-  { icon: Trophy, label: "Technical Clubs" },
-  { icon: GraduationCap, label: "Student Chapters" },
-  { icon: Users, label: "Cultural Societies" },
-  { icon: CalendarDays, label: "Campus Communities" },
+  {
+    icon: HiOutlineTrophy,
+    label: "Technical Clubs",
+  },
+  {
+    icon: HiOutlineAcademicCap,
+    label: "Student Chapters",
+  },
+  {
+    icon: HiOutlineUsers,
+    label: "Cultural Societies",
+  },
+  {
+    icon: HiOutlineCalendarDays,
+    label: "Campus Communities",
+  },
 ];
 
 const TrustSection = () => {
   return (
-    <section className="section-panel section-muted">
-      <div className="container-page relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <SectionHeading
-            eyebrow="Built For Campus Communities"
-            title="Everything a Club Needs."
-            accent="Nothing It Doesn't."
-          >
-            Cluvio helps student organizations simplify operations, coordinate members, manage
-            events, and create a better club experience without the complexity of traditional
-            systems.
-          </SectionHeading>
-        </motion.div>
+    <section className="py-24">
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="mt-12 flex flex-wrap justify-center gap-3"
-        >
+      <div className="container-page">
+
+        {/* Heading */}
+
+        <div className="mx-auto max-w-3xl text-center">
+
+          <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-[var(--accent)]">
+            Built for Campus Communities
+          </span>
+
+          <h2 className="mt-6 text-4xl font-bold leading-tight text-white md:text-5xl">
+            Everything a Club Needs.
+            <span className="block text-[var(--accent)]">
+              Nothing It Doesn't.
+            </span>
+          </h2>
+
+          <p className="mt-6 text-lg leading-8 text-white/65">
+            Cluvio simplifies club management by bringing members, events,
+            announcements, approvals, and administration together in one
+            intuitive platform designed for colleges.
+          </p>
+
+        </div>
+
+        {/* Club Types */}
+
+        <div className="mt-12 flex flex-wrap justify-center gap-3">
+
           {clubTypes.map((club) => {
             const Icon = club.icon;
+
             return (
-              <div key={club.label} className="chip">
-                <Icon size={17} className="text-[var(--accent)]" />
-                <span>{club.label}</span>
+              <div
+                key={club.label}
+                className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm text-white/80"
+              >
+                <Icon className="text-lg text-[var(--accent)]" />
+                {club.label}
               </div>
             );
           })}
-        </motion.div>
 
-        <div className="mt-16 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-          {pillars.map((item, index) => {
-            const Icon = item.icon;
-            return (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.08 }}
-              >
-                <Card className="h-full p-6">
-                  <div className="icon-tile mb-5">
-                    <Icon size={21} />
-                  </div>
-                  <h3 className="text-lg font-semibold text-white">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-white/62">{item.description}</p>
-                </Card>
-              </motion.div>
-            );
-          })}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-        >
-          <Card interactive={false} className="mt-16 p-8 text-center md:p-10">
-            <h3 className="text-2xl font-bold text-white md:text-3xl">
-              Designed Around How Clubs Actually Work
-            </h3>
-            <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-white/62">
-              From onboarding new members to managing large-scale campus events, Cluvio provides a
-              unified workspace that keeps every aspect of club operations organized, accessible,
-              and efficient.
-            </p>
-          </Card>
-        </motion.div>
+        {/* Feature Cards */}
+
+        <div className="mt-20 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+
+          {pillars.map((item) => {
+            const Icon = item.icon;
+
+            return (
+              <div
+                key={item.title}
+                className="rounded-3xl border border-white/10 bg-white/[0.03] p-7 transition duration-300 hover:border-[var(--accent)]/40 hover:bg-white/[0.05]"
+              >
+
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--accent)]/10">
+
+                  <Icon className="text-2xl text-[var(--accent)]" />
+
+                </div>
+
+                <h3 className="mt-6 text-xl font-semibold text-white">
+                  {item.title}
+                </h3>
+
+                <p className="mt-4 leading-7 text-white/60">
+                  {item.description}
+                </p>
+
+              </div>
+            );
+          })}
+
+        </div>
+
       </div>
+
     </section>
   );
 };

@@ -1,162 +1,213 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
 import {
-  ArrowRight,
-  Play,
-  Users,
-  CalendarDays,
-  Bell,
-  Activity,
-  CheckCircle2,
-} from "lucide-react";
-import Badge from "../UI/Badge";
-import Button from "../UI/Button";
-import Card from "../UI/Card";
-
-const stats = [
-  ["10+", "Student Clubs"],
-  ["500+", "Members Managed"],
-  ["100%", "Cloud Based"],
-];
+  FaArrowRight,
+  FaPlay,
+  FaUsers,
+  FaCalendarAlt,
+  FaBell,
+  FaChartLine,
+  FaCheckCircle,
+} from "react-icons/fa";
 
 const Hero = ({ onEnterDashboard }) => {
   return (
-    <section id="home" className="section-panel relative overflow-hidden pt-32 sm:pt-36">
-      
+    <section
+      id="home"
+      className="relative overflow-hidden pt-32 pb-20 lg:pt-36"
+    >
+      <div className="container-page">
+        <div className="grid items-center gap-16 lg:grid-cols-[1fr_0.95fr]">
 
-      <div className="container-page relative z-10">
-        <div className="grid items-center gap-12 lg:grid-cols-[1fr_0.92fr] xl:gap-20">
+          {/* Left Content */}
+
           <div>
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Badge>
-                <CheckCircle2 size={14} />
-                Built for Modern Student Clubs
-              </Badge>
-            </motion.div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="mt-8 text-[clamp(2.75rem,7vw,5.75rem)] font-[780] leading-[1.02] text-white"
-            >
+            {/* Heading */}
+
+            <h1 className="mt-8 text-5xl font-bold leading-tight text-white md:text-6xl xl:text-7xl">
               The Operating System
-              <span className="block text-accent">For Student Clubs</span>
-            </motion.h1>
+              <span className="block text-[var(--accent)]">
+                for Student Clubs
+              </span>
+            </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="mt-7 max-w-xl text-base leading-relaxed text-white/68 sm:text-lg"
-            >
-              Manage members, events, announcements, attendance, and club operations from one
-              beautifully designed workspace built for campus communities.
-            </motion.p>
+            {/* Description */}
 
-            <motion.div
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="mt-9 flex flex-wrap gap-4"
-            >
-              <Button size="lg" onClick={onEnterDashboard}>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-white/65">
+              Manage members, events, announcements, attendance and every club
+              activity from one beautifully designed platform built exclusively
+              for colleges.
+            </p>
+
+            {/* Buttons */}
+
+            <div className="mt-10 flex flex-wrap gap-4">
+
+              <button
+                onClick={onEnterDashboard}
+                className="flex items-center gap-2 rounded-xl bg-[var(--accent)] px-6 py-3.5 font-medium text-black transition hover:scale-[1.02]"
+              >
                 Get Started
-                <ArrowRight size={16} />
-              </Button>
-              <Button variant="secondary" size="lg" onClick={onEnterDashboard}>
-                <Play size={16} />
-                Watch Demo
-              </Button>
-            </motion.div>
+                <FaArrowRight className="text-sm" />
+              </button>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="mt-12 grid max-w-xl grid-cols-3 gap-3 sm:gap-4"
-            >
-              {stats.map(([value, label]) => (
-                <div key={label} className="card-surface p-4">
-                  <h3 className="metric-value">{value}</h3>
-                  <p className="mt-2 text-xs text-white/50 sm:text-sm">{label}</p>
-                </div>
-              ))}
-            </motion.div>
+              <button
+                onClick={onEnterDashboard}
+                className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-6 py-3.5 font-medium text-white transition hover:bg-white/10"
+              >
+                <FaPlay className="text-sm" />
+                Watch Demo
+              </button>
+
+            </div>
+
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7 }}
-            className="relative"
-          >
-            <Card interactive={true} onClick={onEnterDashboard} className="relative p-4 shadow-glow sm:p-6 cursor-pointer hover:border-[var(--accent)] hover:scale-[1.01] transition-all">
-              <div className="mb-7 flex items-center justify-between gap-4">
+          {/* Right Dashboard */}
+
+          <div className="relative">
+
+            <div
+              onClick={onEnterDashboard}
+              className="cursor-pointer rounded-3xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-xl transition duration-300 hover:border-[var(--accent)]/50 hover:-translate-y-1"
+            >
+
+              {/* Header */}
+
+              <div className="mb-8 flex items-center justify-between">
+
                 <div>
-                  <h3 className="font-semibold text-white">Cluvio Dashboard</h3>
-                  <p className="mt-1 text-sm text-white/50">Club Management Workspace</p>
+                  <h3 className="text-lg font-semibold text-white">
+                    Cluvio Dashboard
+                  </h3>
+
+                  <p className="mt-1 text-sm text-white/50">
+                    Club Management Workspace
+                  </p>
                 </div>
-                <div className="flex gap-2" aria-hidden="true">
-                  <div className="h-3 w-3 rounded-full bg-[var(--danger)]" />
-                  <div className="h-3 w-3 rounded-full bg-[var(--warning)]" />
-                  <div className="h-3 w-3 rounded-full bg-[var(--success)]" />
+
+                <div className="flex gap-2">
+                  <span className="h-3 w-3 rounded-full bg-red-500" />
+                  <span className="h-3 w-3 rounded-full bg-yellow-500" />
+                  <span className="h-3 w-3 rounded-full bg-green-500" />
                 </div>
+
               </div>
+
+              {/* Stats */}
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="card-surface p-5">
-                  <Users size={20} className="mb-3 text-[var(--accent)]" />
-                  <h3 className="text-2xl font-bold text-white">482</h3>
-                  <p className="mt-1 text-sm text-white/50">Active Members</p>
+
+                <div className="rounded-2xl bg-white/5 p-5">
+
+                  <FaUsers className="mb-4 text-xl text-[var(--accent)]" />
+
+                  <h2 className="text-3xl font-bold text-white">
+                    482
+                  </h2>
+
+                  <p className="mt-1 text-sm text-white/50">
+                    Active Members
+                  </p>
+
                 </div>
-                <div className="card-surface p-5">
-                  <CalendarDays size={20} className="mb-3 text-[var(--warning)]" />
-                  <h3 className="text-2xl font-bold text-white">12</h3>
-                  <p className="mt-1 text-sm text-white/50">Upcoming Events</p>
+
+                <div className="rounded-2xl bg-white/5 p-5">
+
+                  <FaCalendarAlt className="mb-4 text-xl text-yellow-400" />
+
+                  <h2 className="text-3xl font-bold text-white">
+                    12
+                  </h2>
+
+                  <p className="mt-1 text-sm text-white/50">
+                    Upcoming Events
+                  </p>
+
                 </div>
+
               </div>
 
-              <div className="card-surface mt-5 p-5">
-                <div className="mb-4 flex items-center gap-2">
-                  <Activity size={16} className="text-[var(--accent)]" />
-                  <span className="font-medium text-white">Recent Activity</span>
+              {/* Activity */}
+
+              <div className="mt-5 rounded-2xl bg-white/5 p-5">
+
+                <div className="mb-5 flex items-center gap-3">
+
+                  <FaChartLine className="text-[var(--accent)]" />
+
+                  <h4 className="font-medium text-white">
+                    Recent Activity
+                  </h4>
+
                 </div>
-                <div className="space-y-3">
+
+                <div className="space-y-4">
+
                   {[
-                    ["New member joined", "2m ago"],
-                    ["Event registration approved", "15m ago"],
-                    ["Announcement published", "1h ago"],
-                  ].map(([label, time]) => (
-                    <div key={label} className="flex justify-between gap-4 text-sm">
-                      <span className="text-white/62">{label}</span>
-                      <span className="shrink-0 text-white/80">{time}</span>
+                    {
+                      title: "New member joined",
+                      time: "2 min ago",
+                    },
+                    {
+                      title: "Event registration approved",
+                      time: "15 min ago",
+                    },
+                    {
+                      title: "Announcement published",
+                      time: "1 hour ago",
+                    },
+                  ].map((item) => (
+                    <div
+                      key={item.title}
+                      className="flex items-center justify-between border-b border-white/5 pb-3 last:border-none last:pb-0"
+                    >
+                      <span className="text-sm text-white/65">
+                        {item.title}
+                      </span>
+
+                      <span className="text-xs text-white/40">
+                        {item.time}
+                      </span>
                     </div>
                   ))}
-                </div>
-              </div>
-            </Card>
 
-            <motion.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{ repeat: Infinity, duration: 4 }}
-              className="card-surface absolute -left-8 bottom-12 hidden p-4 md:block"
-            >
-              <div className="flex items-center gap-3">
-                <Bell size={18} className="text-[var(--accent)]" />
-                <div>
-                  <p className="text-sm font-medium text-white">New Event Created</p>
-                  <p className="text-xs text-white/50">AI Workshop - Tomorrow</p>
                 </div>
+
               </div>
-            </motion.div>
-          </motion.div>
+
+            </div>
+
+            {/* Floating Notification */}
+
+            <div className="absolute -left-8 bottom-12 hidden rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-xl lg:block">
+
+              <div className="flex items-center gap-3">
+
+                <div className="rounded-xl bg-[var(--accent)]/15 p-3">
+                  <FaBell className="text-[var(--accent)]" />
+                </div>
+
+                <div>
+
+                  <p className="text-sm font-medium text-white">
+                    New Event Created
+                  </p>
+
+                  <p className="text-xs text-white/50">
+                    AI Workshop • Tomorrow
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
       </div>
     </section>

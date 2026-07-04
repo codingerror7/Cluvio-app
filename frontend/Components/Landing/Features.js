@@ -1,147 +1,177 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
 import {
-  Users,
-  CalendarDays,
-  BellRing,
-  BarChart3,
-  ShieldCheck,
-  ArrowRight,
-} from "lucide-react";
-import Card from "../UI/Card";
-import SectionHeading from "../UI/SectionHeading";
+  HiOutlineUsers,
+  HiOutlineCalendarDays,
+  HiOutlineBellAlert,
+  HiOutlineChartBar,
+  HiOutlineShieldCheck,
+  HiOutlineArrowRight,
+} from "react-icons/hi2";
 
 const features = [
   {
-    icon: Users,
-    title: "Member Management",
-    description:
-      "Manage members, leadership teams, committees, and participation from one centralized workspace.",
-  },
-  {
-    icon: CalendarDays,
+    icon: HiOutlineCalendarDays,
     title: "Event Management",
-    description: "Create events, track registrations, and coordinate activities effortlessly.",
+    description:
+      "Plan events, manage registrations, schedules, and attendance from one place.",
   },
   {
-    icon: BellRing,
+    icon: HiOutlineBellAlert,
     title: "Announcements",
-    description: "Keep members informed through real-time updates and club-wide communication.",
+    description:
+      "Broadcast important updates and keep every club member informed.",
   },
   {
-    icon: BarChart3,
-    title: "Insights & Analytics",
-    description: "Understand participation trends, event performance, and member engagement.",
+    icon: HiOutlineChartBar,
+    title: "Analytics",
+    description:
+      "Track member engagement, participation, and event performance with insights.",
   },
   {
-    icon: ShieldCheck,
-    title: "Role-Based Access",
-    description: "Securely manage permissions for admins, coordinators, and members.",
+    icon: HiOutlineShieldCheck,
+    title: "Role Management",
+    description:
+      "Assign permissions securely for admins, coordinators, and members.",
   },
+];
+
+const roles = [
+  "President",
+  "Vice President",
+  "Technical Lead",
+  "Event Coordinator",
 ];
 
 const Features = () => {
   return (
-    <section id="features" className="section-panel">
-      <div className="container-page relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <SectionHeading
-            eyebrow="Features"
-            title="Everything Needed To Run"
-            accent="A Modern Student Club"
-          >
-            Cluvio combines member management, event coordination, communication, and analytics
-            into one simple platform.
-          </SectionHeading>
-        </motion.div>
+    <section id="features" className="py-24">
 
-        <div className="mt-16 grid gap-5 lg:grid-cols-3">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="lg:col-span-2"
-          >
-            <Card interactive={false} className="relative h-full overflow-hidden p-6 sm:p-8">
-              <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-[var(--accent-line)] to-transparent" />
-              <div className="relative z-10">
-                <div className="icon-tile h-14 w-14">
-                  <Users size={26} />
-                </div>
-                <h3 className="mt-7 text-2xl font-bold text-white sm:text-3xl">
-                  Member Management
-                </h3>
-                <p className="mt-4 max-w-xl leading-relaxed text-white/62">
-                  Organize members, assign leadership roles, track participation, manage
-                  committees, and maintain a structured community without spreadsheets or manual
-                  processes.
-                </p>
-                <div className="card-surface mt-8 p-4 sm:p-5">
-                  <div className="space-y-3">
-                    {["President", "Vice President", "Technical Lead", "Event Coordinator"].map(
-                      (role) => (
-                        <div
-                          key={role}
-                          className="flex items-center justify-between gap-4 border-b border-white/5 pb-3 last:border-0 last:pb-0"
-                        >
-                          <div className="flex min-w-0 items-center gap-3">
-                            <div className="h-9 w-9 shrink-0 rounded-xl border border-white/10 bg-[var(--accent-soft)]" />
-                            <span className="truncate text-white">{role}</span>
-                          </div>
-                          <span className="rounded-full bg-[rgba(117,199,161,0.12)] px-2.5 py-1 text-xs font-medium text-[var(--success)]">
-                            Active
-                          </span>
-                        </div>
-                      )
-                    )}
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </motion.div>
+      <div className="container-page">
 
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-1">
-            {features.slice(1).map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <motion.div
-                  key={feature.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.08 }}
-                >
-                  <Card className="group h-full p-6">
-                    <div className="icon-tile">
-                      <Icon size={21} />
-                    </div>
-                    <h3 className="mt-5 text-lg font-semibold text-white">{feature.title}</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-white/62">
-                      {feature.description}
-                    </p>
-                    <div className="mt-5 flex items-center gap-2 text-sm font-semibold text-[var(--accent)]">
-                      Learn More
-                      <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
-                    </div>
-                  </Card>
-                </motion.div>
-              );
-            })}
-          </div>
+        {/* Heading */}
+
+        <div className="mx-auto max-w-3xl text-center">
+
+          <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-[var(--accent)]">
+            Features
+          </span>
+
+          <h2 className="mt-6 text-4xl font-bold text-white md:text-5xl">
+            Everything Needed to Run
+            <span className="block text-[var(--accent)]">
+              a Modern Student Club
+            </span>
+          </h2>
+
+          <p className="mt-6 text-lg leading-8 text-white/65">
+            Cluvio combines member management, communication, events,
+            permissions, and analytics into one modern platform.
+          </p>
+
         </div>
 
-        <p className="mx-auto mt-14 max-w-3xl text-center text-lg leading-relaxed text-white/60">
-          Cluvio replaces fragmented tools with a single platform that helps student organizations
-          stay organized, connected, and productive.
-        </p>
+        {/* Content */}
+
+        <div className="mt-20 grid gap-8 lg:grid-cols-3">
+
+          {/* Main Card */}
+
+          <div className="lg:col-span-2 rounded-3xl border border-white/10 bg-white/[0.03] p-8">
+
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--accent)]/10">
+              <HiOutlineUsers className="text-2xl text-[var(--accent)]" />
+            </div>
+
+            <h3 className="mt-6 text-3xl font-semibold text-white">
+              Member Management
+            </h3>
+
+            <p className="mt-4 max-w-2xl leading-8 text-white/60">
+              Organize members, leadership teams, committees, and participation
+              without spreadsheets. Keep everyone structured, connected, and
+              easy to manage.
+            </p>
+
+            <div className="mt-10 space-y-4">
+
+              {roles.map((role) => (
+                <div
+                  key={role}
+                  className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4"
+                >
+                  <div className="flex items-center gap-4">
+
+                    <div className="h-11 w-11 rounded-xl bg-[var(--accent)]/10" />
+
+                    <span className="font-medium text-white">
+                      {role}
+                    </span>
+
+                  </div>
+
+                  <span className="rounded-full bg-green-500/10 px-3 py-1 text-xs font-medium text-green-400">
+                    Active
+                  </span>
+
+                </div>
+              ))}
+
+            </div>
+
+          </div>
+
+          {/* Side Features */}
+
+          <div className="space-y-6">
+
+            {features.map((feature) => {
+              const Icon = feature.icon;
+
+              return (
+                <div
+                  key={feature.title}
+                  className="group rounded-3xl border border-white/10 bg-white/[0.03] p-6 transition hover:border-[var(--accent)]/40"
+                >
+
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--accent)]/10">
+                    <Icon className="text-xl text-[var(--accent)]" />
+                  </div>
+
+                  <h3 className="mt-5 text-xl font-semibold text-white">
+                    {feature.title}
+                  </h3>
+
+                  <p className="mt-3 leading-7 text-white/60">
+                    {feature.description}
+                  </p>
+
+                  <button className="mt-5 flex items-center gap-2 font-medium text-[var(--accent)] transition group-hover:gap-3">
+                    Learn More
+                    <HiOutlineArrowRight className="text-sm" />
+                  </button>
+
+                </div>
+              );
+            })}
+
+          </div>
+
+        </div>
+
+        <div className="mx-auto mt-20 max-w-3xl text-center">
+
+          <p className="text-lg leading-8 text-white/60">
+            Cluvio replaces fragmented tools with one unified workspace,
+            helping student organizations stay organized, collaborate
+            efficiently, and build stronger campus communities.
+          </p>
+
+        </div>
+
       </div>
+
     </section>
   );
 };

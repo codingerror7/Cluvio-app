@@ -6,7 +6,6 @@ import Hero from "./Hero.js";
 import TrustSection from "./TrustSection.js";
 import Features from "./Features.js";
 import HowItworks from "./HowItWorks.js";
-import ProductPreview from "./ProductPreview.js";
 import Benefits from "./Benefits.js";
 import Faq from "./Faq.js";
 import Cta from "./Cta.js";
@@ -27,7 +26,6 @@ const Home = () => {
       <TrustSection />
       <Features />
       <HowItworks />
-      <ProductPreview />
       <Benefits />
       <Faq />
       <Cta onEnterDashboard={() => setShowDashboard(true)} />
