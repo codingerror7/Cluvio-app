@@ -1,294 +1,201 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
 import {
-  Menu,
-  X,
-  ArrowRight,
-  Layers3,
-} from "lucide-react";
-import Button from "../UI/Button";
+  HiOutlineBars3,
+  HiOutlineXMark,
+  HiOutlineArrowRight,
+  HiOutlineSquares2X2,
+} from "react-icons/hi2";
 
-const Navbar = ({ onEnterDashboard }) => {
-  const [mobileOpen, setMobileOpen] = useState(false);
+const links = [
+  {
+    label: "Features",
+    href: "#features",
+  },
+  {
+    label: "How it Works",
+    href: "#how-it-works",
+  },
+  {
+    label: "FAQ",
+    href: "#faq",
+  },
+  {
+    label: "Contact",
+    href: "#contact",
+  },
+];
+
+export default function Navbar({ onEnterDashboard }) {
+  const [mobileMenu, setMobileMenu] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setScrolled(window.scrollY > 15);
     };
 
     window.addEventListener("scroll", handleScroll);
 
     return () =>
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener(
+        "scroll",
+        handleScroll
+      );
   }, []);
-
-  const navLinks = [
-    {
-      label: "Features",
-      href: "#features",
-    },
-    {
-      label: "How It Works",
-      href: "#how-it-works",
-    },
-    {
-      label: "FAQ",
-      href: "#faq",
-    },
-    {
-      label: "Contact",
-      href: "#contact",
-    },
-  ];
 
   return (
     <>
       <header
-        className={`
-          fixed
-          top-0
-          left-0
-          right-0
-          z-50
-          transition-all
-          duration-300
-          ${
-            scrolled
-              ? "bg-[#080d16]/78 backdrop-blur-2xl border-b border-white/10 shadow-[0_16px_48px_rgba(2,6,23,0.22)]"
-              : "bg-transparent"
-          }
-        `}
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "border-b border-white/10 bg-[#070b13]/80 backdrop-blur-xl"
+            : "bg-transparent"
+        }`}
       >
         <div className="container-page">
-          <div className="h-[72px] sm:h-20 flex items-center justify-between">
+
+          <div className="flex h-20 items-center justify-between">
 
             {/* Logo */}
+
             <a
               href="/"
               className="flex items-center gap-3"
-              aria-label="Cluvio home"
             >
-              <div
-                className="
-                  w-10
-                  h-10
-                  rounded-2xl
-                  brand-mark
-                "
-              >
-                <Layers3
-                  size={18}
-                  className="text-white"
-                />
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[var(--accent)]/10">
+
+                <HiOutlineSquares2X2 className="text-xl text-[var(--accent)]" />
+
               </div>
 
-              <div className="flex flex-col">
-                <span
-                  className="
-                    text-white
-                    font-bold
-                    text-lg
-                  "
-                >
+              <div>
+
+                <h1 className="text-lg font-bold text-white">
                   Cluvio
-                </span>
+                </h1>
 
-                <span
-                  className="
-                    text-xs
-                    text-white/48
-                    hidden
-                    sm:block
-                  "
-                >
+                <p className="hidden text-xs text-white/45 sm:block">
                   Club Management Platform
-                </span>
+                </p>
+
               </div>
+
             </a>
 
-            {/* Desktop Navigation */}
-            <nav
-              className="
-                hidden
-                md:flex
-                items-center
-                gap-8
-              "
-            >
-              {navLinks.map((item) => (
+            {/* Desktop */}
+
+            <nav className="hidden items-center gap-8 md:flex">
+
+              {links.map((link) => (
                 <a
-                  key={item.label}
-                  href={item.href}
-                  className="
-                    text-sm
-                    text-white/65
-                    hover:text-white
-                    transition-colors
-                    duration-200
-                  "
+                  key={link.label}
+                  href={link.href}
+                  className="text-sm text-white/60 transition hover:text-white"
                 >
-                  {item.label}
+                  {link.label}
                 </a>
               ))}
+
             </nav>
 
-            {/* Desktop Actions */}
-            <div
-              className="
-                hidden
-                md:flex
-                items-center
-                gap-3
-              "
-            >
-              <Button variant="ghost" size="sm" onClick={onEnterDashboard}>
-                Sign In
-              </Button>
+            {/* Desktop Buttons */}
 
-              <Button size="sm" onClick={onEnterDashboard}>
+            <div className="hidden items-center gap-3 md:flex">
+
+              <button
+                onClick={onEnterDashboard}
+                className="rounded-xl px-5 py-2.5 text-sm font-medium text-white/70 transition hover:text-white"
+              >
+                Sign In
+              </button>
+
+              <button
+                onClick={onEnterDashboard}
+                className="flex items-center gap-2 rounded-xl bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-black transition hover:opacity-90"
+              >
                 Get Started
 
-                <ArrowRight
-                  size={16}
-                />
-              </Button>
+                <HiOutlineArrowRight className="text-lg" />
+
+              </button>
+
             </div>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Button */}
+
             <button
               onClick={() =>
-                setMobileOpen(!mobileOpen)
+                setMobileMenu(!mobileMenu)
               }
-              className="
-                md:hidden
-                w-10
-                h-10
-                flex
-                items-center
-                justify-center
-                rounded-xl
-                border
-                border-white/10
-                bg-white/[0.052]
-                text-white
-                transition
-                hover:bg-white/[0.09]
-              "
-              aria-label="Toggle navigation menu"
-              aria-expanded={mobileOpen}
+              className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 md:hidden"
             >
-              {mobileOpen ? (
-                <X size={20} />
+              {mobileMenu ? (
+                <HiOutlineXMark className="text-2xl text-white" />
               ) : (
-                <Menu size={20} />
+                <HiOutlineBars3 className="text-2xl text-white" />
               )}
             </button>
+
           </div>
+
         </div>
       </header>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <>
-            {/* Overlay */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() =>
-                setMobileOpen(false)
-              }
-              className="
-                fixed
-                inset-0
-                bg-black/60
-                backdrop-blur-sm
-                z-40
-              "
-            />
 
-            {/* Menu */}
-            <motion.div
-              initial={{
-                opacity: 0,
-                y: -20,
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-              }}
-              exit={{
-                opacity: 0,
-                y: -20,
-              }}
-              transition={{
-                duration: 0.25,
-              }}
-              className="
-                fixed
-                top-24
-                left-4
-                right-4
-                z-50
-                md:hidden
-              "
-            >
-              <div
-                className="
-                  bg-[#0f1726]/95
-                  border
-                  border-white/10
-                  rounded-[24px]
-                  p-4
-                  shadow-soft
-                  backdrop-blur-2xl
-                "
+      {mobileMenu && (
+        <>
+          <div
+            onClick={() =>
+              setMobileMenu(false)
+            }
+            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden"
+          />
+
+          <div className="fixed left-4 right-4 top-24 z-50 rounded-3xl border border-white/10 bg-[#0b1019] p-5 md:hidden">
+
+            <nav className="space-y-2">
+
+              {links.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  onClick={() =>
+                    setMobileMenu(false)
+                  }
+                  className="block rounded-xl px-4 py-3 text-white/70 transition hover:bg-white/5 hover:text-white"
+                >
+                  {link.label}
+                </a>
+              ))}
+
+            </nav>
+
+            <div className="my-5 h-px bg-white/10" />
+
+            <div className="space-y-3">
+
+              <button
+                onClick={onEnterDashboard}
+                className="w-full rounded-xl border border-white/10 py-3 font-medium text-white transition hover:bg-white/5"
               >
-                <nav className="flex flex-col">
-                  {navLinks.map((item) => (
-                    <a
-                      key={item.label}
-                      href={item.href}
-                      onClick={() =>
-                        setMobileOpen(false)
-                      }
-                      className="
-                        px-4
-                        py-3.5
-                        rounded-xl
-                        text-white/70
-                        hover:text-white
-                        hover:bg-white/[0.06]
-                        transition-all
-                      "
-                    >
-                      {item.label}
-                    </a>
-                  ))}
-                </nav>
+                Sign In
+              </button>
 
-                <div className="h-px bg-white/10 my-4" />
+              <button
+                onClick={onEnterDashboard}
+                className="w-full rounded-xl bg-[var(--accent)] py-3 font-semibold text-black transition hover:opacity-90"
+              >
+                Get Started
+              </button>
 
-                <div className="space-y-3">
-                  <Button variant="secondary" className="w-full" onClick={onEnterDashboard}>
-                    Sign In
-                  </Button>
+            </div>
 
-                  <Button className="w-full" onClick={onEnterDashboard}>
-                    Get Started
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+          </div>
+        </>
+      )}
     </>
   );
-};
-
-export default Navbar;
+}
