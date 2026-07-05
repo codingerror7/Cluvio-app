@@ -9,17 +9,3 @@ html {
   scroll-behavior: smooth;
 }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: #020617;
-  color: #ffffff;
-  font-family: 'Inter', sans-serif;
-}
-
-.container-page {
-  width: 100%;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-}

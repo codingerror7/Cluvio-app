@@ -50,32 +50,9 @@ export default function Signup() {
             </div>
 
             <div className="grid gap-4">
-              <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
-                <div className="flex items-center gap-4">
-                  <div className="rounded-2xl bg-cyan-500/10 p-3">
-                    <HiOutlineUserGroup className="text-2xl text-cyan-400" />
-                  </div>
+              
 
-                  <div>
-                    <h3 className="font-semibold text-white">12,000+ Members</h3>
-                    <p className="text-white/50">Connected across clubs</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
-                  <HiOutlineCalendarDays className="text-3xl text-violet-400" />
-                  <h3 className="mt-4 text-3xl font-bold text-white">850+</h3>
-                  <p className="text-white/50">Events Hosted</p>
-                </div>
-
-                <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
-                  <HiOutlineBell className="text-3xl text-emerald-400" />
-                  <h3 className="mt-4 text-3xl font-bold text-white">98%</h3>
-                  <p className="text-white/50">Active Engagement</p>
-                </div>
-              </div>
+              
             </div>
           </div>
         </section>
