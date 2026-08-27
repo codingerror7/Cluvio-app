@@ -52,7 +52,7 @@ const Faq = () => {
           </span>
 
           <h2 className="mt-6 text-4xl font-bold text-white md:text-5xl">
-            Everything You Need to Know
+            Everything You Need to Know.
           </h2>
 
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-white/60">
