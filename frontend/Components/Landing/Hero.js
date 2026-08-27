@@ -111,7 +111,7 @@ export default function ClubsGrid() {
                     <p className="text-sm font-semibold text-white">{club.admin}</p>
                     <div className="mt-1 flex items-center gap-1 text-xs text-white/45">
                       <HiOutlineUserGroup />
-                      Club Admin
+                      Club Admin.
                     </div>
                   </div>
                 </div>
