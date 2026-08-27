@@ -62,14 +62,14 @@ const Sidebar = () => {
                 key={item.title}
                 className={`group flex w-full items-center gap-4 rounded-2xl px-4 py-3.5 transition-all duration-200 ${
                   index === 0
-                    ? "bg-[var(--accent)] text-black shadow-lg"
+                    ? "bg-[var(--accent)] text-white shadow-lg"
                     : "text-white/65 hover:bg-white/5 hover:text-white"
                 }`}
               >
                 <Icon
                   className={`text-xl ${
                     index === 0
-                      ? "text-black"
+                      ? "text-white"
                       : "text-white/60 group-hover:text-white"
                   }`}
                 />
