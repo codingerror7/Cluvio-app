@@ -8,13 +8,17 @@
     "start": "next start"
   },
   "dependencies": {
+    "lucide-react": "^1.52.0",
     "next": "16.4.0",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
+    "@types/node": "^26.6.4",
+    "@types/react": "^19.3.0",
     "babel-plugin-react-compiler": "1.0.0",
-    "tailwindcss": "^4"
+    "tailwindcss": "^4",
+    "typescript": "^7.0.2"
   }
 }
