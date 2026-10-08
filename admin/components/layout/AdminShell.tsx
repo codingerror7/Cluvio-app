@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, Suspense } from 'react';
+import { usePathname } from 'next/navigation';
 import { Sidebar } from './Sidebar';
 import { Topbar } from './Topbar';
 
@@ -10,6 +11,12 @@ interface AdminShellProps {
 
 export const AdminShell: React.FC<AdminShellProps> = ({ children }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const isAuthPage = pathname === '/login' || pathname?.startsWith('/login');
+
+  if (isAuthPage) {
+    return <>{children}</>;
+  }
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] text-[#111827] flex">

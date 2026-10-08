@@ -6,7 +6,7 @@ export const metadata = {
   description: "Create your Cluvio account as a Student or Club President.",
 };
 
-export default function SignupPage() {
+export default function RegisterPage() {
   return (
     <AuthLayout>
       <RegisterForm />
