@@ -11,25 +11,25 @@ const footerLinks = [
   {
     title: "Product",
     links: [
-      { label: "Features", href: "#features" },
-      { label: "How It Works", href: "#how-it-works" },
-      { label: "FAQ", href: "#faq" },
+      { label: "Features", href: "/#features" },
+      { label: "How It Works", href: "/Howitworks" },
+      { label: "FAQ", href: "/#faq" },
     ],
   },
   {
     title: "Company",
     links: [
-      { label: "About", href: "#" },
-      { label: "Contact", href: "#" },
+      { label: "About", href: "/About" },
+      { label: "Contact", href: "/Contact" },
       { label: "Careers", href: "#" },
     ],
   },
   {
     title: "Resources",
     links: [
-      { label: "Documentation", href: "#" },
-      { label: "Support", href: "#" },
-      { label: "Community", href: "#" },
+      { label: "Documentation", href: "/Documentation" },
+      { label: "Support", href: "/Contact" },
+      { label: "Community", href: "/#features" },
     ],
   },
 ];

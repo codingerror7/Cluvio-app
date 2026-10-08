@@ -30,10 +30,13 @@ const Topbar = () => {
           />
         </div>
 
-        <button className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-white/70 transition hover:bg-white/10 hover:text-white">
+        <a
+          href="/About"
+          className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-white/70 transition hover:bg-white/10 hover:text-white"
+        >
           <HiOutlineInformationCircle className="text-lg" />
           About Us
-        </button>
+        </a>
 
         <button className="relative flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white/70 transition hover:bg-white/10 hover:text-white">
           <HiOutlineBell className="text-xl" />
