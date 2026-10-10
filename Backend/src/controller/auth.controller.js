@@ -15,6 +15,7 @@ export const register = async (req, res) => {
       password,
       confirmPassword,
       role = "student",
+      secretKey,
       enrollmentNumber,
       studentId,
       age,
@@ -46,12 +47,25 @@ export const register = async (req, res) => {
       });
     }
 
-    // Role safety: Public registration only allows student or president
-    if (role !== "student" && role !== "president") {
+    // Role safety: Public registration allows student, club member, club head, or president
+    const validRoles = ["student", "club member", "club head", "president"];
+    if (!validRoles.includes(role)) {
       return res.status(400).json({
         success: false,
-        message: "Invalid role specified. Only 'student' or 'president' may register.",
+        message: "Invalid role specified. Role must be 'student', 'club member', or 'club head'.",
       });
+    }
+
+    // Secret Key validation for club member and club head
+    if (role === "club member" || role === "club head") {
+      if (!secretKey || secretKey.trim() !== "admin123") {
+        return res.status(400).json({
+          success: false,
+          message: `Invalid secret key. Secret key 'admin123' is required for ${
+            role === "club head" ? "Club Head" : "Club Member"
+          }.`,
+        });
+      }
     }
 
     // Email format check
@@ -100,17 +114,26 @@ export const register = async (req, res) => {
       department: department || (role === "student" ? "Computer Science" : "General"),
       year: year || "1st Year",
       avatar:
-        role === "president"
+        role === "president" || role === "club head"
           ? "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
+          : role === "club member"
+          ? "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80"
           : "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
     });
 
     // Record activity
     try {
+      const isLead = role === "president" || role === "club head";
       await ActivityLog.create({
-        title: role === "president" ? "New Club President Registered" : "New Student Registered",
-        description: `${user.name} registered as ${role === "president" ? "Club President" : "Student"} (${user.department})`,
-        type: role === "president" ? "president" : "student",
+        title: isLead
+          ? "New Club Head Registered"
+          : role === "club member"
+          ? "New Club Member Registered"
+          : "New Student Registered",
+        description: `${user.name} registered as ${
+          isLead ? "Club Head" : role === "club member" ? "Club Member" : "Student"
+        } (${user.department})`,
+        type: isLead ? "president" : "student",
         user: user._id,
       });
     } catch (e) {
@@ -150,7 +173,7 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, role, secretKey } = req.body;
 
     if (!email || !password) {
       return res.status(400).json({
@@ -180,6 +203,36 @@ export const login = async (req, res) => {
         success: false,
         message: "Your account has been suspended. Please contact the administrator.",
       });
+    }
+
+    // Role check if user explicitly selected a role
+    if (role) {
+      const isLeadCompatible =
+        (role === "club head" || role === "president") &&
+        (user.role === "club head" || user.role === "president");
+      const isMemberCompatible =
+        (role === "club member" || role === "student") &&
+        (user.role === "club member" || user.role === "student");
+
+      if (role !== user.role && !isLeadCompatible && !isMemberCompatible && user.role !== "admin") {
+        return res.status(400).json({
+          success: false,
+          message: `This account is registered as '${user.role}'. Please select the '${user.role}' role to sign in.`,
+        });
+      }
+    }
+
+    // Secret Key validation for club member and club head
+    const targetRole = role || user.role;
+    if (targetRole === "club member" || targetRole === "club head") {
+      if (!secretKey || secretKey.trim() !== "admin123") {
+        return res.status(400).json({
+          success: false,
+          message: `Invalid secret key. Secret key 'admin123' is required for ${
+            targetRole === "club head" ? "Club Head" : "Club Member"
+          }.`,
+        });
+      }
     }
 
     const token = generateToken(user._id);

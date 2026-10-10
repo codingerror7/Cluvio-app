@@ -196,8 +196,20 @@ export default function StudentDashboardPage() {
             </div>
             <div>
               <span className="text-lg font-bold tracking-tight text-white">CLUVIO</span>
-              <span className="ml-2 rounded-md bg-[var(--accent)]/15 px-2 py-0.5 text-[10px] font-semibold text-[var(--accent)]">
-                Student Portal
+              <span
+                className={`ml-2 rounded-md px-2 py-0.5 text-[10px] font-semibold border ${
+                  user?.role === "club member"
+                    ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-300"
+                    : user?.role === "club head"
+                    ? "bg-amber-500/15 border-amber-500/30 text-amber-300"
+                    : "bg-cyan-500/15 border-cyan-500/30 text-cyan-300"
+                }`}
+              >
+                {user?.role === "club member"
+                  ? "Club Member Portal"
+                  : user?.role === "club head"
+                  ? "Club Head Portal"
+                  : "Student Portal"}
               </span>
             </div>
           </Link>
@@ -206,10 +218,30 @@ export default function StudentDashboardPage() {
         {/* User Nav and Actions */}
         <div className="flex items-center gap-3">
           <div className="hidden sm:flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-white/80">
-            <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>{user?.name || "Student"}</span>
-            <span className="text-white/40">({user?.enrollmentNumber || user?.studentId || "Enrolled"})</span>
+            <div
+              className={`h-2 w-2 rounded-full animate-pulse ${
+                user?.role === "club member"
+                  ? "bg-emerald-400"
+                  : user?.role === "club head"
+                  ? "bg-amber-400"
+                  : "bg-cyan-400"
+              }`}
+            />
+            <span className="font-semibold">{user?.name || "Member"}</span>
+            <span className="rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-medium capitalize text-white/70">
+              {user?.role || "student"}
+            </span>
           </div>
+
+          {/* Quick link to President/Head console if user is Club Head */}
+          {(user?.role === "club head" || user?.role === "president") && (
+            <Link
+              href="/president/dashboard"
+              className="hidden md:inline-flex items-center gap-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 text-xs font-semibold text-amber-300 hover:bg-amber-500/20 transition-all"
+            >
+              <span>Head Console →</span>
+            </Link>
+          )}
 
           <button
             type="button"
@@ -225,6 +257,39 @@ export default function StudentDashboardPage() {
 
       {/* Main Container */}
       <main className="flex-1 mx-auto max-w-7xl w-full px-4 py-8 sm:px-6 lg:px-8 space-y-6">
+        {/* Role Banner if Club Head */}
+        {(user?.role === "club head" || user?.role === "president") && (
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-orange-500/5 to-transparent p-4 text-xs text-amber-200">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">👑</span>
+              <div>
+                <p className="font-bold text-white text-sm">Authenticated as Club Head</p>
+                <p className="text-white/60 text-[11px] mt-0.5">
+                  You have club leadership privileges. Switch to the Club Head Console to create clubs, manage rosters, and review membership requests.
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/president/dashboard"
+              className="shrink-0 rounded-xl bg-amber-400 px-3.5 py-2 text-xs font-bold text-black shadow-md hover:brightness-110 transition-all"
+            >
+              Open Head Console →
+            </Link>
+          </div>
+        )}
+
+        {/* Role Banner if Club Member */}
+        {user?.role === "club member" && (
+          <div className="flex items-center gap-3 rounded-2xl border border-emerald-500/30 bg-gradient-to-r from-emerald-500/10 to-teal-500/5 p-4 text-xs text-emerald-200">
+            <span className="text-2xl">👥</span>
+            <div>
+              <p className="font-bold text-white text-sm">Verified Club Member Account</p>
+              <p className="text-white/60 text-[11px] mt-0.5">
+                Secret key authenticated: You have active participation access to campus club activities, internal group discussions, and event passes.
+              </p>
+            </div>
+          </div>
+        )}
         {/* Banner Alert if any */}
         {actionMessage && (
           <div

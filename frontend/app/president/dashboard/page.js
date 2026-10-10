@@ -82,7 +82,11 @@ export default function PresidentDashboardPage() {
       const profileRes = await api.users.getProfile();
 
       if (profileRes.success && profileRes.user) {
-        if (profileRes.user.role !== "president" && profileRes.user.role !== "admin") {
+        if (
+          profileRes.user.role !== "president" &&
+          profileRes.user.role !== "club head" &&
+          profileRes.user.role !== "admin"
+        ) {
           router.push("/dashboard");
           return;
         }
@@ -273,7 +277,7 @@ export default function PresidentDashboardPage() {
             <div>
               <span className="text-lg font-bold tracking-tight text-white">CLUVIO</span>
               <span className="ml-2 rounded-md bg-[var(--accent)]/15 px-2 py-0.5 text-[10px] font-semibold text-[var(--accent)]">
-                President Portal
+                {user?.role === "club head" ? "Club Head Console" : "President Portal"}
               </span>
             </div>
           </Link>
@@ -283,7 +287,7 @@ export default function PresidentDashboardPage() {
         <div className="flex items-center gap-3">
           <div className="hidden sm:flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-white/80">
             <span className="h-2 w-2 rounded-full bg-[var(--accent)] animate-pulse" />
-            <span>{user?.name || "President"}</span>
+            <span>{user?.name || (user?.role === "club head" ? "Club Head" : "President")}</span>
             <span className="text-white/40">({user?.department || "Leadership"})</span>
           </div>
 

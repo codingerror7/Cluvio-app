@@ -1,9 +1,9 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Cluvio - Modern Club Management Workspace",
+  title: "Cluvio - Campus Club Platform | A BroCodes Technologies Product",
   description:
-    "Cluvio helps colleges, universities, and organizations manage members, events, announcements, registrations, and communications from a single, beautiful workspace.",
+    "Cluvio is a next-generation college club operations system engineered by BroCodes Technologies (brocodestech.in). Connect students, manage memberships, and empower club leaders.",
 };
 
 export default function RootLayout({ children }) {

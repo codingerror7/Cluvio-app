@@ -27,8 +27,9 @@ const Sidebar = () => {
     router.push("/Login");
   };
 
+  const isHead = user?.role === "president" || user?.role === "club head";
   const dashboardHref = user
-    ? user.role === "president"
+    ? isHead
       ? "/president/dashboard"
       : "/dashboard"
     : "/Login";
@@ -64,13 +65,19 @@ const Sidebar = () => {
             href={dashboardHref}
             className="group flex w-full items-center gap-4 rounded-2xl px-4 py-3.5 text-white/65 hover:bg-white/5 hover:text-white transition-all"
           >
-            {user?.role === "president" ? (
+            {isHead ? (
               <HiOutlineShieldCheck className="text-xl text-white/60 group-hover:text-white" />
             ) : (
               <HiOutlineUser className="text-xl text-white/60 group-hover:text-white" />
             )}
             <span className="font-medium">
-              {user ? (user.role === "president" ? "President Console" : "Student Portal") : "Portal Sign In"}
+              {user
+                ? isHead
+                  ? "Club Head Console"
+                  : user.role === "club member"
+                  ? "Member Portal"
+                  : "Student Portal"
+                : "Portal Sign In"}
             </span>
           </Link>
 

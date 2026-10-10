@@ -70,7 +70,7 @@ export default function ClubsGrid() {
   ];
 
   return (
-    <section className="rounded-[32px] bg-transparent p-6 shadow-[0_20px_80px_rgba(2,8,23,0.25)] sm:p-8 lg:p-6">
+    <section id="clubs" className="rounded-[32px] bg-transparent p-6 shadow-[0_20px_80px_rgba(2,8,23,0.25)] sm:p-8 lg:p-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div className="max-w-2xl">
           <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm font-medium text-[var(--accent)]">
