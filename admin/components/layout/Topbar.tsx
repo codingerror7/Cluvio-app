@@ -175,8 +175,17 @@ export const Topbar: React.FC<TopbarProps> = ({ onOpenMobileMenu }) => {
           items={[
             { label: 'Admin Settings', onClick: () => {} },
             { label: 'System Audit Logs', onClick: () => {} },
-            { label: 'Campus Directory', onClick: () => {} },
-            { label: 'Sign Out', variant: 'danger', onClick: () => {} },
+            {
+              label: 'Sign Out',
+              variant: 'danger',
+              onClick: () => {
+                if (typeof window !== 'undefined') {
+                  localStorage.removeItem('cluvio_admin_token');
+                  localStorage.removeItem('cluvio_admin_user');
+                  window.location.href = '/login';
+                }
+              },
+            },
           ]}
         />
       </div>

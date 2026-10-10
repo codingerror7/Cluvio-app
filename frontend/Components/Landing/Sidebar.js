@@ -1,42 +1,40 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   HiOutlineHome,
-  HiOutlineCalendarDays,
-  HiOutlineUser,
-  HiOutlineBell,
-  HiOutlineCog6Tooth,
-  HiOutlineArrowLeftOnRectangle,
   HiOutlineSquares2X2,
+  HiOutlineUser,
+  HiOutlineShieldCheck,
+  HiOutlineArrowLeftOnRectangle,
+  HiOutlineInformationCircle,
 } from "react-icons/hi2";
-
-const menuItems = [
-  {
-    title: "Home",
-    icon: HiOutlineHome,
-  },
-  {
-    title: "Calendar",
-    icon: HiOutlineCalendarDays,
-  },
-  {
-    title: "Profile",
-    icon: HiOutlineUser,
-  },
-  {
-    title: "Notifications",
-    icon: HiOutlineBell,
-  },
-  {
-    title: "Settings",
-    icon: HiOutlineCog6Tooth,
-  },
-];
+import { getStoredUser, clearAuthToken } from "@/lib/api";
 
 const Sidebar = () => {
+  const router = useRouter();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    setUser(getStoredUser());
+  }, []);
+
+  const handleLogout = () => {
+    clearAuthToken();
+    setUser(null);
+    router.push("/Login");
+  };
+
+  const dashboardHref = user
+    ? user.role === "president"
+      ? "/president/dashboard"
+      : "/dashboard"
+    : "/Login";
+
   return (
-    <aside className="flex h-full w-full flex-col overflow-hidden border-r border-white/10 bg-transparent backdrop-blur-lg">
+    <aside className="flex h-full w-full flex-col overflow-hidden border-r border-white/10 bg-[#070B13]/95 backdrop-blur-lg">
       <div className="flex items-center gap-3 border-b border-white/10 px-6 py-6">
         <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--accent)]/10">
           <HiOutlineSquares2X2 className="text-2xl text-[var(--accent)]" />
@@ -54,39 +52,50 @@ const Sidebar = () => {
         </p>
 
         <div className="space-y-2">
-          {menuItems.map((item, index) => {
-            const Icon = item.icon;
+          <Link
+            href="/"
+            className="group flex w-full items-center gap-4 rounded-2xl px-4 py-3.5 bg-[var(--accent)] text-black font-semibold shadow-lg transition-all"
+          >
+            <HiOutlineHome className="text-xl" />
+            <span>Home</span>
+          </Link>
 
-            return (
-              <button
-                key={item.title}
-                className={`group flex w-full items-center gap-4 rounded-2xl px-4 py-3.5 transition-all duration-200 ${
-                  index === 0
-                    ? "bg-[var(--accent)] text-white shadow-lg"
-                    : "text-white/65 hover:bg-white/5 hover:text-white"
-                }`}
-              >
-                <Icon
-                  className={`text-xl ${
-                    index === 0
-                      ? "text-white"
-                      : "text-white/60 group-hover:text-white"
-                  }`}
-                />
+          <Link
+            href={dashboardHref}
+            className="group flex w-full items-center gap-4 rounded-2xl px-4 py-3.5 text-white/65 hover:bg-white/5 hover:text-white transition-all"
+          >
+            {user?.role === "president" ? (
+              <HiOutlineShieldCheck className="text-xl text-white/60 group-hover:text-white" />
+            ) : (
+              <HiOutlineUser className="text-xl text-white/60 group-hover:text-white" />
+            )}
+            <span className="font-medium">
+              {user ? (user.role === "president" ? "President Console" : "Student Portal") : "Portal Sign In"}
+            </span>
+          </Link>
 
-                <span className="font-medium">{item.title}</span>
-              </button>
-            );
-          })}
+          <Link
+            href="/About"
+            className="group flex w-full items-center gap-4 rounded-2xl px-4 py-3.5 text-white/65 hover:bg-white/5 hover:text-white transition-all"
+          >
+            <HiOutlineInformationCircle className="text-xl text-white/60 group-hover:text-white" />
+            <span className="font-medium">About Cluvio</span>
+          </Link>
         </div>
       </nav>
 
-      <div className="border-t border-white/10 p-4">
-        <button className="group flex w-full items-center gap-4 rounded-2xl px-4 py-3.5 text-white/60 transition hover:bg-red-500/10 hover:text-red-400">
-          <HiOutlineArrowLeftOnRectangle className="text-xl" />
-          <span className="font-medium">Logout</span>
-        </button>
-      </div>
+      {user && (
+        <div className="border-t border-white/10 p-4">
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="group flex w-full items-center gap-4 rounded-2xl px-4 py-3.5 text-white/60 transition hover:bg-red-500/10 hover:text-red-400 cursor-pointer"
+          >
+            <HiOutlineArrowLeftOnRectangle className="text-xl" />
+            <span className="font-medium">Logout</span>
+          </button>
+        </div>
+      )}
     </aside>
   );
 };

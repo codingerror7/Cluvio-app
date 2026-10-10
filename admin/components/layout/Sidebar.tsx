@@ -1,14 +1,15 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
   BarChart3,
   ShieldCheck,
   Users2,
   GraduationCap,
+  FileCheck,
   Settings,
   FileText,
   LogOut,
@@ -16,6 +17,7 @@ import {
   LayoutGrid,
 } from 'lucide-react';
 import { Avatar } from '@/components/ui/Avatar';
+import { api, getStoredUser } from '@/lib/api';
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -24,6 +26,20 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const pathname = usePathname();
+  const router = useRouter();
+  const [currentUser, setCurrentUser] = useState<any | null>(null);
+
+  useEffect(() => {
+    const user = getStoredUser();
+    if (user) {
+      setCurrentUser(user);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    api.auth.logout();
+    router.push('/login');
+  };
 
   const isNavActive = (href: string) => {
     if (href === '/') {
@@ -38,9 +54,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   ];
 
   const managementNav = [
-    { label: 'Clubs', href: '/clubs', icon: ShieldCheck, badge: '48' },
-    { label: 'Club Presidents', href: '/presidents', icon: Users2, badge: '46' },
-    { label: 'Students', href: '/students', icon: GraduationCap, badge: '2.8k' },
+    { label: 'Clubs', href: '/clubs', icon: ShieldCheck },
+    { label: 'Club Presidents', href: '/presidents', icon: Users2 },
+    { label: 'Students', href: '/students', icon: GraduationCap },
+    { label: 'Membership Requests', href: '/requests', icon: FileCheck },
   ];
 
   const secondaryNav = [
@@ -77,7 +94,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         <button
           type="button"
           onClick={onClose}
-          className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-700 lg:hidden"
+          className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-700 lg:hidden cursor-pointer"
         >
           <X className="h-4 w-4" />
         </button>
@@ -98,10 +115,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={onClose}
-                  className={`flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
+                  className={`flex items-center justify-between rounded-lg px-3 py-2 text-xs font-semibold transition-colors ${
                     active
-                      ? 'bg-gray-900 text-white shadow-2xs'
+                      ? 'bg-gray-900 text-white shadow-xs'
                       : 'text-gray-600 hover:bg-gray-100/70 hover:text-gray-900'
                   }`}
                 >
@@ -128,10 +144,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={onClose}
-                  className={`flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
+                  className={`flex items-center justify-between rounded-lg px-3 py-2 text-xs font-semibold transition-colors ${
                     active
-                      ? 'bg-gray-900 text-white shadow-2xs'
+                      ? 'bg-gray-900 text-white shadow-xs'
                       : 'text-gray-600 hover:bg-gray-100/70 hover:text-gray-900'
                   }`}
                 >
@@ -139,24 +154,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                     <Icon className={`h-4 w-4 ${active ? 'text-white' : 'text-gray-400'}`} />
                     <span>{item.label}</span>
                   </div>
-                  {item.badge && (
-                    <span
-                      className={`rounded-full px-1.5 py-0.5 text-[10px] font-semibold ${
-                        active
-                          ? 'bg-white/20 text-white'
-                          : 'bg-gray-100 text-gray-500'
-                      }`}
-                    >
-                      {item.badge}
-                    </span>
-                  )}
                 </Link>
               );
             })}
           </nav>
         </div>
 
-        {/* Secondary Section */}
+        {/* Settings & Logs */}
         <div>
           <div className="px-3 pb-2 text-[10px] font-bold uppercase tracking-wider text-gray-400">
             System
@@ -184,25 +188,26 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         <div className="flex items-center justify-between rounded-lg p-2 hover:bg-gray-100/60 transition-colors">
           <div className="flex items-center gap-2.5 min-w-0">
             <Avatar
-              name="Dr. Samantha Rao"
-              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80"
+              name={currentUser?.name || 'Administrator'}
+              src={currentUser?.avatar || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80'}
               size="sm"
               status="online"
             />
             <div className="min-w-0 flex-1">
               <p className="truncate text-xs font-semibold text-gray-900">
-                Dr. Samantha Rao
+                {currentUser?.name || 'Administrator'}
               </p>
               <p className="truncate text-[10px] text-gray-500 font-medium">
-                Super Admin • Dean Office
+                {currentUser?.email || 'admin@cluvio.edu'}
               </p>
             </div>
           </div>
 
           <button
             type="button"
-            title="Log out"
-            className="flex h-7 w-7 items-center justify-center rounded text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+            onClick={handleLogout}
+            title="Log out of Admin Console"
+            className="flex h-7 w-7 items-center justify-center rounded text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
           >
             <LogOut className="h-3.5 w-3.5" />
           </button>

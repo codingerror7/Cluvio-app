@@ -1,17 +1,17 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
   ShieldCheck,
   Users2,
   GraduationCap,
   Sparkles,
-  Calendar,
   ArrowUpRight,
   Download,
   Filter,
   Plus,
+  RefreshCw,
 } from 'lucide-react';
 import { StatCard } from '@/components/ui/StatCard';
 import { ChartCard } from '@/components/ui/ChartCard';
@@ -19,6 +19,7 @@ import { AreaChart } from '@/components/ui/charts/AreaChart';
 import { BarChart } from '@/components/ui/charts/BarChart';
 import { DonutChart } from '@/components/ui/charts/DonutChart';
 import { ActivityFeed } from '@/components/ui/ActivityFeed';
+import { api } from '@/lib/api';
 import {
   mockAnalytics,
   mockPlatformActivity,
@@ -28,6 +29,26 @@ import {
 export const DashboardView: React.FC = () => {
   const [timeRange, setTimeRange] = useState('30d');
   const [participationTab, setParticipationTab] = useState<'weekly' | 'monthly' | 'yearly'>('monthly');
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState<any>(null);
+
+  const fetchDashboardStats = async () => {
+    try {
+      setLoading(true);
+      const res = await api.dashboard.getStats();
+      if (res.success && res.stats) {
+        setStats(res.stats);
+      }
+    } catch (err) {
+      console.warn('Falling back to local metrics for offline mode:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDashboardStats();
+  }, []);
 
   // Chart data based on selected tab
   const getParticipationData = () => {
@@ -59,6 +80,23 @@ export const DashboardView: React.FC = () => {
     value: d.count,
   }));
 
+  const totalClubsVal = stats?.totalClubs ?? mockClubs.length;
+  const clubPresidentsVal = stats?.clubPresidents ?? 4;
+  const totalStudentsVal = stats?.totalStudents ?? 4;
+  const activeClubsVal = stats?.activeClubs ?? mockClubs.length;
+
+  const categories = stats?.categoriesBreakdown?.length > 0
+    ? stats.categoriesBreakdown
+    : mockAnalytics.categoriesBreakdown;
+
+  const topClubs = stats?.topClubsRanking?.length > 0
+    ? stats.topClubsRanking
+    : mockAnalytics.topClubsRanking;
+
+  const activities = stats?.recentActivities?.length > 0
+    ? stats.recentActivities
+    : mockPlatformActivity;
+
   return (
     <div className="space-y-6 sm:space-y-8">
       {/* Dashboard Welcome Header */}
@@ -68,17 +106,27 @@ export const DashboardView: React.FC = () => {
             <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
               Dashboard
             </h1>
-            <span className="inline-flex items-center rounded-full bg-blue-50 px-2 py-0.5 text-xs font-semibold text-blue-700">
-              Live Monitor
+            <span className="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-700">
+              Live MongoDB
             </span>
           </div>
           <p className="mt-1 text-sm text-gray-500">
-            Welcome back, Admin. Here&apos;s what&apos;s happening across Cluvio today.
+            Welcome back, Admin. Real-time campus telemetry and management console.
           </p>
         </div>
 
         {/* Date Filter & Actions */}
         <div className="flex flex-wrap items-center gap-2.5">
+          <button
+            type="button"
+            onClick={fetchDashboardStats}
+            title="Refresh statistics"
+            className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 text-xs font-medium text-gray-700 shadow-2xs hover:bg-gray-50 transition-colors cursor-pointer"
+          >
+            <RefreshCw className={`h-3.5 w-3.5 text-gray-400 ${loading ? 'animate-spin' : ''}`} />
+            <span className="hidden sm:inline">Refresh</span>
+          </button>
+
           <div className="relative inline-block">
             <select
               value={timeRange}
@@ -93,20 +141,12 @@ export const DashboardView: React.FC = () => {
             <Filter className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
           </div>
 
-          <button
-            type="button"
-            className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 text-xs font-medium text-gray-700 shadow-2xs hover:bg-gray-50 hover:text-gray-900 transition-colors"
-          >
-            <Download className="h-3.5 w-3.5 text-gray-400" />
-            <span className="hidden sm:inline">Export Report</span>
-          </button>
-
           <Link
             href="/clubs"
             className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-gray-900 px-3.5 text-xs font-medium text-white shadow-xs hover:bg-black transition-colors"
           >
             <Plus className="h-3.5 w-3.5" />
-            <span>Add Club</span>
+            <span>Manage Clubs</span>
           </Link>
         </div>
       </div>
@@ -115,37 +155,37 @@ export const DashboardView: React.FC = () => {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           title="Total Clubs"
-          value={mockAnalytics.kpis.totalClubs.value}
-          trend={mockAnalytics.kpis.totalClubs.change}
+          value={totalClubsVal}
+          trend="+100% active"
           trendType="positive"
-          supportingText={mockAnalytics.kpis.totalClubs.label}
+          supportingText="Active student clubs"
           icon={<ShieldCheck className="h-5 w-5 text-blue-600" />}
         />
 
         <StatCard
           title="Club Presidents"
-          value={mockAnalytics.kpis.clubPresidents.value}
-          trend={mockAnalytics.kpis.clubPresidents.change}
+          value={clubPresidentsVal}
+          trend="Verified"
           trendType="positive"
-          supportingText={mockAnalytics.kpis.clubPresidents.label}
+          supportingText="Club leadership active"
           icon={<Users2 className="h-5 w-5 text-indigo-600" />}
         />
 
         <StatCard
           title="Total Students"
-          value={mockAnalytics.kpis.totalStudents.value}
-          trend={mockAnalytics.kpis.totalStudents.change}
+          value={totalStudentsVal}
+          trend="Registered"
           trendType="positive"
-          supportingText={mockAnalytics.kpis.totalStudents.label}
+          supportingText="Student profiles"
           icon={<GraduationCap className="h-5 w-5 text-emerald-600" />}
         />
 
         <StatCard
           title="Active Clubs"
-          value={mockAnalytics.kpis.activeClubs.value}
-          trend={mockAnalytics.kpis.activeClubs.change}
+          value={activeClubsVal}
+          trend={`${stats?.pendingApprovals ?? 1} Pending`}
           trendType="neutral"
-          supportingText={mockAnalytics.kpis.activeClubs.label}
+          supportingText="Campus organizations"
           icon={<Sparkles className="h-5 w-5 text-amber-600" />}
         />
       </div>
@@ -221,7 +261,7 @@ export const DashboardView: React.FC = () => {
           title="Club Categories"
           subtitle="Distribution of clubs across university disciplines"
         >
-          <DonutChart categories={mockAnalytics.categoriesBreakdown} />
+          <DonutChart categories={categories} />
         </ChartCard>
       </div>
 
@@ -238,7 +278,7 @@ export const DashboardView: React.FC = () => {
               href="/clubs"
               className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-700"
             >
-              <span>View all 48</span>
+              <span>View all {totalClubsVal}</span>
               <ArrowUpRight className="h-3.5 w-3.5" />
             </Link>
           </div>
@@ -255,12 +295,12 @@ export const DashboardView: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
-                {mockAnalytics.topClubsRanking.map((club, idx) => (
-                  <tr key={idx} className="hover:bg-gray-50/70 transition-colors">
+                {topClubs.map((club: any, idx: number) => (
+                  <tr key={club.id || idx} className="hover:bg-gray-50/70 transition-colors">
                     <td className="py-3 pr-2">
                       <div className="flex items-center gap-2.5">
                         <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gray-100 text-sm">
-                          {club.avatar}
+                          {club.avatar || '💻'}
                         </span>
                         <div>
                           <p className="font-semibold text-gray-900">{club.name}</p>
@@ -277,18 +317,18 @@ export const DashboardView: React.FC = () => {
                       {club.members}
                     </td>
                     <td className="py-3 text-right font-medium text-gray-700">
-                      {club.events}
+                      {club.events || 0}
                     </td>
                     <td className="py-3 text-right">
                       <div className="inline-flex items-center gap-1.5">
                         <div className="h-1.5 w-12 rounded-full bg-gray-100 overflow-hidden">
                           <div
                             className="h-full rounded-full bg-emerald-500"
-                            style={{ width: `${club.engagement}%` }}
+                            style={{ width: `${club.engagement || 85}%` }}
                           />
                         </div>
                         <span className="font-semibold text-gray-900 font-mono text-[11px]">
-                          {club.engagement}%
+                          {club.engagement || 85}%
                         </span>
                       </div>
                     </td>
@@ -302,7 +342,7 @@ export const DashboardView: React.FC = () => {
         {/* Recent Activity (1 column on lg) */}
         <div className="lg:col-span-1">
           <ActivityFeed
-            activities={mockPlatformActivity}
+            activities={activities}
             title="Recent Activity"
             maxItems={5}
           />

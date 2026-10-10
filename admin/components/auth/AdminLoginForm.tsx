@@ -1,20 +1,44 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Mail, Lock, Eye, EyeOff, ArrowRight, ShieldAlert } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, ShieldAlert, Loader2, Sparkles } from 'lucide-react';
+import { api } from '@/lib/api';
 
 export const AdminLoginForm: React.FC = () => {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberSession, setRememberSession] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Non-functional mock submit (purely UI feedback demonstration)
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
+    setError(null);
+    setLoading(true);
+
+    try {
+      const response = await api.auth.login({ email, password });
+      if (response.user.role !== 'admin') {
+        api.auth.logout();
+        setError('Forbidden: This account does not possess administrator credentials.');
+        setLoading(false);
+        return;
+      }
+
+      router.push('/dashboard');
+    } catch (err: any) {
+      setError(err.message || 'Authentication failed. Please check your credentials.');
+      setLoading(false);
+    }
+  };
+
+  const handleFillDemo = () => {
+    setEmail('admin@cluvio.edu');
+    setPassword('Admin@123');
+    setError(null);
   };
 
   return (
@@ -29,17 +53,32 @@ export const AdminLoginForm: React.FC = () => {
         </p>
       </div>
 
-      {/* Mock notice if form is submitted */}
-      {submitted && (
-        <div className="mb-5 rounded-xl border border-gray-900/10 bg-gray-50 p-3.5 text-xs text-gray-800 flex items-center justify-between">
+      {/* Demo Credentials Quick Fill Banner */}
+      <div className="mb-5 rounded-xl border border-blue-100 bg-blue-50/70 p-3.5 text-xs text-blue-900 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Sparkles className="h-4 w-4 text-blue-600 shrink-0" />
+          <span>Demo Account: <strong>admin@cluvio.edu</strong></span>
+        </div>
+        <button
+          type="button"
+          onClick={handleFillDemo}
+          className="text-xs font-semibold text-blue-700 hover:text-blue-900 underline underline-offset-2 cursor-pointer"
+        >
+          Auto-fill
+        </button>
+      </div>
+
+      {/* Error notice if failed */}
+      {error && (
+        <div className="mb-5 rounded-xl border border-red-200 bg-red-50 p-3.5 text-xs text-red-700 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <ShieldAlert className="h-4 w-4 text-gray-700 shrink-0" />
-            <span>Admin sign-in simulated (UI/UX only).</span>
+            <ShieldAlert className="h-4 w-4 text-red-600 shrink-0" />
+            <span>{error}</span>
           </div>
           <button
             type="button"
-            onClick={() => setSubmitted(false)}
-            className="text-gray-400 hover:text-gray-700"
+            onClick={() => setError(null)}
+            className="text-red-400 hover:text-red-700"
           >
             ✕
           </button>
@@ -81,12 +120,6 @@ export const AdminLoginForm: React.FC = () => {
             >
               Password
             </label>
-            <button
-              type="button"
-              className="text-xs font-medium text-gray-500 hover:text-gray-900 transition-colors"
-            >
-              Forgot password?
-            </button>
           </div>
           <div className="relative">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
@@ -106,7 +139,7 @@ export const AdminLoginForm: React.FC = () => {
               onClick={() => setShowPassword((prev) => !prev)}
               tabIndex={-1}
               aria-label={showPassword ? 'Hide password' : 'Show password'}
-              className="absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400 hover:text-gray-700 transition-colors focus:outline-none"
+              className="absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400 hover:text-gray-700 transition-colors focus:outline-none cursor-pointer"
             >
               {showPassword ? (
                 <EyeOff className="h-4 w-4" />
@@ -137,10 +170,20 @@ export const AdminLoginForm: React.FC = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="mt-2 flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-gray-900 text-sm font-semibold text-white shadow-xs transition-all hover:bg-black hover:shadow-sm active:scale-[0.99] cursor-pointer"
+          disabled={loading}
+          className="mt-2 flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-gray-900 text-sm font-semibold text-white shadow-xs transition-all hover:bg-black hover:shadow-sm active:scale-[0.99] cursor-pointer disabled:opacity-60"
         >
-          <span>Sign In to Console</span>
-          <ArrowRight className="h-4 w-4" />
+          {loading ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span>Authenticating...</span>
+            </>
+          ) : (
+            <>
+              <span>Sign In to Console</span>
+              <ArrowRight className="h-4 w-4" />
+            </>
+          )}
         </button>
       </form>
 
