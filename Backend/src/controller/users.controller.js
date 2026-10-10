@@ -12,7 +12,7 @@ export const getProfile = async (req, res) => {
 
     let extraData = {};
 
-    if (user.role === "student") {
+    if (user.role === "student" || user.role === "club member") {
       const memberships = await Membership.find({ student: user._id })
         .populate("club", "name description category logo status")
         .sort({ createdAt: -1 });
@@ -45,7 +45,7 @@ export const getProfile = async (req, res) => {
         })),
         pendingRequestsCount: pendingRequests.filter((r) => r.status === "Pending").length,
       };
-    } else if (user.role === "president") {
+    } else if (user.role === "president" || user.role === "club head") {
       const ownedClubs = await Club.find({ president: user._id });
       extraData = {
         ownedClubs,

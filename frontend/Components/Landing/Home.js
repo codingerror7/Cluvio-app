@@ -1,34 +1,54 @@
-"use client"
+"use client";
 
 import React from "react";
-import Sidebar from "./Sidebar.js";
-import Topbar from "./Topbar.js";
-import Hero from "./Hero.js";
+import LandingNavbar from "./LandingNavbar.js";
+import HeroShowcase from "./HeroShowcase.js";
+import FeaturesGrid from "./FeaturesGrid.js";
+import BroCodesSpotlight from "./BroCodesSpotlight.js";
+import RoleShowcase from "./RoleShowcase.js";
+import ClubsGrid from "./Hero.js";
 import Steps from "./Steps.js";
 import Faq from "./Faq.js";
+import CtaBanner from "./CtaBanner.js";
 import Footer from "./Footer.js";
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-black text-white">
-      <div className="flex min-h-screen">
-        <div className="fixed inset-y-0 left-0 z-40 hidden w-72 md:flex">
-          <Sidebar />
-        </div>
+    <div className="min-h-screen bg-[#070B13] text-white selection:bg-cyan-500 selection:text-black">
+      {/* Top Navbar with BroCodes Technologies banner & Login/Register buttons */}
+      <LandingNavbar />
 
-        <div className="flex-1 md:ml-72">
-          <div className="sticky top-0 z-30 border-b border-white/10 bg-black/95 backdrop-blur-xl">
-            <Topbar />
-          </div>
+      {/* Main Landing Page Content */}
+      <main className="relative flex flex-col">
+        {/* 1. Hero Showcase Section */}
+        <HeroShowcase />
 
-          <div className="mx-auto flex w-full max-w-7xl flex-col px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-            <Hero />
-            <Steps />
-            <Faq />
-            <Footer />
-          </div>
+        <div className="mx-auto flex w-full max-w-7xl flex-col px-4 sm:px-6 lg:px-8 space-y-12">
+          {/* 2. Core Features Grid */}
+          <FeaturesGrid />
+
+          {/* 3. BroCodes Technologies Dedicated Spotlight */}
+          <BroCodesSpotlight />
+
+          {/* 4. 3-Role Architecture & Access Tiers */}
+          <RoleShowcase />
+
+          {/* 5. Live Active Clubs Showcase */}
+          <ClubsGrid />
+
+          {/* 6. How Cluvio Works (3 Steps) */}
+          <Steps />
+
+          {/* 7. FAQ */}
+          <Faq />
+
+          {/* 8. Conversion CTA Banner with Login & Register */}
+          <CtaBanner />
+
+          {/* 9. Full Footer with BroCodes Technologies details */}
+          <Footer />
         </div>
-      </div>
+      </main>
     </div>
   );
 };

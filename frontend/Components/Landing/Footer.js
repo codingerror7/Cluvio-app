@@ -1,101 +1,212 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import {
   HiOutlineSquares2X2,
   HiOutlineEnvelope,
   HiOutlineArrowUpRight,
+  HiOutlineArrowTopRightOnSquare,
+  HiOutlineSparkles,
 } from "react-icons/hi2";
 
-const footerLinks = [
-  {
-    title: "Product",
-    links: [
-      { label: "Features", href: "/#features" },
-      { label: "How It Works", href: "/Howitworks" },
-      { label: "FAQ", href: "/#faq" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { label: "About", href: "/About" },
-      { label: "Contact", href: "/Contact" },
-      { label: "Careers", href: "#" },
-    ],
-  },
-  {
-    title: "Resources",
-    links: [
-      { label: "Documentation", href: "/Documentation" },
-      { label: "Support", href: "/Contact" },
-      { label: "Community", href: "/#features" },
-    ],
-  },
-];
-
-const Footer = () => {
+export default function Footer() {
   return (
-    <footer className="mt-8 rounded-[32px] border border-white/10 bg-transparent p-6 shadow-[0_20px_80px_rgba(2,8,23,0.2)] sm:p-8 lg:p-10">
-      <div className="mx-auto max-w-6xl">
-        <div className="grid gap-14 md:grid-cols-12">
-          <div className="md:col-span-5">
-            <a href="/" className="inline-flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[var(--accent)]/10">
-                <HiOutlineSquares2X2 className="text-xl text-[var(--accent)]" />
+    <footer className="mt-16 rounded-[36px] border border-white/10 bg-gradient-to-b from-[#0a1120] to-[#050811] p-8 sm:p-12 lg:p-14 shadow-[0_20px_80px_rgba(2,8,23,0.4)]">
+      <div className="mx-auto max-w-7xl">
+        <div className="grid gap-12 lg:grid-cols-12">
+          {/* Brand & BroCodes Attribution Column */}
+          <div className="lg:col-span-5 space-y-5">
+            <Link href="/" className="inline-flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 text-black shadow-[0_0_20px_rgba(34,211,238,0.3)]">
+                <HiOutlineSquares2X2 className="text-2xl font-bold" />
               </div>
-              <span className="text-2xl font-bold text-white">Cluvio</span>
-            </a>
+              <div>
+                <span className="text-2xl font-extrabold tracking-tight text-white">
+                  Cluvio
+                </span>
+                <p className="text-[11px] font-medium text-cyan-400">
+                  College Club Operations System
+                </p>
+              </div>
+            </Link>
 
-            <p className="mt-6 max-w-sm leading-8 text-white/60">
-              A modern operating system for student clubs. Manage members, events, announcements, attendance, and communities from one unified platform.
+            <p className="max-w-md text-sm leading-relaxed text-white/60">
+              Cluvio is a next-generation campus platform empowering student organizations, clubs, and college leadership to manage memberships, real-time requests, announcements, and events from one beautifully unified interface.
             </p>
 
-            <a href="mailto:support@cluvio.com" className="mt-6 inline-flex items-center gap-2 text-white/60 transition hover:text-white">
-              <HiOutlineEnvelope className="text-lg" />
-              support@cluvio.com
-            </a>
+            {/* BroCodes Technologies Showcase Badge */}
+            <div className="rounded-2xl border border-cyan-500/20 bg-cyan-500/[0.05] p-4 text-xs space-y-2">
+              <div className="flex items-center gap-1.5 font-bold text-white">
+                <HiOutlineSparkles className="text-cyan-400" />
+                <span>A Product by BroCodes Technologies</span>
+              </div>
+              <p className="text-white/60 text-[11px] leading-relaxed">
+                Engineering intelligent web architectures and transformative platforms for education and digital enterprises.
+              </p>
+              <a
+                href="https://brocodestech.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 font-mono text-cyan-300 font-bold hover:underline pt-1"
+              >
+                <span>Visit brocodestech.in</span>
+                <HiOutlineArrowTopRightOnSquare className="text-xs" />
+              </a>
+            </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 md:col-span-7">
-            {footerLinks.map((group) => (
-              <div key={group.title}>
-                <h4 className="font-semibold text-white">{group.title}</h4>
-                <ul className="mt-5 space-y-3">
-                  {group.links.map((link) => (
-                    <li key={link.label}>
-                      <a href={link.href} className="text-white/60 transition hover:text-white">
-                        {link.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          {/* Links Columns */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 lg:col-span-7">
+            {/* Quick Portals & Auth */}
+            <div>
+              <h4 className="font-bold text-white text-sm tracking-wide uppercase">
+                Access Portals
+              </h4>
+              <ul className="mt-4 space-y-2.5 text-xs text-white/60">
+                <li>
+                  <Link href="/Login" className="hover:text-cyan-400 font-semibold text-white/80 transition-colors">
+                    → Sign In
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/register" className="hover:text-cyan-400 font-semibold text-cyan-300 transition-colors">
+                    → Register Account
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/Login" className="hover:text-white transition-colors">
+                    Student Portal
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/Login" className="hover:text-white transition-colors">
+                    Club Member Hub
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/Login" className="hover:text-white transition-colors">
+                    Club Head Console
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Platform Sections */}
+            <div>
+              <h4 className="font-bold text-white text-sm tracking-wide uppercase">
+                Platform
+              </h4>
+              <ul className="mt-4 space-y-2.5 text-xs text-white/60">
+                <li>
+                  <a href="#showcase" className="hover:text-white transition-colors">
+                    Platform Overview
+                  </a>
+                </li>
+                <li>
+                  <a href="#features" className="hover:text-white transition-colors">
+                    Core Features
+                  </a>
+                </li>
+                <li>
+                  <a href="#roles" className="hover:text-white transition-colors">
+                    3-Tier Roles
+                  </a>
+                </li>
+                <li>
+                  <a href="#clubs" className="hover:text-white transition-colors">
+                    Active Clubs
+                  </a>
+                </li>
+                <li>
+                  <a href="#faq" className="hover:text-white transition-colors">
+                    FAQ
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* BroCodes Technologies */}
+            <div>
+              <h4 className="font-bold text-white text-sm tracking-wide uppercase">
+                BroCodes Tech
+              </h4>
+              <ul className="mt-4 space-y-2.5 text-xs text-white/60">
+                <li>
+                  <a
+                    href="https://brocodestech.in"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 font-semibold text-cyan-300 hover:underline"
+                  >
+                    <span>Official Website</span>
+                    <HiOutlineArrowTopRightOnSquare className="text-[10px]" />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://brocodestech.in"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white transition-colors"
+                  >
+                    About The Team
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://brocodestech.in"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white transition-colors"
+                  >
+                    Engineering Labs
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="mailto:contact@brocodestech.in"
+                    className="hover:text-white transition-colors"
+                  >
+                    contact@brocodestech.in
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col items-center justify-between gap-6 border-t border-white/10 pt-8 md:flex-row">
-          <p className="text-sm text-white/50">
-            © {new Date().getFullYear()} Cluvio. All rights reserved.
+        {/* Bottom Bar */}
+        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row text-xs text-white/50">
+          <p>
+            © {new Date().getFullYear()} Cluvio. Developed & Engineered by{" "}
+            <a
+              href="https://brocodestech.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-cyan-400 font-semibold hover:underline"
+            >
+              BroCodes Technologies
+            </a>{" "}
+            (<a href="https://brocodestech.in" target="_blank" rel="noopener noreferrer" className="hover:text-white font-mono">brocodestech.in</a>). All rights reserved.
           </p>
 
-          <div className="flex items-center gap-6 text-sm">
-            <a href="#" className="text-white/50 transition hover:text-white">
-              Privacy Policy
-            </a>
-            <a href="#" className="text-white/50 transition hover:text-white">
-              Terms
-            </a>
-            <a href="#home" className="inline-flex items-center gap-1 text-white/50 transition hover:text-white">
-              Back to top
-              <HiOutlineArrowUpRight className="text-base" />
+          <div className="flex items-center gap-6">
+            <Link href="/Login" className="hover:text-cyan-300 font-medium">
+              Sign In
+            </Link>
+            <Link href="/register" className="hover:text-cyan-300 font-medium">
+              Register
+            </Link>
+            <a
+              href="#"
+              className="inline-flex items-center gap-1 hover:text-white transition-colors"
+            >
+              Back to Top ↑
             </a>
           </div>
         </div>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

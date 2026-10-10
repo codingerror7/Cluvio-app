@@ -32,15 +32,27 @@ const seed = async () => {
       console.log("Admin account already exists.");
     }
 
-    // 2. Check or create Presidents
+  // 2. Check or create Presidents / Club Heads
     const presidentsData = [
       {
         name: "Rahul Sharma",
         email: "rahul.sharma@campus.edu",
         password: "President@123",
-        role: "president",
+        role: "club head",
         studentId: "PRES-2024-001",
         enrollmentNumber: "PRES-2024-001",
+        department: "Computer Science",
+        year: "3rd Year",
+        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+        status: "Active",
+      },
+      {
+        name: "Club Head Demo",
+        email: "clubhead@campus.edu",
+        password: "Head@123",
+        role: "club head",
+        studentId: "HEAD-2024-001",
+        enrollmentNumber: "HEAD-2024-001",
         department: "Computer Science",
         year: "3rd Year",
         avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
@@ -204,8 +216,38 @@ const seed = async () => {
     }
     console.log(`Verified ${createdClubs.length} clubs.`);
 
-    // 4. Check or create Students
+    // 4. Check or create Students & Club Members
     const studentsData = [
+      {
+        name: "Student Demo",
+        email: "student@campus.edu",
+        password: "Student@123",
+        role: "student",
+        studentId: "STU-2024-DEMO",
+        enrollmentNumber: "STU-2024-DEMO",
+        department: "Computer Science",
+        year: "1st Year",
+        age: 19,
+        bio: "Exploring student clubs and eager to participate in campus events.",
+        favouriteGenres: ["Technical", "Engineering", "Creative"],
+        avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+        status: "Active",
+      },
+      {
+        name: "Club Member Demo",
+        email: "member@campus.edu",
+        password: "Member@123",
+        role: "club member",
+        studentId: "MEM-2024-DEMO",
+        enrollmentNumber: "MEM-2024-DEMO",
+        department: "Computer Science",
+        year: "2nd Year",
+        age: 20,
+        bio: "Active club member participating in workshops, hackathons and tech talks.",
+        favouriteGenres: ["Technical", "AI & ML"],
+        avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80",
+        status: "Active",
+      },
       {
         name: "Aarav Sharma",
         email: "aarav.s@campus.edu",

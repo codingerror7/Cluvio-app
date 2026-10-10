@@ -91,6 +91,20 @@ export default function AuthLayout({ children }) {
                   <p className="text-[11px] text-white/40">Campus Safe</p>
                 </div>
               </div>
+
+              {/* 3 Access Tiers Showcase */}
+              <div className="mt-8 flex flex-wrap items-center gap-2 text-xs">
+                <span className="text-white/40 text-[11px]">Role Portals:</span>
+                <span className="rounded-full bg-cyan-500/10 border border-cyan-500/20 px-2.5 py-1 text-cyan-300 font-medium">
+                  🎓 Student
+                </span>
+                <span className="rounded-full bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 text-emerald-300 font-medium">
+                  👥 Club Member
+                </span>
+                <span className="rounded-full bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 text-amber-300 font-medium">
+                  👑 Club Head
+                </span>
+              </div>
             </div>
 
             {/* Bottom Note */}

@@ -26,7 +26,7 @@ const Topbar = () => {
 
   const getDashboardLink = () => {
     if (!user) return "/Login";
-    if (user.role === "president") return "/president/dashboard";
+    if (user.role === "president" || user.role === "club head") return "/president/dashboard";
     return "/dashboard";
   };
 
