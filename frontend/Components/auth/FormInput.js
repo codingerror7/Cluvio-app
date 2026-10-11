@@ -22,21 +22,21 @@ export default function FormInput({
   return (
     <div className={`w-full ${className}`}>
       {label && (
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between mb-1.5">
           <label
             htmlFor={inputId}
-            className="block text-sm font-medium text-white/80 select-none"
+            className="block text-xs font-semibold text-slate-700 select-none"
           >
             {label}
-            {required && <span className="ml-1 text-[var(--accent)]">*</span>}
+            {required && <span className="ml-1 text-blue-600">*</span>}
           </label>
         </div>
       )}
 
       <div className="relative">
         {Icon && (
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-white/35 transition-colors">
-            <Icon className="text-lg" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+            <Icon className="text-base" />
           </div>
         )}
 
@@ -48,26 +48,26 @@ export default function FormInput({
           placeholder={placeholder}
           disabled={disabled}
           className={`
-            h-12 w-full rounded-xl border bg-white/[0.03] text-sm text-white placeholder:text-white/30
-            outline-none transition-all duration-200
-            ${Icon ? "pl-11" : "pl-4"} pr-4
+            h-10 sm:h-11 w-full rounded-xl border bg-white text-xs sm:text-sm text-slate-800 placeholder:text-slate-400
+            outline-none transition-all duration-150
+            ${Icon ? "pl-10" : "pl-3.5"} pr-3.5
             ${
               error
-                ? "border-red-500/60 focus:border-red-400 focus:ring-2 focus:ring-red-500/20"
-                : "border-white/10 hover:border-white/20 focus:border-[var(--accent)] focus:bg-white/[0.05] focus:ring-2 focus:ring-[var(--accent)]/20"
+                ? "border-rose-400 focus:border-rose-500 focus:ring-2 focus:ring-rose-100"
+                : "border-slate-200/90 hover:border-slate-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
             }
-            ${disabled ? "opacity-50 cursor-not-allowed bg-white/[0.01]" : ""}
+            ${disabled ? "opacity-50 cursor-not-allowed bg-slate-50" : ""}
           `}
           {...props}
         />
       </div>
 
       {error ? (
-        <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1.5">
+        <p className="mt-1 text-[11px] text-rose-500 flex items-center gap-1 font-medium">
           <span>{error}</span>
         </p>
       ) : helper ? (
-        <p className="mt-1.5 text-xs text-white/40">{helper}</p>
+        <p className="mt-1 text-[11px] text-slate-400">{helper}</p>
       ) : null}
     </div>
   );
