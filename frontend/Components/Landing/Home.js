@@ -14,7 +14,7 @@ import Footer from "./Footer.js";
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-[#070B13] text-white selection:bg-cyan-500 selection:text-black">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 selection:bg-blue-600 selection:text-white">
       {/* Top Navbar with BroCodes Technologies banner & Login/Register buttons */}
       <LandingNavbar />
 

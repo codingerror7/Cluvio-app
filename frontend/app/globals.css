@@ -2,11 +2,11 @@
 @import "tailwindcss";
 
 :root {
-  --accent: #22d3ee;
-  --accent-hover: #06b6d4;
-  --accent-muted: rgba(34, 211, 238, 0.12);
-  --background: #070B13;
-  --foreground: #ffffff;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-muted: rgba(37, 99, 235, 0.12);
+  --background: #F8FAFC;
+  --foreground: #0F172A;
   --card-bg: #111827;
   --card-elevated: #162032;
   --border-color: rgba(255, 255, 255, 0.1);

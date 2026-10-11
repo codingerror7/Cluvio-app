@@ -2,8 +2,15 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { HiOutlineUserGroup, HiOutlineCheckCircle, HiOutlineClock } from "react-icons/hi2";
+import {
+  HiOutlineUserGroup,
+  HiOutlineCheckCircle,
+  HiOutlineClock,
+  HiOutlineSparkles,
+  HiOutlineArrowRight,
+} from "react-icons/hi2";
 import { api, getStoredUser } from "@/lib/api";
+import Link from "next/link";
 
 export default function ClubsGrid() {
   const router = useRouter();
@@ -18,8 +25,39 @@ export default function ClubsGrid() {
     const fetchClubs = async () => {
       try {
         const res = await api.clubs.getAll();
-        if (res.success && Array.isArray(res.clubs)) {
+        if (res.success && Array.isArray(res.clubs) && res.clubs.length > 0) {
           setClubs(res.clubs);
+        } else {
+          // Fallback initial demo clubs
+          setClubs([
+            {
+              id: "c1",
+              name: "Coding & Tech Club",
+              category: "Technical",
+              description: "Open-source development, competitive programming, and web technologies.",
+              logo: "💻",
+              membersCount: 128,
+              president: { name: "Rahul Sharma", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" },
+            },
+            {
+              id: "c2",
+              name: "Robotics & Hardware Labs",
+              category: "Engineering",
+              description: "Autonomous rovers, drone design, IoT electronics and hardware hackathons.",
+              logo: "🤖",
+              membersCount: 94,
+              president: { name: "Priya Patel", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&auto=format&fit=crop&q=80" },
+            },
+            {
+              id: "c3",
+              name: "Design & Visual Arts",
+              category: "Creative",
+              description: "UI/UX design systems, branding, photography, video production and 3D modeling.",
+              logo: "🎨",
+              membersCount: 82,
+              president: { name: "Ananya Verma", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" },
+            },
+          ]);
         }
       } catch (err) {
         console.warn("Failed to fetch clubs for landing:", err);
@@ -37,7 +75,7 @@ export default function ClubsGrid() {
       return;
     }
 
-    if (currentUser.role !== "student") {
+    if (currentUser.role !== "student" && currentUser.role !== "club member") {
       router.push("/president/dashboard");
       return;
     }
@@ -48,7 +86,6 @@ export default function ClubsGrid() {
     try {
       await api.requests.submit(club.id || club._id, "Joined via Featured Clubs showcase.");
       setStatusMsg({ type: "success", text: `Join request submitted for ${club.name}!` });
-      // Refresh clubs to get updated status
       const res = await api.clubs.getAll();
       if (res.success && Array.isArray(res.clubs)) {
         setClubs(res.clubs);
@@ -60,103 +97,96 @@ export default function ClubsGrid() {
     }
   };
 
-  const colors = [
-    "from-cyan-500/20 to-blue-600/5",
-    "from-pink-500/20 to-purple-600/5",
-    "from-violet-500/20 to-indigo-600/5",
-    "from-orange-500/20 to-red-500/5",
-    "from-emerald-500/20 to-green-600/5",
-    "from-sky-500/20 to-cyan-600/5",
-  ];
-
   return (
-    <section id="clubs" className="rounded-[32px] bg-transparent p-6 shadow-[0_20px_80px_rgba(2,8,23,0.25)] sm:p-8 lg:p-6">
+    <section id="clubs" className="py-16 text-left">
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div className="max-w-2xl">
-          <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm font-medium text-[var(--accent)]">
-            Featured Clubs
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3.5 py-1 text-xs font-semibold text-blue-700">
+            <HiOutlineSparkles className="text-sm" />
+            Live Database Sync
           </span>
-          <h2 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">
-            Discover active communities ready to grow.
+          <h2 className="mt-3 text-3xl font-extrabold text-slate-900 sm:text-4xl tracking-tight">
+            Discover Active Communities Ready to Grow.
           </h2>
-          <p className="mt-3 text-base leading-7 text-white/60">
+          <p className="mt-2 text-base text-slate-600">
             Real-time college clubs powered by live database persistence. Explore charters, meet presidents, and join with a single click.
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={() => {
-            const currentUser = getStoredUser();
-            if (currentUser?.role === "president") router.push("/president/dashboard");
-            else if (currentUser) router.push("/dashboard");
-            else router.push("/Login");
-          }}
-          className="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white/80 transition hover:bg-white/10 hover:text-white cursor-pointer"
+        <Link
+          href="/register"
+          className="inline-flex items-center justify-center gap-1.5 rounded-full border border-slate-300 bg-white px-5 py-2.5 text-xs font-bold text-slate-700 transition hover:bg-slate-50 hover:border-slate-400 cursor-pointer shadow-xs"
         >
-          Explore All Clubs
-        </button>
+          <span>Explore All 50+ Clubs</span>
+          <HiOutlineArrowRight className="text-xs" />
+        </Link>
       </div>
 
       {statusMsg && (
         <div
           className={`mt-6 rounded-2xl p-4 text-xs flex items-center justify-between border ${
             statusMsg.type === "success"
-              ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-300"
-              : "bg-rose-500/10 border-rose-500/30 text-rose-300"
+              ? "bg-emerald-50 border-emerald-200 text-emerald-800"
+              : "bg-rose-50 border-rose-200 text-rose-800"
           }`}
         >
-          <span>{statusMsg.text}</span>
-          <button type="button" onClick={() => setStatusMsg(null)} className="text-white/60 hover:text-white">
+          <span className="font-semibold">{statusMsg.text}</span>
+          <button
+            type="button"
+            onClick={() => setStatusMsg(null)}
+            className="text-slate-400 hover:text-slate-600 cursor-pointer"
+          >
             ✕
           </button>
         </div>
       )}
 
-      <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-        {clubs.map((club, idx) => {
-          const colorGradient = colors[idx % colors.length];
+      {/* Clubs Grid in Clean Light SaaS Theme */}
+      <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {clubs.slice(0, 6).map((club, idx) => {
           const isMember = club.isMember;
           const isPending = club.membershipStatus === "Pending";
 
           return (
             <div
               key={club.id || club._id || idx}
-              className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-[#111827] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--accent)]/40"
+              className="group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-slate-200/90 bg-white p-7 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:border-blue-300 hover:shadow-xl"
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${colorGradient} opacity-100`} />
-
-              <div className="relative flex h-full flex-col p-6 sm:p-7">
+              <div>
                 <div className="flex items-center justify-between">
-                  <span className="inline-flex w-fit rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-white/70">
+                  <span className="inline-flex rounded-full bg-blue-50 border border-blue-100 px-3 py-1 text-xs font-bold text-blue-700">
                     {club.category}
                   </span>
-                  <span className="text-2xl p-1.5 rounded-xl bg-white/5 border border-white/10">
+                  <span className="text-2xl p-2 rounded-2xl bg-slate-50 border border-slate-100 shadow-2xs">
                     {club.logo || "💻"}
                   </span>
                 </div>
 
-                <h3 className="mt-5 text-2xl font-bold text-white">{club.name}</h3>
-                <p className="mt-3 flex-1 leading-7 text-white/60 line-clamp-3">{club.description}</p>
+                <h3 className="mt-5 text-xl font-bold text-slate-900 tracking-tight">
+                  {club.name}
+                </h3>
+                <p className="mt-2 text-xs sm:text-sm text-slate-600 line-clamp-2 leading-relaxed">
+                  {club.description}
+                </p>
+              </div>
 
-                <div className="my-6 h-px bg-white/10" />
-
+              <div className="mt-6 pt-5 border-t border-slate-100">
                 <div className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 min-w-0">
                     <img
                       src={
                         club.president?.avatar ||
-                        `https://i.pravatar.cc/150?img=${(idx % 50) + 10}`
+                        `https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80`
                       }
                       alt={club.president?.name || "President"}
-                      className="h-12 w-12 rounded-2xl object-cover ring-2 ring-white/10"
+                      className="h-10 w-10 rounded-full object-cover ring-2 ring-slate-100 shrink-0"
                     />
 
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold text-white truncate">
-                        {club.president?.name || "President"}
+                      <p className="text-xs font-bold text-slate-800 truncate">
+                        {club.president?.name || "Club President"}
                       </p>
-                      <div className="mt-1 flex items-center gap-1 text-xs text-white/45">
+                      <div className="flex items-center gap-1 text-[11px] text-slate-400">
                         <HiOutlineUserGroup />
                         <span>{club.membersCount || 1} members</span>
                       </div>
@@ -164,12 +194,12 @@ export default function ClubsGrid() {
                   </div>
 
                   {isMember ? (
-                    <span className="rounded-2xl bg-emerald-500/20 border border-emerald-500/40 px-4 py-2 text-xs font-bold text-emerald-300 flex items-center gap-1">
+                    <span className="rounded-full bg-emerald-50 border border-emerald-200 px-3.5 py-1.5 text-xs font-bold text-emerald-700 flex items-center gap-1">
                       <HiOutlineCheckCircle />
                       <span>Joined</span>
                     </span>
                   ) : isPending ? (
-                    <span className="rounded-2xl bg-amber-500/20 border border-amber-500/40 px-3.5 py-2 text-xs font-bold text-amber-300 flex items-center gap-1">
+                    <span className="rounded-full bg-amber-50 border border-amber-200 px-3 py-1.5 text-xs font-bold text-amber-700 flex items-center gap-1">
                       <HiOutlineClock />
                       <span>Pending</span>
                     </span>
@@ -178,15 +208,13 @@ export default function ClubsGrid() {
                       type="button"
                       disabled={joiningId === (club.id || club._id)}
                       onClick={() => handleJoin(club)}
-                      className="rounded-2xl bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-black transition hover:scale-105 cursor-pointer disabled:opacity-50"
+                      className="rounded-full bg-[#2563EB] px-4.5 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#1D4ED8] transition-all cursor-pointer disabled:opacity-50"
                     >
-                      {joiningId === (club.id || club._id) ? "Joining..." : "Join"}
+                      {joiningId === (club.id || club._id) ? "Joining..." : "Join Club"}
                     </button>
                   )}
                 </div>
               </div>
-
-              <div className="absolute inset-x-8 bottom-0 h-px bg-gradient-to-r from-transparent via-[var(--accent)]/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
             </div>
           );
         })}
