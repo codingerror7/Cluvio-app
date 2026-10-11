@@ -9,6 +9,11 @@ import {
   deleteClub,
   getClubMembers,
   removeMember,
+  addEvent,
+  removeEvent,
+  addAnnouncement,
+  removeAnnouncement,
+  updateRecruitmentSettings,
 } from "../controller/clubs.controller.js";
 import { protect } from "../middleware/auth.middleware.js";
 import { authorize } from "../middleware/role.middleware.js";
@@ -23,7 +28,8 @@ const optionalProtect = async (req, res, next) => {
   ) {
     try {
       const token = req.headers.authorization.split(" ")[1];
-      const secret = process.env.JWT_SECRET || "cluvio_jwt_secret_college_demo_key_2026";
+      const secret =
+        process.env.JWT_SECRET || "cluvio_jwt_secret_college_demo_key_2026";
       const decoded = jwt.verify(token, secret);
       req.user = await User.findById(decoded.id).select("-password");
     } catch (e) {
@@ -44,6 +50,37 @@ router.delete(
   protect,
   authorize("president", "admin"),
   removeMember
+);
+
+// Activities & Events Management
+router.post("/:id/events", protect, authorize("president", "admin"), addEvent);
+router.delete(
+  "/:id/events/:eventId",
+  protect,
+  authorize("president", "admin"),
+  removeEvent
+);
+
+// Announcements Management
+router.post(
+  "/:id/announcements",
+  protect,
+  authorize("president", "admin"),
+  addAnnouncement
+);
+router.delete(
+  "/:id/announcements/:announcementId",
+  protect,
+  authorize("president", "admin"),
+  removeAnnouncement
+);
+
+// Recruitment Settings Management
+router.put(
+  "/:id/recruitment",
+  protect,
+  authorize("president", "admin"),
+  updateRecruitmentSettings
 );
 
 export default router;

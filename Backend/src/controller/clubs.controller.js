@@ -457,3 +457,209 @@ export const removeMember = async (req, res) => {
     });
   }
 };
+
+export const addEvent = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, date, time, location, description, status } = req.body;
+
+    if (!title) {
+      return res.status(400).json({ success: false, message: "Event title is required." });
+    }
+
+    const club = await Club.findById(id);
+    if (!club) {
+      return res.status(404).json({ success: false, message: "Club not found." });
+    }
+
+    if (
+      req.user.role !== "admin" &&
+      club.president.toString() !== req.user._id.toString()
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "Forbidden: You are not authorized to manage events for this club.",
+      });
+    }
+
+    const newEvent = {
+      title: title.trim(),
+      date: date || new Date().toISOString().split("T")[0],
+      time: time || "5:00 PM",
+      location: location || "Campus Center",
+      description: description || "",
+      status: status || "Upcoming",
+      attendees: 0,
+    };
+
+    club.recentEvents.unshift(newEvent);
+    club.eventsCount = club.recentEvents.length;
+    await club.save();
+
+    return res.status(201).json({
+      success: true,
+      message: "Activity event added successfully.",
+      event: club.recentEvents[0],
+      events: club.recentEvents,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const removeEvent = async (req, res) => {
+  try {
+    const { id, eventId } = req.params;
+    const club = await Club.findById(id);
+    if (!club) {
+      return res.status(404).json({ success: false, message: "Club not found." });
+    }
+
+    if (
+      req.user.role !== "admin" &&
+      club.president.toString() !== req.user._id.toString()
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "Forbidden: You are not authorized to manage events for this club.",
+      });
+    }
+
+    club.recentEvents = club.recentEvents.filter(
+      (e) => e._id.toString() !== eventId
+    );
+    club.eventsCount = club.recentEvents.length;
+    await club.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Event removed successfully.",
+      events: club.recentEvents,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const addAnnouncement = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, message, priority } = req.body;
+
+    if (!title || !message) {
+      return res.status(400).json({
+        success: false,
+        message: "Title and message are required for announcement.",
+      });
+    }
+
+    const club = await Club.findById(id);
+    if (!club) {
+      return res.status(404).json({ success: false, message: "Club not found." });
+    }
+
+    if (
+      req.user.role !== "admin" &&
+      club.president.toString() !== req.user._id.toString()
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "Forbidden: You are not authorized to post announcements for this club.",
+      });
+    }
+
+    const announcement = {
+      title: title.trim(),
+      message: message.trim(),
+      priority: priority || "Normal",
+      date: new Date().toLocaleDateString("en-GB"),
+      createdAt: new Date(),
+    };
+
+    club.announcements.unshift(announcement);
+    await club.save();
+
+    return res.status(201).json({
+      success: true,
+      message: "Announcement posted successfully.",
+      announcement: club.announcements[0],
+      announcements: club.announcements,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const removeAnnouncement = async (req, res) => {
+  try {
+    const { id, announcementId } = req.params;
+    const club = await Club.findById(id);
+    if (!club) {
+      return res.status(404).json({ success: false, message: "Club not found." });
+    }
+
+    if (
+      req.user.role !== "admin" &&
+      club.president.toString() !== req.user._id.toString()
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "Forbidden: You are not authorized to delete announcements for this club.",
+      });
+    }
+
+    club.announcements = club.announcements.filter(
+      (a) => a._id.toString() !== announcementId
+    );
+    await club.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Announcement removed.",
+      announcements: club.announcements,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const updateRecruitmentSettings = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { recruitmentOpen, hiringDomains } = req.body;
+
+    const club = await Club.findById(id);
+    if (!club) {
+      return res.status(404).json({ success: false, message: "Club not found." });
+    }
+
+    if (
+      req.user.role !== "admin" &&
+      club.president.toString() !== req.user._id.toString()
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "Forbidden: You are not authorized to update settings for this club.",
+      });
+    }
+
+    if (typeof recruitmentOpen === "boolean") {
+      club.recruitmentOpen = recruitmentOpen;
+    }
+    if (Array.isArray(hiringDomains)) {
+      club.hiringDomains = hiringDomains;
+    }
+
+    await club.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Recruitment settings updated successfully.",
+      recruitmentOpen: club.recruitmentOpen,
+      hiringDomains: club.hiringDomains,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+

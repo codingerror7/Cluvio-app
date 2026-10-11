@@ -14,13 +14,13 @@ export const getProfile = async (req, res) => {
 
     if (user.role === "student" || user.role === "club member") {
       const memberships = await Membership.find({ student: user._id })
-        .populate("club", "name description category logo status")
+        .populate("club", "name description category logo status meetingSchedule")
         .sort({ createdAt: -1 });
 
       const pendingRequests = await MembershipRequest.find({
         student: user._id,
       })
-        .populate("club", "name description category logo")
+        .populate("club", "name description category logo meetingSchedule")
         .sort({ createdAt: -1 });
 
       extraData = {
@@ -32,6 +32,7 @@ export const getProfile = async (req, res) => {
           category: m.club?.category,
           logo: m.club?.logo,
           joinedDate: m.joinedDate,
+          meetingSchedule: m.club?.meetingSchedule,
         })),
         clubsJoined: memberships.length,
         requests: pendingRequests.map((r) => ({
@@ -41,9 +42,20 @@ export const getProfile = async (req, res) => {
           category: r.club?.category,
           logo: r.club?.logo,
           status: r.status,
+          preferredDomain: r.preferredDomain,
+          skills: r.skills || [],
+          motivation: r.motivation || r.note,
+          experience: r.experience || "",
+          availabilityHours: r.availabilityHours || "3-5 hrs/week",
+          portfolioUrl: r.portfolioUrl || "",
+          interviewDetails: r.interviewDetails || {},
+          rejectionReason: r.rejectionReason || "",
+          feedback: r.feedback || "",
           requestDate: r.requestDate,
         })),
-        pendingRequestsCount: pendingRequests.filter((r) => r.status === "Pending").length,
+        pendingRequestsCount: pendingRequests.filter(
+          (r) => r.status === "Pending" || r.status === "Interview Scheduled"
+        ).length,
       };
     } else if (user.role === "president" || user.role === "club head") {
       const ownedClubs = await Club.find({ president: user._id });
@@ -93,7 +105,8 @@ export const updateProfile = async (req, res) => {
     if (bio !== undefined) user.bio = bio.trim();
     if (department) user.department = department.trim();
     if (year) user.year = year.trim();
-    if (favouriteGenres && Array.isArray(favouriteGenres)) user.favouriteGenres = favouriteGenres;
+    if (favouriteGenres && Array.isArray(favouriteGenres))
+      user.favouriteGenres = favouriteGenres;
     if (avatar) user.avatar = avatar;
 
     const newEnroll = enrollmentNumber || studentId;

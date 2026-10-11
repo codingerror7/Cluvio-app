@@ -138,12 +138,44 @@ export const api = {
         method: "DELETE",
       });
     },
+    addEvent: async (clubId, eventData) => {
+      return fetchWithAuth(`/clubs/${clubId}/events`, {
+        method: "POST",
+        body: JSON.stringify(eventData),
+      });
+    },
+    removeEvent: async (clubId, eventId) => {
+      return fetchWithAuth(`/clubs/${clubId}/events/${eventId}`, {
+        method: "DELETE",
+      });
+    },
+    addAnnouncement: async (clubId, data) => {
+      return fetchWithAuth(`/clubs/${clubId}/announcements`, {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+    },
+    removeAnnouncement: async (clubId, announcementId) => {
+      return fetchWithAuth(`/clubs/${clubId}/announcements/${announcementId}`, {
+        method: "DELETE",
+      });
+    },
+    updateRecruitment: async (clubId, settings) => {
+      return fetchWithAuth(`/clubs/${clubId}/recruitment`, {
+        method: "PUT",
+        body: JSON.stringify(settings),
+      });
+    },
   },
   requests: {
-    submit: async (clubId, note) => {
+    submit: async (clubId, applicationData = {}) => {
+      const payload =
+        typeof applicationData === "string"
+          ? { clubId, note: applicationData }
+          : { clubId, ...applicationData };
       return fetchWithAuth("/requests", {
         method: "POST",
-        body: JSON.stringify({ clubId, note }),
+        body: JSON.stringify(payload),
       });
     },
     getMyRequests: async () => {
@@ -157,10 +189,12 @@ export const api = {
     getClubRequests: async (clubId = "all") => {
       return fetchWithAuth(`/requests/club/${clubId}`);
     },
-    review: async (id, action) => {
+    review: async (id, reviewData) => {
+      const payload =
+        typeof reviewData === "string" ? { action: reviewData } : reviewData;
       return fetchWithAuth(`/requests/${id}/review`, {
         method: "PUT",
-        body: JSON.stringify({ action }),
+        body: JSON.stringify(payload),
       });
     },
   },

@@ -79,6 +79,33 @@ const clubSchema = new mongoose.Schema(
       enum: ["Active", "Pending", "Inactive", "Suspended"],
       default: "Active",
     },
+    recruitmentOpen: {
+      type: Boolean,
+      default: true,
+    },
+    hiringDomains: {
+      type: [String],
+      default: [
+        "Technical & Coding",
+        "Design & UI/UX",
+        "PR & Social Media",
+        "Operations & Logistics",
+        "Content & Editorial",
+      ],
+    },
+    announcements: [
+      {
+        title: { type: String, required: true },
+        message: { type: String, required: true },
+        priority: {
+          type: String,
+          enum: ["Normal", "High", "Urgent"],
+          default: "Normal",
+        },
+        date: { type: String, default: () => new Date().toLocaleDateString("en-GB") },
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
     leadership: [
       {
         name: { type: String, required: true },
@@ -99,6 +126,7 @@ const clubSchema = new mongoose.Schema(
           default: "Upcoming",
         },
         location: { type: String, default: "Campus Auditorium" },
+        description: { type: String, default: "" },
       },
     ],
   },

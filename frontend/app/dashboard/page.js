@@ -17,10 +17,16 @@ import {
   HiOutlineCalendarDays,
   HiOutlineShieldCheck,
   HiOutlineAcademicCap,
+  HiOutlineGlobeAlt,
+  HiOutlineBriefcase,
+  HiOutlineChatBubbleBottomCenterText,
+  HiOutlineVideoCamera,
+  HiOutlineMapPin,
   HiCheck,
   HiXMark,
-  HiOutlineChevronRight,
   HiOutlineArrowPath,
+  HiOutlineArrowRight,
+  HiOutlineDocumentText,
 } from "react-icons/hi2";
 import { api } from "@/lib/api";
 
@@ -35,16 +41,27 @@ const CATEGORIES = [
   "Social",
 ];
 
-const AVAILABLE_GENRES = [
-  "Technical",
-  "Engineering",
-  "AI & ML",
-  "Robotics",
-  "Creative",
-  "Cultural",
-  "Entrepreneurship",
-  "Sports",
-  "Social",
+const DEFAULT_DOMAINS = [
+  "Technical & Coding",
+  "Design & UI/UX",
+  "PR & Social Media",
+  "Operations & Logistics",
+  "Content & Editorial",
+  "Event Management",
+];
+
+const SUGGESTED_SKILLS = [
+  "React",
+  "Python",
+  "Figma",
+  "Graphic Design",
+  "Video Editing",
+  "Public Speaking",
+  "Event Planning",
+  "Social Media",
+  "Content Writing",
+  "Robotics / IoT",
+  "Sponsorship",
 ];
 
 export default function StudentDashboardPage() {
@@ -57,10 +74,21 @@ export default function StudentDashboardPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  // Modal states
-  const [selectedClub, setSelectedClub] = useState(null);
-  const [joinNote, setJoinNote] = useState("");
-  const [joiningClubId, setJoiningClubId] = useState(null);
+  // Club Charter Detail Modal
+  const [viewingClub, setViewingClub] = useState(null);
+
+  // Registration Form Modal
+  const [applyingClub, setApplyingClub] = useState(null);
+  const [appForm, setAppForm] = useState({
+    preferredDomain: "Technical & Coding",
+    skills: ["React"],
+    customSkill: "",
+    motivation: "",
+    experience: "",
+    availabilityHours: "3-5 hrs/week",
+    portfolioUrl: "",
+  });
+  const [submittingApp, setSubmittingApp] = useState(false);
   const [actionMessage, setActionMessage] = useState(null);
 
   // Profile Edit states
@@ -101,7 +129,6 @@ export default function StudentDashboardPage() {
       }
     } catch (err) {
       console.warn("Could not load authenticated profile:", err);
-      // Redirect to Login if not authenticated
       router.push("/Login");
     } finally {
       setLoading(false);
@@ -117,44 +144,113 @@ export default function StudentDashboardPage() {
     router.push("/Login");
   };
 
-  const handleJoinClub = async (club) => {
-    setJoiningClubId(club.id || club._id);
+  // Open the registration form modal
+  const handleOpenRegistrationForm = (club) => {
+    setViewingClub(null);
+    setApplyingClub(club);
+    setAppForm({
+      preferredDomain:
+        club.hiringDomains && club.hiringDomains.length > 0
+          ? club.hiringDomains[0]
+          : "Technical & Coding",
+      skills: ["React"],
+      customSkill: "",
+      motivation: "",
+      experience: "",
+      availabilityHours: "3-5 hrs/week",
+      portfolioUrl: "",
+    });
+  };
+
+  // Toggle skills in application form
+  const toggleSkill = (skill) => {
+    if (appForm.skills.includes(skill)) {
+      setAppForm({
+        ...appForm,
+        skills: appForm.skills.filter((s) => s !== skill),
+      });
+    } else {
+      setAppForm({ ...appForm, skills: [...appForm.skills, skill] });
+    }
+  };
+
+  const handleAddCustomSkill = (e) => {
+    e.preventDefault();
+    if (
+      appForm.customSkill.trim() &&
+      !appForm.skills.includes(appForm.customSkill.trim())
+    ) {
+      setAppForm({
+        ...appForm,
+        skills: [...appForm.skills, appForm.customSkill.trim()],
+        customSkill: "",
+      });
+    }
+  };
+
+  // Submit the registration form
+  const handleSubmitApplication = async (e) => {
+    e.preventDefault();
+    if (!applyingClub) return;
+
+    if (!appForm.motivation.trim()) {
+      setActionMessage({
+        type: "error",
+        text: "Please write why you would like to join this club (Statement of Purpose).",
+      });
+      return;
+    }
+
+    setSubmittingApp(true);
     setActionMessage(null);
 
     try {
-      await api.requests.submit(club.id || club._id, joinNote);
+      await api.requests.submit(applyingClub.id || applyingClub._id, {
+        preferredDomain: appForm.preferredDomain,
+        skills: appForm.skills,
+        motivation: appForm.motivation.trim(),
+        experience: appForm.experience.trim(),
+        availabilityHours: appForm.availabilityHours,
+        portfolioUrl: appForm.portfolioUrl.trim(),
+        note: appForm.motivation.trim(),
+      });
+
       setActionMessage({
         type: "success",
-        text: `Application for ${club.name} submitted successfully! The Club Head will review your request.`,
+        text: `Registration form for ${applyingClub.name} submitted successfully! Your application has been sent to the Club Head.`,
       });
-      setSelectedClub(null);
-      setJoinNote("");
+      setApplyingClub(null);
       await loadDashboardData();
+      setActiveTab("my-clubs"); // Switch to view submitted application
     } catch (err) {
       setActionMessage({
         type: "error",
-        text: err.message || "Failed to submit membership request.",
+        text: err.message || "Failed to submit membership application.",
       });
     } finally {
-      setJoiningClubId(null);
+      setSubmittingApp(false);
     }
   };
 
   const handleCancelRequest = async (requestId) => {
-    if (!confirm("Are you sure you want to cancel this pending membership request?")) {
+    if (
+      !confirm(
+        "Are you sure you want to withdraw this club membership application?"
+      )
+    ) {
       return;
     }
     try {
       await api.requests.cancel(requestId);
       setActionMessage({
         type: "success",
-        text: "Membership request cancelled.",
+        text: "Membership application withdrawn.",
       });
       await loadDashboardData();
     } catch (err) {
       setActionMessage({
         type: "error",
-        text: err.message || "Failed to cancel request.",
+        text: err.message || "Failed to withdraw request.",
       });
     }
   };
@@ -214,9 +310,9 @@ export default function StudentDashboardPage() {
   });
 
   const joinedClubsList = profileData?.clubs || [];
-  const pendingRequestsList = profileData?.requests || [];
-  const activePendingCount = pendingRequestsList.filter(
-    (r) => r.status === "Pending"
+  const requestsList = profileData?.requests || [];
+  const activePendingCount = requestsList.filter(
+    (r) => r.status === "Pending" || r.status === "Interview Scheduled"
   ).length;
 
   return (
@@ -243,7 +339,7 @@ export default function StudentDashboardPage() {
                   }`}
                 >
                   {user?.role === "club member"
-                    ? "Club Member"
+                    ? "Club Member Portal"
                     : user?.role === "club head"
                     ? "Club Head"
                     : "Student Portal"}
@@ -338,7 +434,7 @@ export default function StudentDashboardPage() {
                 Verified Club Member Account
               </p>
               <p className="text-slate-600 text-[11px] mt-0.5">
-                Secret key verified: You have authorized access to active campus club discussions, committee activities, and internal event passes.
+                Congratulations! You are officially a Club Member. You have authorized access to internal club channels, events, and committee sessions.
               </p>
             </div>
           </div>
@@ -409,12 +505,12 @@ export default function StudentDashboardPage() {
           <div className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-xs flex items-center justify-between">
             <div>
               <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
-                In Review
+                In Review / Pipeline
               </p>
               <h3 className="text-2xl font-bold text-slate-900 mt-0.5">
                 {activePendingCount}
               </h3>
-              <p className="text-[11px] text-slate-400 mt-0.5">Pending applications</p>
+              <p className="text-[11px] text-slate-400 mt-0.5">Active applications</p>
             </div>
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600 border border-amber-100">
               <HiOutlineClock className="text-2xl" />
@@ -472,7 +568,7 @@ export default function StudentDashboardPage() {
             }`}
           >
             <HiOutlineUserGroup className="text-base" />
-            <span>My Memberships</span>
+            <span>My Memberships & Applications</span>
             <span
               className={`rounded-md px-1.5 py-0.2 text-[10px] font-bold ${
                 activeTab === "my-clubs"
@@ -578,13 +674,13 @@ export default function StudentDashboardPage() {
                     joinedClubsList.some(
                       (m) => (m.clubId || m.id) === (club.id || club._id)
                     );
+                  const activeReq = requestsList.find(
+                    (r) => (r.clubId || r.id) === (club.id || club._id)
+                  );
                   const isPending =
-                    club.membershipStatus === "Pending" ||
-                    pendingRequestsList.some(
-                      (r) =>
-                        (r.clubId || r.id) === (club.id || club._id) &&
-                        r.status === "Pending"
-                    );
+                    activeReq &&
+                    (activeReq.status === "Pending" ||
+                      activeReq.status === "Interview Scheduled");
 
                   return (
                     <div
@@ -631,10 +727,10 @@ export default function StudentDashboardPage() {
                       <div className="mt-4 flex items-center justify-between gap-2 pt-3 border-t border-slate-100">
                         <button
                           type="button"
-                          onClick={() => setSelectedClub(club)}
+                          onClick={() => setViewingClub(club)}
                           className="text-xs font-semibold text-slate-600 hover:text-blue-600 transition-colors cursor-pointer"
                         >
-                          View Details
+                          View Charter
                         </button>
 
                         {isMember ? (
@@ -645,15 +741,19 @@ export default function StudentDashboardPage() {
                         ) : isPending ? (
                           <span className="inline-flex items-center gap-1 rounded-xl bg-amber-50 border border-amber-200 px-3 py-1.5 text-xs font-semibold text-amber-800">
                             <HiOutlineClock className="text-sm text-amber-600" />
-                            <span>In Review</span>
+                            <span>
+                              {activeReq.status === "Interview Scheduled"
+                                ? "Interview"
+                                : "In Review"}
+                            </span>
                           </span>
                         ) : (
                           <button
                             type="button"
-                            onClick={() => setSelectedClub(club)}
+                            onClick={() => handleOpenRegistrationForm(club)}
                             className="rounded-xl bg-blue-600 hover:bg-blue-700 px-3.5 py-1.5 text-xs font-semibold text-white shadow-xs transition-colors cursor-pointer"
                           >
-                            Join Club
+                            Join Club →
                           </button>
                         )}
                       </div>
@@ -665,7 +765,7 @@ export default function StudentDashboardPage() {
           </div>
         )}
 
-        {/* TAB 2: MY CLUBS & MEMBERSHIPS */}
+        {/* TAB 2: MY MEMBERSHIPS & APPLICATIONS */}
         {activeTab === "my-clubs" && (
           <div className="space-y-6">
             {/* Active Memberships */}
@@ -676,7 +776,7 @@ export default function StudentDashboardPage() {
                     Active Club Memberships
                   </h2>
                   <p className="text-xs text-slate-500">
-                    Campus clubs you are currently an approved member of
+                    Campus clubs where you have been approved and converted to an active Club Member
                   </p>
                 </div>
                 <span className="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-lg">
@@ -706,7 +806,7 @@ export default function StudentDashboardPage() {
                         <div className="flex items-center justify-between">
                           <span className="text-2xl">{m.logo || "💻"}</span>
                           <span className="rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 text-[10px] font-bold">
-                            {m.role || "Member"}
+                            {m.role || "Club Member"}
                           </span>
                         </div>
                         <h4 className="text-sm font-bold text-slate-900">
@@ -716,12 +816,17 @@ export default function StudentDashboardPage() {
                           Category: {m.category || "Technical"}
                         </p>
                       </div>
-                      <p className="mt-3 pt-2 border-t border-slate-200/60 text-[10px] text-slate-400">
-                        Joined:{" "}
-                        {m.joinedDate
-                          ? new Date(m.joinedDate).toLocaleDateString("en-GB")
-                          : "Active"}
-                      </p>
+                      <div className="mt-3 pt-2 border-t border-slate-200/60 flex items-center justify-between text-[10px] text-slate-400">
+                        <span>
+                          Enrolled:{" "}
+                          {m.joinedDate
+                            ? new Date(m.joinedDate).toLocaleDateString("en-GB")
+                            : "Active"}
+                        </span>
+                        <span className="text-emerald-700 font-semibold">
+                          Active Member
+                        </span>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -733,68 +838,193 @@ export default function StudentDashboardPage() {
               <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                 <div>
                   <h2 className="text-base sm:text-lg font-bold text-slate-900">
-                    Application History & Status
+                    Application History & Status Tracker
                   </h2>
                   <p className="text-xs text-slate-500">
-                    Track the progress of your submitted club membership requests
+                    Real-time status of your club registration forms and interview invitations
                   </p>
                 </div>
               </div>
 
-              {pendingRequestsList.length === 0 ? (
+              {requestsList.length === 0 ? (
                 <p className="py-8 text-center text-xs text-slate-500">
-                  No pending or past membership requests recorded.
+                  No pending or past membership applications recorded.
                 </p>
               ) : (
-                <div className="divide-y divide-slate-100">
-                  {pendingRequestsList.map((req, idx) => (
+                <div className="space-y-3">
+                  {requestsList.map((req, idx) => (
                     <div
                       key={req.requestId || idx}
-                      className="py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+                      className={`rounded-2xl border p-4 sm:p-5 transition-all ${
+                        req.status === "Approved"
+                          ? "border-emerald-200 bg-emerald-50/30"
+                          : req.status === "Interview Scheduled"
+                          ? "border-purple-200 bg-purple-50/30"
+                          : req.status === "Rejected"
+                          ? "border-rose-200 bg-rose-50/30"
+                          : "border-slate-200 bg-white"
+                      }`}
                     >
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-xl border border-slate-200">
-                          {req.logo || "💻"}
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-slate-100">
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-2xl border border-slate-200 shadow-2xs">
+                            {req.logo || "💻"}
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <h3 className="text-base font-bold text-slate-900">
+                                {req.clubName}
+                              </h3>
+                              <span className="rounded-md bg-slate-100 border border-slate-200 px-2 py-0.2 text-[10px] font-semibold text-slate-700">
+                                {req.preferredDomain || "Technical"}
+                              </span>
+                            </div>
+                            <p className="text-xs text-slate-400">
+                              Applied on{" "}
+                              {req.requestDate
+                                ? new Date(req.requestDate).toLocaleDateString("en-GB")
+                                : "Recently"}
+                            </p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="text-sm font-bold text-slate-900">
-                            {req.clubName}
-                          </p>
-                          <p className="text-xs text-slate-400">
-                            Submitted on{" "}
-                            {req.requestDate
-                              ? new Date(req.requestDate).toLocaleDateString("en-GB")
-                              : "Recently"}
-                          </p>
-                        </div>
-                      </div>
 
-                      <div className="flex items-center gap-2">
-                        {req.status === "Pending" ? (
-                          <>
-                            <span className="rounded-lg bg-amber-50 border border-amber-200 px-2.5 py-1 text-xs font-semibold text-amber-800 flex items-center gap-1.5">
-                              <HiOutlineClock className="text-amber-600" />
-                              <span>Pending Review</span>
+                        {/* Status Badge */}
+                        <div className="flex items-center gap-2">
+                          {req.status === "Pending" ? (
+                            <span className="rounded-xl bg-amber-50 border border-amber-200 px-3 py-1.5 text-xs font-semibold text-amber-800 flex items-center gap-1.5">
+                              <HiOutlineClock className="text-amber-600 text-sm" />
+                              <span>Application in Review</span>
                             </span>
+                          ) : req.status === "Interview Scheduled" ? (
+                            <span className="rounded-xl bg-purple-100 border border-purple-300 px-3 py-1.5 text-xs font-bold text-purple-900 flex items-center gap-1.5 shadow-2xs">
+                              <HiOutlineCalendarDays className="text-purple-700 text-sm" />
+                              <span>Interview Scheduled</span>
+                            </span>
+                          ) : req.status === "Approved" ? (
+                            <span className="rounded-xl bg-emerald-50 border border-emerald-200 px-3 py-1.5 text-xs font-bold text-emerald-800 flex items-center gap-1.5">
+                              <HiOutlineCheckCircle className="text-emerald-600 text-sm" />
+                              <span>Approved & Converted to Club Member</span>
+                            </span>
+                          ) : (
+                            <span className="rounded-xl bg-rose-50 border border-rose-300 px-3 py-1.5 text-xs font-bold text-rose-800 flex items-center gap-1.5">
+                              <HiOutlineXCircle className="text-rose-600 text-sm" />
+                              <span>Application Rejected</span>
+                            </span>
+                          )}
+
+                          {req.status === "Pending" && (
                             <button
                               type="button"
                               onClick={() => handleCancelRequest(req.requestId)}
-                              className="text-xs text-slate-500 hover:text-rose-600 underline cursor-pointer ml-1"
+                              className="text-xs text-slate-400 hover:text-rose-600 underline cursor-pointer ml-1"
                             >
-                              Cancel
+                              Withdraw
                             </button>
-                          </>
-                        ) : req.status === "Approved" ? (
-                          <span className="rounded-lg bg-emerald-50 border border-emerald-200 px-2.5 py-1 text-xs font-semibold text-emerald-800 flex items-center gap-1.5">
-                            <HiOutlineCheckCircle className="text-emerald-600" />
-                            <span>Approved & Joined</span>
-                          </span>
-                        ) : (
-                          <span className="rounded-lg bg-rose-50 border border-rose-200 px-2.5 py-1 text-xs font-semibold text-rose-800 flex items-center gap-1.5">
-                            <HiOutlineXCircle className="text-rose-600" />
-                            <span>Declined</span>
-                          </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Detail Body */}
+                      <div className="pt-3 text-xs space-y-2">
+                        {/* INTERVIEW ROUND DETAILS */}
+                        {req.status === "Interview Scheduled" && req.interviewDetails && (
+                          <div className="rounded-xl border border-purple-200 bg-white p-3.5 space-y-2 text-purple-950 shadow-2xs">
+                            <p className="font-bold text-sm text-purple-900 flex items-center gap-1.5">
+                              <HiOutlineVideoCamera className="text-base text-purple-700" />
+                              <span>Interview Round Scheduled by Club Head</span>
+                            </p>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                              {req.interviewDetails.date && (
+                                <div className="flex items-center gap-1.5 text-slate-700">
+                                  <HiOutlineCalendarDays className="text-purple-600" />
+                                  <span>
+                                    <strong>Date:</strong> {req.interviewDetails.date}{" "}
+                                    {req.interviewDetails.time && `at ${req.interviewDetails.time}`}
+                                  </span>
+                                </div>
+                              )}
+                              {req.interviewDetails.venueOrLink && (
+                                <div className="flex items-center gap-1.5 text-slate-700">
+                                  <HiOutlineMapPin className="text-purple-600" />
+                                  <span>
+                                    <strong>Venue / Link:</strong>{" "}
+                                    {req.interviewDetails.venueOrLink.startsWith("http") ? (
+                                      <a
+                                        href={req.interviewDetails.venueOrLink}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="text-blue-600 font-semibold underline"
+                                      >
+                                        Open Meet Link →
+                                      </a>
+                                    ) : (
+                                      req.interviewDetails.venueOrLink
+                                    )}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                            {req.interviewDetails.instructions && (
+                              <p className="text-[11px] text-slate-600 bg-purple-50/50 p-2 rounded-lg">
+                                <strong>Instructions:</strong> {req.interviewDetails.instructions}
+                              </p>
+                            )}
+                          </div>
                         )}
+
+                        {/* REJECTION REASON NOTIFICATION */}
+                        {req.status === "Rejected" && (
+                          <div className="rounded-xl border border-rose-200 bg-rose-50/70 p-3 space-y-1 text-xs">
+                            <p className="font-bold text-rose-900">
+                              Aapka form reject kar diya gaya hai.
+                            </p>
+                            <p className="text-slate-700">
+                              <strong>Club Head Feedback:</strong>{" "}
+                              {req.rejectionReason ||
+                                req.feedback ||
+                                "Criteria ya seat limit ke karan aapka application reject kar diya gaya hai."}
+                            </p>
+                            <p className="text-[11px] text-slate-500 pt-1">
+                              Aap dusre campus clubs ke liye apply kar sakte hain ya agle semester dubara apply kar sakte hain.
+                            </p>
+                          </div>
+                        )}
+
+                        {/* APPROVED CONGRATS */}
+                        {req.status === "Approved" && (
+                          <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-3 text-xs text-emerald-900">
+                            <p className="font-bold text-emerald-900">
+                              🎉 Congratulations! You are now an official Club Member.
+                            </p>
+                            <p className="text-slate-600 mt-0.5">
+                              Aapka role successfully <strong>Club Member</strong> me convert ho chuka hai. Check your active club roster above!
+                            </p>
+                          </div>
+                        )}
+
+                        {/* Application Summary */}
+                        <div className="flex flex-wrap items-center gap-2 text-[11px] text-slate-500 pt-1">
+                          {req.skills && req.skills.length > 0 && (
+                            <div className="flex items-center gap-1">
+                              <span className="font-semibold text-slate-700">Skills:</span>
+                              <div className="flex flex-wrap gap-1">
+                                {req.skills.map((s, i) => (
+                                  <span
+                                    key={i}
+                                    className="rounded bg-slate-100 border border-slate-200 px-1.5 py-0.2 text-[10px] text-slate-700 font-medium"
+                                  >
+                                    {s}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          {req.motivation && (
+                            <span className="truncate max-w-md italic text-slate-500">
+                              &quot;{req.motivation}&quot;
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -907,33 +1137,6 @@ export default function StudentDashboardPage() {
                 </div>
               </div>
 
-              {/* Interests & genres */}
-              <div>
-                <label className="block text-slate-700 font-semibold mb-1.5">
-                  Favourite Club Genres & Interests
-                </label>
-                <div className="flex flex-wrap gap-1.5">
-                  {AVAILABLE_GENRES.map((genre) => {
-                    const isSelected = editGenres.includes(genre);
-                    return (
-                      <button
-                        key={genre}
-                        type="button"
-                        onClick={() => toggleGenre(genre)}
-                        className={`rounded-lg border px-2.5 py-1 text-xs font-semibold transition-all cursor-pointer ${
-                          isSelected
-                            ? "border-blue-600 bg-blue-50 text-blue-700"
-                            : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50"
-                        }`}
-                      >
-                        {isSelected && <HiCheck className="inline mr-1 text-xs" />}
-                        {genre}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
               {/* Bio */}
               <div>
                 <label className="block text-slate-700 font-semibold mb-1">
@@ -962,28 +1165,228 @@ export default function StudentDashboardPage() {
         )}
       </main>
 
-      {/* CLUB CHARTER & DETAIL MODAL (Light Theme) */}
-      {selectedClub && (
+      {/* MODAL 1: CLUB REGISTRATION APPLICATION FORM MODAL */}
+      {applyingClub && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 overflow-y-auto">
+          <div className="w-full max-w-xl rounded-2xl border border-slate-200 bg-white p-6 sm:p-7 shadow-2xl space-y-4 my-auto animate-fadeIn max-h-[92vh] overflow-y-auto">
+            {/* Header */}
+            <div className="flex items-start justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center gap-3">
+                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-50 text-2xl border border-slate-200 shadow-2xs">
+                  {applyingClub.logo || "💻"}
+                </span>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900">
+                    Apply to Join {applyingClub.name}
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Official Membership Application Form • Reviewed by Club Head
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setApplyingClub(null)}
+                className="rounded-lg p-1 text-slate-400 hover:text-slate-700 cursor-pointer"
+              >
+                <HiXMark className="text-xl" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmitApplication} className="space-y-4 text-xs">
+              {/* Domain Selection */}
+              <div>
+                <label className="block text-slate-700 font-semibold mb-1.5">
+                  Select Preferred Department / Domain in Club *
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {(applyingClub.hiringDomains && applyingClub.hiringDomains.length > 0
+                    ? applyingClub.hiringDomains
+                    : DEFAULT_DOMAINS
+                  ).map((domain) => (
+                    <button
+                      key={domain}
+                      type="button"
+                      onClick={() =>
+                        setAppForm({ ...appForm, preferredDomain: domain })
+                      }
+                      className={`rounded-xl border p-2 text-center text-xs font-semibold transition-all cursor-pointer ${
+                        appForm.preferredDomain === domain
+                          ? "border-blue-600 bg-blue-50 text-blue-700 shadow-2xs ring-1 ring-blue-600/30"
+                          : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
+                      }`}
+                    >
+                      {domain}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Skills Tags */}
+              <div>
+                <label className="block text-slate-700 font-semibold mb-1.5">
+                  Relevant Skills & Technical Tools
+                </label>
+                <div className="flex flex-wrap gap-1.5 mb-2">
+                  {SUGGESTED_SKILLS.map((skill) => {
+                    const isSelected = appForm.skills.includes(skill);
+                    return (
+                      <button
+                        key={skill}
+                        type="button"
+                        onClick={() => toggleSkill(skill)}
+                        className={`rounded-lg border px-2.5 py-1 text-[11px] font-medium transition-all cursor-pointer ${
+                          isSelected
+                            ? "border-blue-600 bg-blue-50 text-blue-700 font-semibold"
+                            : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
+                        }`}
+                      >
+                        {isSelected && <HiCheck className="inline mr-1 text-[10px]" />}
+                        {skill}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Custom skill add */}
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={appForm.customSkill}
+                    onChange={(e) =>
+                      setAppForm({ ...appForm, customSkill: e.target.value })
+                    }
+                    placeholder="Add other skill (e.g. Flutter, Blender, Java)..."
+                    className="h-9 flex-1 rounded-xl border border-slate-200 bg-white px-3 text-xs text-slate-800 placeholder:text-slate-400 outline-none focus:border-blue-600"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddCustomSkill}
+                    className="rounded-xl border border-slate-200 bg-slate-50 px-3 text-xs font-semibold text-slate-700 hover:bg-slate-100 cursor-pointer"
+                  >
+                    + Add
+                  </button>
+                </div>
+              </div>
+
+              {/* Motivation / SOP */}
+              <div>
+                <label className="block text-slate-700 font-semibold mb-1">
+                  Why do you want to join this club? (Statement of Purpose) *
+                </label>
+                <textarea
+                  required
+                  rows={3}
+                  value={appForm.motivation}
+                  onChange={(e) =>
+                    setAppForm({ ...appForm, motivation: e.target.value })
+                  }
+                  placeholder="Explain your interest, what you want to learn, and how you will contribute to upcoming club events..."
+                  className="w-full rounded-xl border border-slate-200 bg-white p-3 text-xs text-slate-800 placeholder:text-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none resize-none"
+                />
+              </div>
+
+              {/* Experience and Past Projects */}
+              <div>
+                <label className="block text-slate-700 font-semibold mb-1">
+                  Prior Experience, Projects, or College Events (Optional)
+                </label>
+                <textarea
+                  rows={2}
+                  value={appForm.experience}
+                  onChange={(e) =>
+                    setAppForm({ ...appForm, experience: e.target.value })
+                  }
+                  placeholder="Mention any past projects, hackathons participated, or leadership activities..."
+                  className="w-full rounded-xl border border-slate-200 bg-white p-2.5 text-xs text-slate-800 placeholder:text-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none resize-none"
+                />
+              </div>
+
+              {/* Weekly Time Commitment & Portfolio Link Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-slate-700 font-semibold mb-1">
+                    Weekly Time Commitment
+                  </label>
+                  <select
+                    value={appForm.availabilityHours}
+                    onChange={(e) =>
+                      setAppForm({ ...appForm, availabilityHours: e.target.value })
+                    }
+                    className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-xs text-slate-800 focus:border-blue-600 outline-none cursor-pointer"
+                  >
+                    <option value="3-5 hrs/week">3-5 hrs/week (Standard)</option>
+                    <option value="5-8 hrs/week">5-8 hrs/week (Active)</option>
+                    <option value="8-12 hrs/week">8-12 hrs/week (Core Contributor)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-slate-700 font-semibold mb-1">
+                    Portfolio / GitHub / LinkedIn URL (Optional)
+                  </label>
+                  <input
+                    type="url"
+                    value={appForm.portfolioUrl}
+                    onChange={(e) =>
+                      setAppForm({ ...appForm, portfolioUrl: e.target.value })
+                    }
+                    placeholder="https://github.com/..."
+                    className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-xs text-slate-800 placeholder:text-slate-400 focus:border-blue-600 outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Notice */}
+              <div className="rounded-xl border border-blue-200 bg-blue-50/60 p-2.5 text-[11px] text-blue-900 leading-normal">
+                💡 <strong>Application Process:</strong> Your registration form will be forwarded to the Club Head. If selected or scheduled for an interview round, you will receive real-time updates right here on your dashboard. Upon approval, your account will convert to <strong>Club Member</strong>!
+              </div>
+
+              {/* Actions */}
+              <div className="pt-3 border-t border-slate-100 flex items-center justify-end gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setApplyingClub(null)}
+                  className="rounded-xl border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50 cursor-pointer"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={submittingApp}
+                  className="rounded-xl bg-blue-600 hover:bg-blue-700 px-5 py-2 text-xs font-semibold text-white shadow-xs disabled:opacity-50 transition-colors cursor-pointer"
+                >
+                  {submittingApp ? "Submitting..." : "Submit Registration Form →"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 2: CLUB CHARTER DETAIL MODAL */}
+      {viewingClub && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4 overflow-y-auto">
-          <div className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 sm:p-7 shadow-2xl space-y-4">
+          <div className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 sm:p-7 shadow-2xl space-y-4 my-auto">
             {/* Modal Header */}
             <div className="flex items-start justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center gap-3">
                 <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-50 text-2xl border border-slate-200">
-                  {selectedClub.logo || "💻"}
+                  {viewingClub.logo || "💻"}
                 </span>
                 <div>
                   <h3 className="text-lg font-bold text-slate-900">
-                    {selectedClub.name}
+                    {viewingClub.name}
                   </h3>
                   <span className="rounded-md bg-slate-100 border border-slate-200 px-2 py-0.5 text-[10px] font-semibold text-slate-700">
-                    {selectedClub.category}
+                    {viewingClub.category}
                   </span>
                 </div>
               </div>
               <button
                 type="button"
-                onClick={() => setSelectedClub(null)}
+                onClick={() => setViewingClub(null)}
                 className="rounded-lg p-1 text-slate-400 hover:text-slate-700 cursor-pointer"
               >
                 <HiXMark className="text-xl" />
@@ -997,17 +1400,17 @@ export default function StudentDashboardPage() {
                   Charter & Mission
                 </h4>
                 <p className="text-slate-600 leading-relaxed bg-slate-50 border border-slate-200/70 p-3 rounded-xl">
-                  {selectedClub.description || "Active campus student organization."}
+                  {viewingClub.description || "Active campus student organization."}
                 </p>
               </div>
 
-              {selectedClub.objectives && (
+              {viewingClub.objectives && (
                 <div>
                   <h4 className="font-semibold text-slate-700 mb-1">
                     Key Objectives
                   </h4>
                   <p className="text-slate-600 leading-relaxed bg-slate-50 border border-slate-200/70 p-3 rounded-xl">
-                    {selectedClub.objectives}
+                    {viewingClub.objectives}
                   </p>
                 </div>
               )}
@@ -1018,69 +1421,37 @@ export default function StudentDashboardPage() {
                     Schedule
                   </p>
                   <p className="font-semibold text-slate-800 mt-0.5">
-                    {selectedClub.meetingSchedule || "Weekly Meetups"}
+                    {viewingClub.meetingSchedule || "Weekly Meetups"}
                   </p>
                 </div>
                 <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200/70">
                   <p className="text-[10px] uppercase text-slate-400 font-bold">
-                    President
+                    Club President
                   </p>
                   <p className="font-semibold text-slate-800 mt-0.5 truncate">
-                    {selectedClub.president?.name || "Assigned Head"}
+                    {viewingClub.president?.name || "Appointed Head"}
                   </p>
                 </div>
               </div>
-
-              {/* Note input for joining */}
-              {!selectedClub.isMember &&
-                selectedClub.membershipStatus !== "Pending" && (
-                  <div>
-                    <label className="block font-semibold text-slate-700 mb-1">
-                      Note to Club Head (Optional)
-                    </label>
-                    <textarea
-                      rows={2}
-                      value={joinNote}
-                      onChange={(e) => setJoinNote(e.target.value)}
-                      placeholder="Share a short note on why you'd like to join..."
-                      className="w-full rounded-xl border border-slate-200 bg-white p-2.5 text-xs text-slate-800 placeholder:text-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none resize-none"
-                    />
-                  </div>
-                )}
             </div>
 
             {/* Modal Actions */}
             <div className="pt-3 border-t border-slate-100 flex items-center justify-end gap-2.5">
               <button
                 type="button"
-                onClick={() => setSelectedClub(null)}
+                onClick={() => setViewingClub(null)}
                 className="rounded-xl border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50 cursor-pointer"
               >
                 Close
               </button>
 
-              {selectedClub.isMember ? (
-                <span className="rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 px-4 py-2 text-xs font-bold">
-                  Already Enrolled
-                </span>
-              ) : selectedClub.membershipStatus === "Pending" ? (
-                <span className="rounded-xl bg-amber-50 text-amber-800 border border-amber-200 px-4 py-2 text-xs font-bold">
-                  Request Pending
-                </span>
-              ) : (
-                <button
-                  type="button"
-                  disabled={
-                    joiningClubId === (selectedClub.id || selectedClub._id)
-                  }
-                  onClick={() => handleJoinClub(selectedClub)}
-                  className="rounded-xl bg-blue-600 hover:bg-blue-700 px-4 py-2 text-xs font-semibold text-white shadow-xs disabled:opacity-50 transition-colors cursor-pointer"
-                >
-                  {joiningClubId === (selectedClub.id || selectedClub._id)
-                    ? "Submitting..."
-                    : "Submit Join Request"}
-                </button>
-              )}
+              <button
+                type="button"
+                onClick={() => handleOpenRegistrationForm(viewingClub)}
+                className="rounded-xl bg-blue-600 hover:bg-blue-700 px-4 py-2 text-xs font-semibold text-white shadow-xs transition-colors cursor-pointer"
+              >
+                Apply to Join →
+              </button>
             </div>
           </div>
         </div>
