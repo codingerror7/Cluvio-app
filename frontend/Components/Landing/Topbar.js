@@ -36,7 +36,7 @@ const Topbar = () => {
         <h1 className="text-xl font-bold text-white sm:text-2xl">
           Good Day,
           <span className="ml-2 text-[var(--accent)]">
-            {user?.name ? `${user.name.split(" ")[0]} 👋` : "Campus Leader 👋"}
+            {user?.name ? user.name.split(" ")[0] : "Campus Leader"}
           </span>
         </h1>
         <p className="mt-1 text-sm text-white/50">

@@ -19,11 +19,11 @@ const Home = () => {
       <LandingNavbar />
 
       {/* Main Landing Page Content */}
-      <main className="relative flex flex-col">
+      <main className="relative flex flex-col w-full">
         {/* 1. Hero Showcase Section */}
         <HeroShowcase />
 
-        <div className="mx-auto flex w-full max-w-7xl flex-col px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="w-full max-w-[1560px] mx-auto flex flex-col px-3 sm:px-6 lg:px-8 space-y-12">
           {/* 2. Core Features Grid */}
           <FeaturesGrid />
 

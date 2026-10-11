@@ -80,7 +80,7 @@ export default function RoleShowcase() {
 
   return (
     <section id="roles" className="py-16 relative">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-[1560px] px-2 sm:px-4">
         <div className="mx-auto max-w-3xl text-center">
           <span className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-semibold text-blue-700">
             Role-Based Campus Architecture

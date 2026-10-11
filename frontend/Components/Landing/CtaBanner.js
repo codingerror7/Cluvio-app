@@ -3,7 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import {
-  HiOutlineSparkles,
   HiOutlineArrowRight,
   HiOutlineArrowTopRightOnSquare,
   HiOutlineShieldCheck,
@@ -12,15 +11,15 @@ import {
 export default function CtaBanner() {
   return (
     <section className="my-16 relative">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="relative rounded-[36px] bg-gradient-to-r from-[#1D4ED8] via-[#2563EB] to-[#4F46E5] p-8 sm:p-14 lg:p-16 text-center text-white shadow-[0_20px_60px_rgba(37,99,235,0.25)] overflow-hidden">
+      <div className="mx-auto w-full max-w-[1560px] px-2 sm:px-4">
+        <div className="relative rounded-[36px] bg-gradient-to-r from-[#1D4ED8] via-[#2563EB] to-[#4F46E5] p-6 sm:p-10 lg:p-14 text-center text-white shadow-[0_20px_60px_rgba(37,99,235,0.25)] overflow-hidden">
           {/* Subtle Decorative Elements */}
           <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-white/10 blur-2xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full bg-indigo-900/20 blur-2xl pointer-events-none" />
 
           <div className="relative z-10 mx-auto max-w-3xl space-y-6">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-semibold text-white backdrop-blur-xs">
-              <HiOutlineSparkles className="text-sm" />
+              <span className="h-1.5 w-1.5 rounded-full bg-white" />
               <span>Next-Generation Campus Experience</span>
             </div>
 

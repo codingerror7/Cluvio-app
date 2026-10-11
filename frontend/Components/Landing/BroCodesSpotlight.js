@@ -2,23 +2,23 @@
 
 import React from "react";
 import {
-  HiOutlineSparkles,
   HiOutlineArrowTopRightOnSquare,
   HiOutlineShieldCheck,
   HiOutlineBolt,
   HiOutlineHeart,
+  HiOutlineGlobeAlt,
 } from "react-icons/hi2";
 
 export default function BroCodesSpotlight() {
   return (
     <section id="brocodes" className="my-16 py-4 relative">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-[36px] border border-blue-200/90 bg-gradient-to-br from-blue-50/90 via-white to-indigo-50/80 p-8 sm:p-12 lg:p-16 shadow-[0_20px_50px_rgba(37,99,235,0.06)] overflow-hidden">
+      <div className="mx-auto w-full max-w-[1560px] px-2 sm:px-4">
+        <div className="rounded-[36px] border border-blue-200/90 bg-gradient-to-br from-blue-50/90 via-white to-indigo-50/80 p-6 sm:p-10 lg:p-12 shadow-[0_20px_50px_rgba(37,99,235,0.06)] overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center text-left">
             {/* Left Narrative Column */}
             <div className="lg:col-span-7 space-y-5">
               <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-100/70 px-3.5 py-1 text-xs font-semibold text-blue-700">
-                <HiOutlineSparkles className="text-sm" />
+                <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
                 <span>The Engineering Team Behind Cluvio</span>
               </div>
 
@@ -91,9 +91,10 @@ export default function BroCodesSpotlight() {
                   href="https://brocodestech.in"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs text-slate-500 hover:text-blue-600 font-mono transition-colors"
+                  className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-blue-600 font-mono transition-colors"
                 >
-                  🌐 brocodestech.in
+                  <HiOutlineGlobeAlt className="text-sm text-blue-500" />
+                  <span>brocodestech.in</span>
                 </a>
               </div>
             </div>

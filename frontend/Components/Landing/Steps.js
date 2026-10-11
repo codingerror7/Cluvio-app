@@ -41,7 +41,7 @@ const steps = [
 export default function Steps() {
   return (
     <section id="how-it-works" className="py-16 text-left">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto w-full max-w-[1560px] px-2 sm:px-4">
         <div className="mx-auto max-w-3xl text-center">
           <span className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-semibold text-blue-700">
             Simplified Workflow
@@ -58,7 +58,7 @@ export default function Steps() {
         </div>
 
         {/* 3 Step Timeline Cards */}
-        <div className="mx-auto mt-14 max-w-4xl space-y-6">
+        <div className="mx-auto mt-14 max-w-5xl space-y-6">
           {steps.map((step) => {
             const Icon = step.icon;
 

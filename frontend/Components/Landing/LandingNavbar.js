@@ -10,7 +10,6 @@ import {
   HiOutlineBars3,
   HiXMark,
   HiOutlineArrowLeftOnRectangle,
-  HiOutlineSparkles,
 } from "react-icons/hi2";
 import { getStoredUser, clearAuthToken } from "@/lib/api";
 
@@ -47,10 +46,10 @@ export default function LandingNavbar() {
   return (
     <>
       {/* Top Banner Capsule (Matching the Reference Image Header) */}
-      <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border-b border-blue-100 py-2.5 px-4 text-center text-xs font-medium text-slate-700">
-        <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 flex-wrap">
+      <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border-b border-blue-100 py-2.5 px-3 sm:px-6 text-center text-xs font-medium text-slate-700">
+        <div className="mx-auto flex max-w-[1560px] items-center justify-center gap-2 flex-wrap">
           <span className="flex items-center gap-1.5 text-blue-600 font-bold">
-            <HiOutlineSparkles className="text-sm" />
+            <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
             <span>Join the Cluvio Community</span>
           </span>
           <span className="text-slate-400">•</span>
@@ -78,7 +77,7 @@ export default function LandingNavbar() {
             : "bg-white/80 backdrop-blur-md border-b border-slate-200/60"
         }`}
       >
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex h-20 max-w-[1560px] items-center justify-between px-3 sm:px-6 lg:px-8">
           {/* Left Brand Logo */}
           <div className="flex items-center gap-4">
             <Link href="/" className="group flex items-center gap-3">

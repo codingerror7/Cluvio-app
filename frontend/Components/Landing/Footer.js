@@ -5,13 +5,12 @@ import Link from "next/link";
 import {
   HiOutlineSquares2X2,
   HiOutlineArrowTopRightOnSquare,
-  HiOutlineSparkles,
 } from "react-icons/hi2";
 
 export default function Footer() {
   return (
-    <footer className="mt-16 rounded-[36px] border border-slate-200/90 bg-white p-8 sm:p-12 lg:p-14 shadow-xs text-left">
-      <div className="mx-auto max-w-7xl">
+    <footer className="mt-16 w-full rounded-[36px] border border-slate-200/90 bg-white p-6 sm:p-10 lg:p-12 shadow-xs text-left">
+      <div className="mx-auto w-full max-w-[1560px]">
         <div className="grid gap-12 lg:grid-cols-12">
           {/* Brand & BroCodes Column */}
           <div className="lg:col-span-5 space-y-4">
@@ -36,7 +35,7 @@ export default function Footer() {
             {/* BroCodes Technologies Showcase Badge */}
             <div className="rounded-2xl border border-blue-200/80 bg-blue-50/60 p-4 text-xs space-y-2">
               <div className="flex items-center gap-1.5 font-bold text-slate-900">
-                <HiOutlineSparkles className="text-blue-600" />
+                <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
                 <span>A Product by BroCodes Technologies</span>
               </div>
               <p className="text-slate-600 text-[11px] leading-relaxed">

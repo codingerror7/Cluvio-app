@@ -46,7 +46,7 @@ export default function Faq() {
 
   return (
     <section id="faq" className="py-16 text-left">
-      <div className="mx-auto max-w-4xl">
+      <div className="mx-auto w-full max-w-5xl px-2 sm:px-4">
         <div className="text-center">
           <span className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-semibold text-blue-700">
             Frequently Asked Questions

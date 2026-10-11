@@ -6,8 +6,12 @@ import {
   HiOutlineUserGroup,
   HiOutlineCheckCircle,
   HiOutlineClock,
-  HiOutlineSparkles,
   HiOutlineArrowRight,
+  HiOutlineCodeBracket,
+  HiOutlineCpuChip,
+  HiOutlinePaintBrush,
+  HiOutlineBuildingLibrary,
+  HiXMark,
 } from "react-icons/hi2";
 import { api, getStoredUser } from "@/lib/api";
 import Link from "next/link";
@@ -35,7 +39,6 @@ export default function ClubsGrid() {
               name: "Coding & Tech Club",
               category: "Technical",
               description: "Open-source development, competitive programming, and web technologies.",
-              logo: "💻",
               membersCount: 128,
               president: { name: "Rahul Sharma", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" },
             },
@@ -44,7 +47,6 @@ export default function ClubsGrid() {
               name: "Robotics & Hardware Labs",
               category: "Engineering",
               description: "Autonomous rovers, drone design, IoT electronics and hardware hackathons.",
-              logo: "🤖",
               membersCount: 94,
               president: { name: "Priya Patel", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&auto=format&fit=crop&q=80" },
             },
@@ -53,7 +55,6 @@ export default function ClubsGrid() {
               name: "Design & Visual Arts",
               category: "Creative",
               description: "UI/UX design systems, branding, photography, video production and 3D modeling.",
-              logo: "🎨",
               membersCount: 82,
               president: { name: "Ananya Verma", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" },
             },
@@ -97,12 +98,26 @@ export default function ClubsGrid() {
     }
   };
 
+  const getClubCategoryIcon = (category = "", name = "") => {
+    const cat = (category + " " + name).toLowerCase();
+    if (cat.includes("tech") || cat.includes("cod") || cat.includes("web") || cat.includes("dev")) {
+      return <HiOutlineCodeBracket className="text-xl text-blue-600" />;
+    }
+    if (cat.includes("robot") || cat.includes("hard") || cat.includes("eng") || cat.includes("iot")) {
+      return <HiOutlineCpuChip className="text-xl text-indigo-600" />;
+    }
+    if (cat.includes("design") || cat.includes("art") || cat.includes("creat")) {
+      return <HiOutlinePaintBrush className="text-xl text-purple-600" />;
+    }
+    return <HiOutlineBuildingLibrary className="text-xl text-emerald-600" />;
+  };
+
   return (
-    <section id="clubs" className="py-16 text-left">
+    <section id="clubs" className="py-16 text-left w-full">
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div className="max-w-2xl">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3.5 py-1 text-xs font-semibold text-blue-700">
-            <HiOutlineSparkles className="text-sm" />
+            <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
             Live Database Sync
           </span>
           <h2 className="mt-3 text-3xl font-extrabold text-slate-900 sm:text-4xl tracking-tight">
@@ -136,7 +151,7 @@ export default function ClubsGrid() {
             onClick={() => setStatusMsg(null)}
             className="text-slate-400 hover:text-slate-600 cursor-pointer"
           >
-            ✕
+            <HiXMark className="text-base" />
           </button>
         </div>
       )}
@@ -157,9 +172,9 @@ export default function ClubsGrid() {
                   <span className="inline-flex rounded-full bg-blue-50 border border-blue-100 px-3 py-1 text-xs font-bold text-blue-700">
                     {club.category}
                   </span>
-                  <span className="text-2xl p-2 rounded-2xl bg-slate-50 border border-slate-100 shadow-2xs">
-                    {club.logo || "💻"}
-                  </span>
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-50 border border-slate-100 shadow-2xs">
+                    {getClubCategoryIcon(club.category, club.name)}
+                  </div>
                 </div>
 
                 <h3 className="mt-5 text-xl font-bold text-slate-900 tracking-tight">

@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import {
-  HiOutlineSparkles,
   HiOutlineArrowRight,
   HiOutlineCheckCircle,
   HiOutlinePlay,
@@ -16,6 +15,8 @@ import {
   HiOutlineBell,
   HiOutlineShare,
   HiOutlineSquares2X2,
+  HiOutlineDocumentText,
+  HiOutlineGlobeAlt,
 } from "react-icons/hi2";
 
 export default function HeroShowcase() {
@@ -24,11 +25,11 @@ export default function HeroShowcase() {
   return (
     <section id="home" className="relative pt-6 pb-12 sm:pt-10 sm:pb-16 overflow-hidden">
       {/* Background Soft Mesh Ambient Lighting */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-b from-blue-100/40 via-indigo-50/20 to-transparent blur-3xl pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1560px] h-96 bg-gradient-to-b from-blue-100/40 via-indigo-50/20 to-transparent blur-3xl pointer-events-none" />
       <div className="absolute top-20 right-10 w-96 h-96 bg-blue-200/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-40 left-10 w-80 h-80 bg-purple-200/20 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="relative mx-auto w-full max-w-[1560px] px-3 sm:px-6 lg:px-8">
         {/* HERO SECTION SPLIT: Left Copy + Right Interactive Dashboard Graphic */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Left Column: Copy & Actions */}
@@ -160,7 +161,7 @@ export default function HeroShowcase() {
               <div className="grid grid-cols-4 gap-2 text-left">
                 <div className="rounded-xl border border-slate-100 bg-slate-50/70 p-2.5">
                   <div className="h-6 w-6 rounded-md bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs mb-1.5">
-                    👥
+                    <HiOutlineBuildingOffice2 className="text-sm" />
                   </div>
                   <p className="text-base font-black text-slate-800">12</p>
                   <p className="text-[9px] text-slate-500 font-medium truncate">Total Clubs</p>
@@ -168,7 +169,7 @@ export default function HeroShowcase() {
 
                 <div className="rounded-xl border border-slate-100 bg-slate-50/70 p-2.5">
                   <div className="h-6 w-6 rounded-md bg-blue-100 text-blue-600 flex items-center justify-center text-xs mb-1.5">
-                    👤
+                    <HiOutlineUser className="text-sm" />
                   </div>
                   <p className="text-base font-black text-slate-800">248</p>
                   <p className="text-[9px] text-slate-500 font-medium truncate">Total Members</p>
@@ -176,7 +177,7 @@ export default function HeroShowcase() {
 
                 <div className="rounded-xl border border-slate-100 bg-slate-50/70 p-2.5">
                   <div className="h-6 w-6 rounded-md bg-purple-100 text-purple-600 flex items-center justify-center text-xs mb-1.5">
-                    📅
+                    <HiOutlineCalendarDays className="text-sm" />
                   </div>
                   <p className="text-base font-black text-slate-800">8</p>
                   <p className="text-[9px] text-slate-500 font-medium truncate">Upcoming Events</p>
@@ -184,7 +185,7 @@ export default function HeroShowcase() {
 
                 <div className="rounded-xl border border-slate-100 bg-slate-50/70 p-2.5">
                   <div className="h-6 w-6 rounded-md bg-amber-100 text-amber-600 flex items-center justify-center text-xs mb-1.5">
-                    📋
+                    <HiOutlineDocumentText className="text-sm" />
                   </div>
                   <p className="text-base font-black text-slate-800">5</p>
                   <p className="text-[9px] text-slate-500 font-medium truncate">Pending Join Requests</p>
@@ -363,7 +364,7 @@ export default function HeroShowcase() {
           <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs flex items-center gap-3">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 text-xl">
-                🏛️
+                <HiOutlineBuildingOffice2 className="text-xl" />
               </div>
               <div>
                 <p className="text-xl sm:text-2xl font-black text-slate-900">100+</p>
@@ -373,7 +374,7 @@ export default function HeroShowcase() {
 
             <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs flex items-center gap-3">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 text-xl">
-                👥
+                <HiOutlineUserGroup className="text-xl" />
               </div>
               <div>
                 <p className="text-xl sm:text-2xl font-black text-slate-900">2,500+</p>
@@ -383,7 +384,7 @@ export default function HeroShowcase() {
 
             <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs flex items-center gap-3">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 text-xl">
-                📅
+                <HiOutlineCalendarDays className="text-xl" />
               </div>
               <div>
                 <p className="text-xl sm:text-2xl font-black text-slate-900">500+</p>
@@ -393,7 +394,7 @@ export default function HeroShowcase() {
 
             <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs flex items-center gap-3">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 text-xl">
-                🌐
+                <HiOutlineGlobeAlt className="text-xl" />
               </div>
               <div>
                 <p className="text-xl sm:text-2xl font-black text-slate-900">15+</p>

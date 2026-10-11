@@ -9,7 +9,6 @@ import {
   HiOutlineChartBar,
   HiOutlineCpuChip,
   HiOutlineArrowRight,
-  HiOutlineSparkles,
 } from "react-icons/hi2";
 import Link from "next/link";
 
@@ -73,10 +72,10 @@ export default function FeaturesGrid() {
 
   return (
     <section id="features" className="py-16 relative">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-[1560px] px-2 sm:px-4">
         <div className="mx-auto max-w-3xl text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-semibold text-blue-700 mb-3">
-            <HiOutlineSparkles className="text-sm" />
+            <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
             <span>High-Velocity Architecture</span>
           </div>
           <h2 className="text-3xl font-extrabold text-slate-900 sm:text-4xl lg:text-5xl tracking-tight">
