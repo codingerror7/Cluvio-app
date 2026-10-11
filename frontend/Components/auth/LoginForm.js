@@ -14,7 +14,6 @@ import {
   HiOutlineAcademicCap,
   HiOutlineUserGroup,
   HiOutlineShieldCheck,
-  HiOutlineCheckCircle,
 } from "react-icons/hi2";
 import FormInput from "./FormInput";
 import PasswordInput from "./PasswordInput";
@@ -45,7 +44,7 @@ export default function LoginForm() {
     e.preventDefault();
     setError(null);
 
-    // Validate secret key for special roles on client first
+    // Validate secret key for special roles
     if (isSpecialRole) {
       if (!secretKey || secretKey.trim() !== "admin123") {
         setError(
@@ -106,157 +105,112 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7">
       {/* Header */}
-      <div className="mb-6">
-        <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-3 py-1 text-xs font-semibold text-cyan-400 mb-3">
-          <HiOutlineSparkles className="text-sm" />
-          <span>Cluvio Multi-Role Authentication</span>
+      <div className="mb-4">
+        <div className="inline-flex items-center gap-1.5 rounded-full border border-blue-200/80 bg-blue-50 px-2.5 py-0.5 text-[11px] font-semibold text-blue-700 mb-2">
+          <HiOutlineSparkles className="text-xs text-blue-600" />
+          <span>Unified Campus Login</span>
         </div>
-        <h1 className="text-3xl font-bold tracking-tight text-white">
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900">
           Sign In to Cluvio
         </h1>
-        <p className="mt-1.5 text-sm leading-6 text-white/55">
+        <p className="mt-0.5 text-xs text-slate-500">
           Select your campus role and enter your credentials.
         </p>
       </div>
 
       {/* Role Selection Tabs */}
-      <div className="mb-5">
-        <label className="block text-xs font-semibold text-white/70 uppercase tracking-wider mb-2">
-          Select Login Role
-        </label>
-        <div className="grid grid-cols-3 gap-1.5 rounded-2xl border border-white/10 bg-white/[0.03] p-1.5 backdrop-blur-md">
+      <div className="mb-3.5">
+        <div className="grid grid-cols-3 gap-1.5 rounded-xl border border-slate-200 bg-slate-50/70 p-1">
           <button
             type="button"
             onClick={() => handleRoleChange("student")}
             className={`
-              flex flex-col items-center justify-center gap-1 py-2.5 px-2 rounded-xl text-xs font-semibold transition-all cursor-pointer
+              flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-semibold transition-all cursor-pointer
               ${
                 role === "student"
-                  ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-[0_0_16px_rgba(34,211,238,0.35)]"
-                  : "text-white/60 hover:text-white hover:bg-white/5"
+                  ? "bg-white text-blue-700 shadow-xs border border-slate-200 font-bold"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
               }
             `}
           >
-            <HiOutlineAcademicCap className="text-base" />
-            <span>Student</span>
+            <HiOutlineAcademicCap className="text-sm text-blue-600 shrink-0" />
+            <span className="truncate">Student</span>
           </button>
 
           <button
             type="button"
             onClick={() => handleRoleChange("club member")}
             className={`
-              flex flex-col items-center justify-center gap-1 py-2.5 px-2 rounded-xl text-xs font-semibold transition-all cursor-pointer
+              flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-semibold transition-all cursor-pointer
               ${
                 role === "club member"
-                  ? "bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-[0_0_16px_rgba(16,185,129,0.35)]"
-                  : "text-white/60 hover:text-white hover:bg-white/5"
+                  ? "bg-white text-emerald-700 shadow-xs border border-slate-200 font-bold"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
               }
             `}
           >
-            <HiOutlineUserGroup className="text-base" />
-            <span>Club Member</span>
+            <HiOutlineUserGroup className="text-sm text-emerald-600 shrink-0" />
+            <span className="truncate">Member</span>
           </button>
 
           <button
             type="button"
             onClick={() => handleRoleChange("club head")}
             className={`
-              flex flex-col items-center justify-center gap-1 py-2.5 px-2 rounded-xl text-xs font-semibold transition-all cursor-pointer
+              flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-semibold transition-all cursor-pointer
               ${
                 role === "club head"
-                  ? "bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-[0_0_16px_rgba(245,158,11,0.35)]"
-                  : "text-white/60 hover:text-white hover:bg-white/5"
+                  ? "bg-white text-amber-700 shadow-xs border border-slate-200 font-bold"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
               }
             `}
           >
-            <HiOutlineShieldCheck className="text-base" />
-            <span>Club Head</span>
+            <HiOutlineShieldCheck className="text-sm text-amber-600 shrink-0" />
+            <span className="truncate">Club Head</span>
           </button>
         </div>
       </div>
 
-      {/* Role Context Pill */}
-      <div
-        className={`mb-5 flex items-center justify-between rounded-xl border px-3.5 py-2.5 text-xs transition-all ${
-          role === "student"
-            ? "border-cyan-500/20 bg-cyan-500/5 text-cyan-300"
-            : role === "club member"
-            ? "border-emerald-500/20 bg-emerald-500/5 text-emerald-300"
-            : "border-amber-500/20 bg-amber-500/5 text-amber-300"
-        }`}
-      >
-        <div className="flex items-center gap-2">
-          {role === "student" ? (
-            <HiOutlineAcademicCap className="text-base shrink-0" />
-          ) : role === "club member" ? (
-            <HiOutlineUserGroup className="text-base shrink-0" />
-          ) : (
-            <HiOutlineShieldCheck className="text-base shrink-0" />
-          )}
-          <span>
-            {role === "student"
-              ? "Open student access — no secret key needed."
-              : role === "club member"
-              ? "Club Member role requires secret key 'admin123'."
-              : "Club Head leadership role requires secret key 'admin123'."}
-          </span>
-        </div>
-        {isSpecialRole && (
-          <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-300 uppercase tracking-wide">
-            Key Req.
-          </span>
-        )}
-      </div>
-
-      {/* Quick Demo Autofill Bar */}
-      <div className="mb-5 rounded-2xl border border-white/10 bg-white/[0.02] p-3 text-xs">
-        <div className="flex items-center justify-between mb-2">
-          <span className="flex items-center gap-1.5 font-semibold text-white/80">
-            <HiOutlineSparkles className="text-sm text-cyan-400" />
-            <span>1-Click Demo Fill:</span>
-          </span>
-          <span className="text-[10px] text-white/40">Select to test quickly</span>
-        </div>
-        <div className="grid grid-cols-3 gap-1.5">
+      {/* 1-Click Demo Fill bar */}
+      <div className="mb-3.5 flex items-center justify-between rounded-lg border border-slate-200/80 bg-slate-50/60 px-2.5 py-1.5 text-xs">
+        <span className="text-[11px] font-medium text-slate-500">
+          Demo fill:
+        </span>
+        <div className="flex gap-1.5">
           <button
             type="button"
             onClick={() => handleFillDemo("student")}
-            className="rounded-xl border border-white/10 bg-white/5 py-2 px-2 text-center hover:border-cyan-400/50 hover:bg-cyan-500/10 transition-all cursor-pointer"
+            className="rounded-md border border-slate-200 bg-white px-2 py-0.5 text-[10px] font-semibold text-slate-700 hover:border-blue-300 hover:text-blue-600 cursor-pointer shadow-2xs"
           >
-            <p className="font-semibold text-white text-[11px]">🎓 Student</p>
-            <p className="text-[10px] text-white/45 truncate">student@campus.edu</p>
+            🎓 Student
           </button>
-
           <button
             type="button"
             onClick={() => handleFillDemo("club member")}
-            className="rounded-xl border border-white/10 bg-white/5 py-2 px-2 text-center hover:border-emerald-400/50 hover:bg-emerald-500/10 transition-all cursor-pointer"
+            className="rounded-md border border-slate-200 bg-white px-2 py-0.5 text-[10px] font-semibold text-slate-700 hover:border-emerald-300 hover:text-emerald-600 cursor-pointer shadow-2xs"
           >
-            <p className="font-semibold text-white text-[11px]">👥 Member</p>
-            <p className="text-[10px] text-white/45 truncate">member@campus.edu</p>
+            👥 Member
           </button>
-
           <button
             type="button"
             onClick={() => handleFillDemo("club head")}
-            className="rounded-xl border border-white/10 bg-white/5 py-2 px-2 text-center hover:border-amber-400/50 hover:bg-amber-500/10 transition-all cursor-pointer"
+            className="rounded-md border border-slate-200 bg-white px-2 py-0.5 text-[10px] font-semibold text-slate-700 hover:border-amber-300 hover:text-amber-600 cursor-pointer shadow-2xs"
           >
-            <p className="font-semibold text-white text-[11px]">👑 Club Head</p>
-            <p className="text-[10px] text-white/45 truncate">clubhead@campus.edu</p>
+            👑 Head
           </button>
         </div>
       </div>
 
       {/* Error alert */}
       {error && (
-        <div className="mb-5 rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-xs text-rose-300 flex items-center justify-between">
+        <div className="mb-3 rounded-xl border border-rose-200 bg-rose-50 p-2.5 text-xs text-rose-700 flex items-center justify-between">
           <span className="font-medium">{error}</span>
           <button
             type="button"
             onClick={() => setError(null)}
-            className="ml-2 text-white/60 hover:text-white cursor-pointer"
+            className="ml-2 text-rose-500 hover:text-rose-800 font-bold cursor-pointer"
           >
             ✕
           </button>
@@ -264,7 +218,7 @@ export default function LoginForm() {
       )}
 
       {/* Login Form */}
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-3">
         {/* Email */}
         <FormInput
           label="Campus Email Address"
@@ -278,36 +232,34 @@ export default function LoginForm() {
         />
 
         {/* Password */}
-        <div>
-          <PasswordInput
-            label="Password"
-            id="login-password"
-            placeholder="Enter your account password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
+        <PasswordInput
+          label="Password"
+          id="login-password"
+          placeholder="Enter your account password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
 
         {/* Secret Key Input (Visible only for Club Member & Club Head) */}
         {isSpecialRole && (
-          <div className="rounded-2xl border border-amber-500/30 bg-amber-500/[0.05] p-3.5 space-y-2 transition-all">
+          <div className="rounded-xl border border-amber-200 bg-amber-50/70 p-2.5 space-y-1.5 transition-all">
             <div className="flex items-center justify-between">
               <label
                 htmlFor="login-secret-key"
-                className="flex items-center gap-1.5 text-xs font-semibold text-amber-300"
+                className="flex items-center gap-1.5 text-xs font-semibold text-amber-900"
               >
-                <HiOutlineKey className="text-sm" />
+                <HiOutlineKey className="text-sm text-amber-700" />
                 <span>Secret Key (Required)</span>
               </label>
-              <span className="text-[10px] font-mono text-amber-400/80 bg-amber-500/20 px-2 py-0.5 rounded-md">
-                Passcode: admin123
+              <span className="text-[10px] font-mono text-amber-800 bg-white border border-amber-200 px-1.5 py-0.2 rounded font-semibold">
+                admin123
               </span>
             </div>
 
             <div className="relative">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-amber-400/60">
-                <HiOutlineLockClosed className="text-base" />
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                <HiOutlineLockClosed className="text-sm" />
               </div>
               <input
                 id="login-secret-key"
@@ -316,42 +268,42 @@ export default function LoginForm() {
                 value={secretKey}
                 onChange={(e) => setSecretKey(e.target.value)}
                 required
-                className="h-11 w-full rounded-xl border border-amber-500/30 bg-black/40 pl-10 pr-10 text-sm text-white placeholder:text-white/30 outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 transition-all font-mono"
+                className="h-9 sm:h-10 w-full rounded-lg border border-amber-200 bg-white pl-9 pr-9 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-200 transition-all font-mono"
               />
               <button
                 type="button"
                 onClick={() => setShowSecretKey(!showSecretKey)}
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-white/50 hover:text-white cursor-pointer"
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-700 cursor-pointer"
               >
                 {showSecretKey ? (
-                  <HiOutlineEyeSlash className="text-base" />
+                  <HiOutlineEyeSlash className="text-sm" />
                 ) : (
-                  <HiOutlineEye className="text-base" />
+                  <HiOutlineEye className="text-sm" />
                 )}
               </button>
             </div>
-            <p className="text-[11px] text-white/45 leading-relaxed">
-              Security check: enter <code className="text-amber-300 font-bold">admin123</code> to verify {role === "club head" ? "Club Head" : "Club Member"} authority.
+            <p className="text-[10px] text-amber-800/80 leading-normal">
+              Security validation for {role === "club head" ? "Club Head" : "Club Member"} role.
             </p>
           </div>
         )}
 
-        {/* Remember me row */}
-        <div className="flex items-center justify-between pt-1">
+        {/* Remember me & role info */}
+        <div className="flex items-center justify-between pt-0.5">
           <label className="flex items-center gap-2 cursor-pointer select-none">
             <input
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              className="h-4 w-4 rounded border-white/20 bg-white/5 accent-cyan-400 focus:ring-0 cursor-pointer"
+              className="h-3.5 w-3.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
             />
-            <span className="text-xs text-white/60 hover:text-white/80 transition-colors">
+            <span className="text-xs text-slate-600 hover:text-slate-900 transition-colors">
               Remember me
             </span>
           </label>
 
-          <span className="text-xs text-cyan-400/80">
-            Role: <span className="capitalize font-semibold text-white">{role}</span>
+          <span className="text-[11px] text-slate-500">
+            Role: <span className="capitalize font-semibold text-slate-800">{role}</span>
           </span>
         </div>
 
@@ -359,36 +311,25 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={loading}
-          className={`
-            mt-3 flex h-12 w-full items-center justify-center gap-2 rounded-xl
-            font-semibold text-black transition-all duration-200 cursor-pointer disabled:opacity-50
-            hover:brightness-110 active:scale-[0.99]
-            ${
-              role === "student"
-                ? "bg-cyan-400 hover:shadow-[0_0_24px_rgba(34,211,238,0.4)]"
-                : role === "club member"
-                ? "bg-emerald-400 hover:shadow-[0_0_24px_rgba(16,185,129,0.4)]"
-                : "bg-amber-400 hover:shadow-[0_0_24px_rgba(245,158,11,0.4)]"
-            }
-          `}
+          className="mt-2 flex h-10 sm:h-11 w-full items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm transition-all shadow-xs cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {loading ? (
-            <span>Authenticating...</span>
+            <span>Signing In...</span>
           ) : (
             <>
               <span>Sign In as {role === "student" ? "Student" : role === "club member" ? "Club Member" : "Club Head"}</span>
-              <HiOutlineArrowRight className="text-base" />
+              <HiOutlineArrowRight className="text-sm" />
             </>
           )}
         </button>
       </form>
 
       {/* Footer */}
-      <p className="mt-7 text-center text-sm text-white/50">
+      <p className="mt-4 text-center text-xs text-slate-500">
         Don&apos;t have an account yet?{" "}
         <Link
           href="/register"
-          className="font-semibold text-cyan-400 hover:underline ml-1"
+          className="font-semibold text-blue-600 hover:underline ml-1"
         >
           Create account
         </Link>
