@@ -71,7 +71,7 @@ export default function FeaturesGrid() {
   ];
 
   return (
-    <section id="features" className="py-16 relative">
+    <section id="features" className="py-6 sm:py-8 relative">
       <div className="mx-auto w-full max-w-[1560px] px-2 sm:px-4">
         <div className="mx-auto max-w-3xl text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white px-3.5 py-1 text-xs font-semibold text-slate-800 shadow-[0_1px_4px_rgba(0,0,0,0.02)] mb-3">
@@ -88,7 +88,7 @@ export default function FeaturesGrid() {
         </div>
 
         {/* 6 Grid Cards in Minimalist Light Mode */}
-        <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 text-left">
+        <div className="mt-8 sm:mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 text-left">
           {features.map((f) => {
             const Icon = f.icon;
             return (

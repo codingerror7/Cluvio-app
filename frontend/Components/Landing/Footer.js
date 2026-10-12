@@ -9,7 +9,7 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="mt-16 w-full rounded-3xl border border-slate-200/70 bg-white p-6 sm:p-10 lg:p-12 shadow-[0_2px_12px_rgba(0,0,0,0.02)] text-left">
+    <footer className="mt-6 sm:mt-8 w-full rounded-3xl border border-slate-200/70 bg-white p-6 sm:p-8 lg:p-10 shadow-[0_2px_12px_rgba(0,0,0,0.02)] text-left">
       <div className="mx-auto w-full max-w-[1440px]">
         <div className="grid gap-12 lg:grid-cols-12">
           {/* Brand & BroCodes Column */}

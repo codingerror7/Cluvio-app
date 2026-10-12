@@ -113,7 +113,7 @@ export default function ClubsGrid() {
   };
 
   return (
-    <section id="clubs" className="py-16 text-left w-full">
+    <section id="clubs" className="py-6 sm:py-8 text-left w-full">
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div className="max-w-2xl">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200/80 bg-white px-3.5 py-1 text-xs font-semibold text-slate-800 shadow-[0_1px_4px_rgba(0,0,0,0.02)]">
@@ -139,7 +139,7 @@ export default function ClubsGrid() {
 
       {statusMsg && (
         <div
-          className={`mt-6 rounded-2xl p-4 text-xs flex items-center justify-between border ${
+          className={`mt-4 rounded-2xl p-4 text-xs flex items-center justify-between border ${
             statusMsg.type === "success"
               ? "bg-emerald-50 border-emerald-200 text-emerald-800"
               : "bg-rose-50 border-rose-200 text-rose-800"
@@ -157,7 +157,7 @@ export default function ClubsGrid() {
       )}
 
       {/* Clubs Grid in Minimalist Theme */}
-      <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-8 sm:mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {clubs.slice(0, 6).map((club, idx) => {
           const isMember = club.isMember;
           const isPending = club.membershipStatus === "Pending";

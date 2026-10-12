@@ -11,9 +11,9 @@ import {
 
 export default function BroCodesSpotlight() {
   return (
-    <section id="brocodes" className="my-16 py-4 relative">
+    <section id="brocodes" className="my-4 py-2 relative">
       <div className="mx-auto w-full max-w-[1440px] px-2 sm:px-4">
-        <div className="rounded-3xl border border-slate-200/80 bg-white p-6 sm:p-10 lg:p-12 shadow-[0_4px_24px_rgba(0,0,0,0.03)] overflow-hidden">
+        <div className="rounded-3xl border border-slate-200/80 bg-white p-6 sm:p-8 lg:p-10 shadow-[0_4px_24px_rgba(0,0,0,0.03)] overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center text-left">
             {/* Left Narrative Column */}
             <div className="lg:col-span-7 space-y-5">

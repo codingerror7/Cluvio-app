@@ -79,7 +79,7 @@ export default function RoleShowcase() {
   ];
 
   return (
-    <section id="roles" className="py-16 relative">
+    <section id="roles" className="py-6 sm:py-8 relative">
       <div className="mx-auto w-full max-w-[1440px] px-2 sm:px-4">
         <div className="mx-auto max-w-3xl text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white px-3.5 py-1 text-xs font-semibold text-slate-800 shadow-[0_1px_4px_rgba(0,0,0,0.02)]">
@@ -96,7 +96,7 @@ export default function RoleShowcase() {
         </div>
 
         {/* Roles 3-Column Grid */}
-        <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+        <div className="mt-8 sm:mt-10 grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
           {roles.map((r) => {
             const Icon = r.icon;
             return (

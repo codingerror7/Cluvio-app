@@ -10,9 +10,9 @@ import {
 
 export default function CtaBanner() {
   return (
-    <section className="my-16 relative">
+    <section className="my-4 sm:my-6 relative">
       <div className="mx-auto w-full max-w-[1440px] px-2 sm:px-4">
-        <div className="relative rounded-3xl bg-slate-900 p-8 sm:p-12 lg:p-16 text-center text-white shadow-[0_20px_50px_rgba(15,23,42,0.15)] overflow-hidden">
+        <div className="relative rounded-3xl bg-slate-900 p-6 sm:p-10 lg:p-12 text-center text-white shadow-[0_20px_50px_rgba(15,23,42,0.15)] overflow-hidden">
           {/* Subtle Aesthetic Mesh Lighting */}
           <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-blue-600/15 blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-indigo-600/15 blur-3xl pointer-events-none" />

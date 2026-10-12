@@ -21,7 +21,7 @@ import {
 
 export default function HeroShowcase() {
   return (
-    <section id="home" className="relative pt-8 pb-16 sm:pt-14 sm:pb-24 overflow-hidden">
+    <section id="home" className="relative pt-6 pb-10 sm:pt-10 sm:pb-14 overflow-hidden">
       {/* Aesthetic Minimalist Ambient Lighting */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1400px] h-[500px] bg-gradient-to-b from-slate-100/60 via-blue-50/20 to-transparent blur-3xl pointer-events-none -z-10" />
       <div className="absolute top-20 right-1/4 w-80 h-80 bg-blue-100/30 rounded-full blur-3xl pointer-events-none -z-10" />
@@ -183,7 +183,7 @@ export default function HeroShowcase() {
         </div>
 
         {/* 5 MINIMALIST CORE PILLARS */}
-        <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 text-left">
+        <div className="mt-10 sm:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 text-left">
           {/* 1. Club Hubs */}
           <div className="group rounded-2xl border border-slate-200/70 bg-white p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:border-slate-300 hover:shadow-[0_8px_24px_rgba(0,0,0,0.04)] transition-all">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-800 mb-3.5 text-lg group-hover:scale-105 transition-transform">
@@ -241,7 +241,7 @@ export default function HeroShowcase() {
         </div>
 
         {/* MINIMALIST IMPACT METRICS SECTION */}
-        <div className="mt-16 pt-8 border-t border-slate-200/60 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center text-left">
+        <div className="mt-10 pt-6 border-t border-slate-200/60 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center text-left">
           <div className="lg:col-span-4">
             <span className="text-xs font-bold tracking-wider text-slate-400 uppercase">
               — OUR CAMPUS IMPACT

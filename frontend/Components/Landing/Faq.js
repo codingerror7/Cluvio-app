@@ -45,7 +45,7 @@ export default function Faq() {
   };
 
   return (
-    <section id="faq" className="py-16 text-left">
+    <section id="faq" className="py-6 sm:py-8 text-left">
       <div className="mx-auto w-full max-w-4xl px-2 sm:px-4">
         <div className="text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white px-3.5 py-1 text-xs font-semibold text-slate-800 shadow-[0_1px_4px_rgba(0,0,0,0.02)]">
@@ -63,7 +63,7 @@ export default function Faq() {
         </div>
 
         {/* Accordions in Minimalist Aesthetic */}
-        <div className="mt-12 space-y-3">
+        <div className="mt-8 sm:mt-10 space-y-3">
           {faqs.map((faq, index) => {
             const isOpen = active === index;
 
@@ -104,7 +104,7 @@ export default function Faq() {
         </div>
 
         {/* Bottom Help Box */}
-        <div className="mt-12 rounded-2xl border border-slate-200/70 bg-white p-8 text-center shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+        <div className="mt-8 rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 text-center shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
           <h3 className="text-xl font-bold text-slate-900 tracking-tight">Still have questions?</h3>
           <p className="mt-2 text-sm text-slate-500 font-normal">
             Our engineering team at BroCodes Technologies is here to assist your institution.

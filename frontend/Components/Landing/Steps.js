@@ -40,7 +40,7 @@ const steps = [
 
 export default function Steps() {
   return (
-    <section id="how-it-works" className="py-16 text-left">
+    <section id="how-it-works" className="py-6 sm:py-8 text-left">
       <div className="mx-auto w-full max-w-[1440px] px-2 sm:px-4">
         <div className="mx-auto max-w-3xl text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white px-3.5 py-1 text-xs font-semibold text-slate-800 shadow-[0_1px_4px_rgba(0,0,0,0.02)]">
@@ -59,7 +59,7 @@ export default function Steps() {
         </div>
 
         {/* 3 Step Timeline Cards */}
-        <div className="mx-auto mt-14 max-w-4xl space-y-5">
+        <div className="mx-auto mt-8 sm:mt-10 max-w-4xl space-y-4">
           {steps.map((step) => {
             const Icon = step.icon;
 

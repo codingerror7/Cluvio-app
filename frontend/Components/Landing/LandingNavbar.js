@@ -45,23 +45,23 @@ export default function LandingNavbar() {
 
   return (
     <>
-      {/* Top Banner Capsule (Matching the Reference Image Header) */}
-      <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border-b border-blue-100 py-2.5 px-3 sm:px-6 text-center text-xs font-medium text-slate-700">
+      {/* Top Banner Capsule (Black background with Blue highlights) */}
+      <div className="bg-black border-b border-slate-900 py-2.5 px-3 sm:px-6 text-center text-xs font-medium text-slate-300">
         <div className="mx-auto flex max-w-[1560px] items-center justify-center gap-2 flex-wrap">
-          <span className="flex items-center gap-1.5 text-blue-600 font-bold">
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+          <span className="flex items-center gap-1.5 text-blue-400 font-bold">
+            <span className="h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse" />
             <span>Join the BroClubs Community</span>
           </span>
-          <span className="text-slate-400">•</span>
-          <span className="text-slate-600">
+          <span className="text-slate-600">•</span>
+          <span className="text-slate-300">
             Discover, join & lead vibrant campus clubs
           </span>
-          <span className="text-slate-400">•</span>
+          <span className="text-slate-600">•</span>
           <a
             href="https://brocodestech.in"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-semibold text-blue-600 hover:text-blue-800 transition-colors inline-flex items-center gap-1"
+            className="font-semibold text-blue-400 hover:text-blue-300 transition-colors inline-flex items-center gap-1"
           >
             A BroCodes Technologies Product
             <HiOutlineArrowTopRightOnSquare className="text-xs" />

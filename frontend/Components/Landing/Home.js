@@ -23,7 +23,7 @@ const Home = () => {
         {/* 1. Hero Showcase Section */}
         <HeroShowcase />
 
-        <div className="w-full max-w-[1440px] mx-auto flex flex-col px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-24">
+        <div className="w-full max-w-[1440px] mx-auto flex flex-col px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-8">
           {/* 2. Core Features Grid */}
           <FeaturesGrid />
 
