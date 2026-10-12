@@ -110,6 +110,19 @@ export default function HackathonsTab({ user }) {
   const [registeringHackathon, setRegisteringHackathon] = useState(null);
   const [actionSuccess, setActionSuccess] = useState(null);
 
+  // Hosted hackathons created by club heads
+  const [hostedHackathons, setHostedHackathons] = useState(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const stored = localStorage.getItem("broclubs_hosted_hackathons");
+        return stored ? JSON.parse(stored) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+    return [];
+  });
+
   // Registered hackathons state stored in localStorage
   const [registeredList, setRegisteredList] = useState(() => {
     if (typeof window !== "undefined") {
@@ -122,6 +135,8 @@ export default function HackathonsTab({ user }) {
     }
     return [];
   });
+
+  const allHackathons = [...DEFAULT_HACKATHONS, ...hostedHackathons];
 
   // Participation form state
   const [participateForm, setParticipateForm] = useState({
@@ -222,7 +237,7 @@ export default function HackathonsTab({ user }) {
     });
   };
 
-  const filteredHackathons = DEFAULT_HACKATHONS.filter((item) => {
+  const filteredHackathons = allHackathons.filter((item) => {
     const matchesSearch =
       item.title.toLowerCase().includes(search.toLowerCase()) ||
       item.organizer.toLowerCase().includes(search.toLowerCase()) ||
