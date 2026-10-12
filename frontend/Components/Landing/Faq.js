@@ -1,129 +1,208 @@
 "use client";
 
 import React, { useState } from "react";
-import { HiOutlinePlus, HiOutlineMinus } from "react-icons/hi2";
+import {
+  HiOutlineChevronDown,
+  HiOutlineChatBubbleLeftRight,
+  HiOutlineArrowRight,
+} from "react-icons/hi2";
 import Link from "next/link";
 
 const faqs = [
   {
+    category: "General",
     question: "Who is BroClubs designed for?",
     answer:
-      "BroClubs is built for college students, technical societies, cultural clubs, sports chapters, and college administrators looking to streamline operations.",
+      "Built for college students, club leads, and campus coordinators looking to streamline club recruitments, events, and memberships.",
   },
   {
+    category: "Roles & Access",
     question: "What are the 3 roles supported by BroClubs?",
     answer:
-      "BroClubs supports Student (open access), Club Member (requires secret key 'admin123'), and Club Head (requires secret key 'admin123' for full management powers).",
+      "Student (open access to explore & join), Club Member (exclusive tasks & events), and Club Head (full management powers over events and rosters).",
   },
   {
-    question: "Who engineered BroClubs?",
+    category: "Roles & Access",
+    question: "How does the Secret Key authorization work?",
     answer:
-      "BroClubs is an official product engineered by BroCodes Technologies (brocodestech.in), specialized in high-performance digital platforms for higher education and enterprises.",
+      "To protect leadership accounts, registering as a Club Member or Club Head requires the passkey 'admin123'. Standard student accounts require zero keys.",
   },
   {
-    question: "How does the Secret Key system work?",
+    category: "Operations",
+    question: "How do event ticketing and attendance passes work?",
     answer:
-      "To ensure campus security, registering or signing in as a Club Member or Club Head requires the verified passcode 'admin123'. Standard student accounts do not require any key.",
+      "Clubs publish events with capacity limits. Registered students get instant digital QR passes for fast on-campus check-in.",
   },
   {
-    question: "Can multiple club heads manage the same club?",
+    category: "Operations",
+    question: "Can multiple coordinators manage the same club?",
     answer:
-      "Yes. The platform allows presidential and coordinator roles with custom permissions to review applications, approve events, and manage members.",
+      "Yes. Multiple club heads and coordinators can collaborate on approvals, event publishing, and member rosters.",
   },
   {
-    question: "Is BroClubs mobile responsive?",
+    category: "General",
+    question: "Who engineered and maintains BroClubs?",
     answer:
-      "Yes! BroClubs is 100% responsive, optimized for smartphones, tablets, laptops, and large campus displays.",
+      "BroClubs is an official product engineered by BroCodes Technologies (brocodestech.in), specialized in digital platforms for higher education.",
+  },
+  {
+    category: "Platform",
+    question: "Is BroClubs mobile-friendly across devices?",
+    answer:
+      "Yes, 100% responsive and optimized for smartphones, tablets, and laptops.",
   },
 ];
 
+const categories = ["All", "General", "Roles & Access", "Operations"];
+
 export default function Faq() {
   const [active, setActive] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   const toggleFAQ = (index) => {
     setActive(active === index ? null : index);
   };
 
+  const filteredFaqs =
+    selectedCategory === "All"
+      ? faqs
+      : faqs.filter((faq) => faq.category === selectedCategory);
+
   return (
-    <section id="faq" className="py-6 sm:py-8 text-left">
-      <div className="mx-auto w-full max-w-4xl px-2 sm:px-4">
-        <div className="text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white px-3.5 py-1 text-xs font-semibold text-slate-800 shadow-[0_1px_4px_rgba(0,0,0,0.02)]">
-            <span className="h-1.5 w-1.5 rounded-full bg-slate-900" />
-            Frequently Asked Questions
-          </span>
+    <section id="faq" className="py-8 sm:py-12 text-left relative">
+      <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          {/* LEFT SIDE: Sticky Header & Integrated Support Card */}
+          <div className="lg:col-span-5 lg:sticky lg:top-24 space-y-6">
+            <div className="space-y-3">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200/80 bg-white px-3.5 py-1 text-xs font-semibold text-slate-800 shadow-[0_1px_4px_rgba(0,0,0,0.02)]">
+                <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+                Frequently Asked Questions
+              </span>
 
-          <h2 className="mt-4 text-3xl font-black text-slate-900 sm:text-4xl lg:text-5xl tracking-tight">
-            Everything You Need to Know.
-          </h2>
+              <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-slate-900 tracking-tight leading-[1.12]">
+                Everything You{" "}
+                <span className="block text-slate-900">Need to Know.</span>
+              </h2>
 
-          <p className="mx-auto mt-3 max-w-2xl text-base text-slate-500 font-normal">
-            Find answers to the most common questions about managing college clubs with BroClubs and BroCodes Technologies.
-          </p>
-        </div>
+              <p className="text-base text-slate-600 font-normal leading-relaxed">
+                Find answers to the most common questions about managing college clubs with BroClubs and BroCodes Technologies.
+              </p>
+            </div>
 
-        {/* Accordions in Minimalist Aesthetic */}
-        <div className="mt-8 sm:mt-10 space-y-3">
-          {faqs.map((faq, index) => {
-            const isOpen = active === index;
-
-            return (
-              <div
-                key={faq.question}
-                className="overflow-hidden rounded-2xl border border-slate-200/70 bg-white transition-all shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:border-slate-300"
-              >
-                <button
-                  type="button"
-                  onClick={() => toggleFAQ(index)}
-                  aria-expanded={isOpen}
-                  className="flex w-full items-center justify-between p-5 sm:p-6 text-left transition hover:bg-slate-50/50 cursor-pointer"
-                >
-                  <span className="text-base sm:text-lg font-bold text-slate-900">
-                    {faq.question}
-                  </span>
-
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-700 ml-4">
-                    {isOpen ? (
-                      <HiOutlineMinus className="text-sm" />
-                    ) : (
-                      <HiOutlinePlus className="text-sm" />
-                    )}
-                  </div>
-                </button>
-
-                {isOpen && (
-                  <div className="border-t border-slate-100 px-6 py-4 bg-slate-50/30">
-                    <p className="text-sm leading-relaxed text-slate-500 font-normal">
-                      {faq.answer}
-                    </p>
-                  </div>
-                )}
+            {/* Integrated Help Card */}
+            <div className="rounded-2xl border border-slate-200/80 bg-white p-5 sm:p-6 shadow-[0_2px_8px_rgba(0,0,0,0.02)] space-y-4">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 text-xl border border-blue-100">
+                <HiOutlineChatBubbleLeftRight />
               </div>
-            );
-          })}
-        </div>
+              <div>
+                <h3 className="text-base font-bold text-slate-900">Still have questions?</h3>
+                <p className="mt-1 text-xs sm:text-[13px] text-slate-500 leading-relaxed">
+                  Can&apos;t find what you&apos;re looking for? Reach out directly to our engineering support team.
+                </p>
+              </div>
 
-        {/* Bottom Help Box */}
-        <div className="mt-8 rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 text-center shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
-          <h3 className="text-xl font-bold text-slate-900 tracking-tight">Still have questions?</h3>
-          <p className="mt-2 text-sm text-slate-500 font-normal">
-            Our engineering team at BroCodes Technologies is here to assist your institution.
-          </p>
-          <div className="mt-5 flex items-center justify-center gap-3">
-            <Link
-              href="/register"
-              className="rounded-full bg-slate-900 px-6 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-slate-800 transition-all"
-            >
-              Get Started Free
-            </Link>
-            <a
-              href="https://brocodestech.in"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-all"
-            >
-              Contact BroCodes Tech ↗
-            </a>
+              <div className="pt-1 flex flex-wrap gap-2.5">
+                <Link
+                  href="/Contact"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-slate-800 transition-all"
+                >
+                  <span>Contact Support</span>
+                  <HiOutlineArrowRight className="text-xs" />
+                </Link>
+                <a
+                  href="https://brocodestech.in"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-1 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-all"
+                >
+                  <span>BroCodes Tech ↗</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT SIDE: Category Filter Tabs + Smooth Animated Accordions */}
+          <div className="lg:col-span-7 space-y-5">
+            {/* Quick Category Filters */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+              {categories.map((cat) => {
+                const isSelected = selectedCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => {
+                      setSelectedCategory(cat);
+                      setActive(0); // auto-expand first item in new category
+                    }}
+                    className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
+                      isSelected
+                        ? "bg-slate-900 text-white shadow-xs"
+                        : "border border-slate-200/80 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Accordion Questions List */}
+            <div className="space-y-3">
+              {filteredFaqs.map((faq, index) => {
+                const isOpen = active === index;
+
+                return (
+                  <div
+                    key={faq.question}
+                    className={`overflow-hidden rounded-2xl border transition-all duration-200 ${
+                      isOpen
+                        ? "border-blue-200 bg-white shadow-sm ring-1 ring-blue-100"
+                        : "border-slate-200/80 bg-white shadow-[0_1px_4px_rgba(0,0,0,0.02)] hover:border-slate-300"
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => toggleFAQ(index)}
+                      aria-expanded={isOpen}
+                      className="flex w-full items-center justify-between p-4.5 sm:p-5 text-left transition hover:bg-slate-50/50 cursor-pointer gap-4"
+                    >
+                      <div className="flex items-center gap-2.5 flex-1">
+                        <span className="text-sm sm:text-base font-bold text-slate-900 leading-snug">
+                          {faq.question}
+                        </span>
+                      </div>
+
+                      <div
+                        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-transform duration-300 ${
+                          isOpen
+                            ? "rotate-180 bg-blue-50 text-blue-600"
+                            : "bg-slate-100 text-slate-600"
+                        }`}
+                      >
+                        <HiOutlineChevronDown className="text-sm stroke-[2.5]" />
+                      </div>
+                    </button>
+
+                    {/* Smooth CSS Grid Height Transition */}
+                    <div
+                      className={`grid transition-all duration-300 ease-in-out ${
+                        isOpen
+                          ? "grid-rows-[1fr] opacity-100"
+                          : "grid-rows-[0fr] opacity-0"
+                      }`}
+                    >
+                      <div className="overflow-hidden">
+                        <div className="border-t border-slate-100/90 px-4.5 sm:px-5 py-3.5 bg-slate-50/40 text-xs sm:text-[13px] leading-relaxed text-slate-600 font-normal">
+                          {faq.answer}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

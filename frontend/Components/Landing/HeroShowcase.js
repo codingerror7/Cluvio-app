@@ -93,8 +93,7 @@ export default function HeroShowcase() {
 
             {/* Description Subtitle */}
             <p className="text-base sm:text-lg leading-relaxed text-slate-500 max-w-xl font-normal">
-              BroClubs is the minimalist campus platform for college clubs, hackathons, and creative societies.
-              Discover vibrant clubs, RSVP to campus fests, and streamline member recruitments with seamless real-time sync.
+              The all-in-one campus OS for college clubs, hackathons, and student communities.
             </p>
 
             {/* Minimalist Action Buttons */}
@@ -119,18 +118,18 @@ export default function HeroShowcase() {
             </div>
 
             {/* Minimalist Social Proof & Trust Badges */}
-            <div className="pt-4 flex flex-wrap items-center gap-y-2 gap-x-6 text-xs font-medium text-slate-500">
+            <div className="pt-3 flex flex-wrap items-center gap-y-2 gap-x-5 text-xs font-medium text-slate-500">
               <div className="flex items-center gap-1.5">
                 <HiOutlineCheckCircle className="text-base text-slate-900 shrink-0" />
-                <span>1-Click Member Approvals</span>
+                <span>1-Click Approvals</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <HiOutlineCheckCircle className="text-base text-slate-900 shrink-0" />
-                <span>Live Hackathon RSVPs</span>
+                <span>QR Event Passes</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <HiOutlineCheckCircle className="text-base text-slate-900 shrink-0" />
-                <span>Verified Leadership Rosters</span>
+                <span>Verified Rosters</span>
               </div>
             </div>
           </div>

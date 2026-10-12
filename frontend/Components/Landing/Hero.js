@@ -123,8 +123,8 @@ export default function ClubsGrid() {
           <h2 className="mt-3 text-3xl font-black text-slate-900 sm:text-4xl tracking-tight">
             Discover Active Communities Ready to Grow.
           </h2>
-          <p className="mt-2 text-base text-slate-500 font-normal">
-            Real-time college clubs powered by live database persistence. Explore charters, meet presidents, and join with a single click.
+          <p className="mt-2 text-sm sm:text-base text-slate-500 font-normal">
+            Explore verified charters, meet club presidents, and join with a single click.
           </p>
         </div>
 
