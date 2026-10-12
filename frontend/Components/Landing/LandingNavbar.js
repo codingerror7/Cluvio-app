@@ -54,7 +54,7 @@ export default function LandingNavbar() {
           </span>
           <span className="text-slate-400">•</span>
           <span className="text-slate-600">
-            Connect with club heads from top colleges
+            Discover, join & lead vibrant campus clubs
           </span>
           <span className="text-slate-400">•</span>
           <a
