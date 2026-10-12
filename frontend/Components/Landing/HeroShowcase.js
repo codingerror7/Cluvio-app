@@ -19,6 +19,33 @@ import {
   HiOutlineChatBubbleLeftRight,
 } from "react-icons/hi2";
 
+const impactStats = [
+  {
+    icon: HiOutlineBuildingOffice2,
+    value: "50+",
+    label: "Campus Clubs",
+    accent: "text-blue-600 bg-blue-50 border-blue-100",
+  },
+  {
+    icon: HiOutlineUserGroup,
+    value: "3,800+",
+    label: "Students Enrolled",
+    accent: "text-indigo-600 bg-indigo-50 border-indigo-100",
+  },
+  {
+    icon: HiOutlineCalendarDays,
+    value: "150+",
+    label: "Events Hosted",
+    accent: "text-amber-600 bg-amber-50 border-amber-100",
+  },
+  {
+    icon: HiOutlineSparkles,
+    value: "98%",
+    label: "Student Satisfaction",
+    accent: "text-emerald-600 bg-emerald-50 border-emerald-100",
+  },
+];
+
 export default function HeroShowcase() {
   return (
     <section id="home" className="relative pt-6 pb-10 sm:pt-10 sm:pb-14 overflow-hidden">
@@ -240,55 +267,74 @@ export default function HeroShowcase() {
           </div>
         </div>
 
-        {/* MINIMALIST IMPACT METRICS SECTION */}
-        <div className="mt-10 pt-6 border-t border-slate-200/60 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center text-left">
-          <div className="lg:col-span-4">
+        {/* MINIMALIST IMPACT METRICS SECTION - INFINITE CONTINUOUS MARQUEE */}
+        <div className="mt-10 pt-6 border-t border-slate-200/60 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center text-left">
+          <div className="lg:col-span-4 shrink-0">
             <span className="text-xs font-bold tracking-wider text-slate-400 uppercase">
               — OUR CAMPUS IMPACT
             </span>
             <h3 className="mt-1 text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
               Built for Modern Universities
             </h3>
+            <p className="mt-1.5 text-xs sm:text-sm text-slate-500 font-normal">
+              Empowering student bodies and club leaders with real-time operational scale.
+            </p>
           </div>
 
-          <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="rounded-2xl border border-slate-200/70 bg-white p-4 shadow-[0_2px_8px_rgba(0,0,0,0.02)] flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-800 text-lg">
-                <HiOutlineBuildingOffice2 />
-              </div>
-              <div>
-                <p className="text-xl sm:text-2xl font-black text-slate-900">50+</p>
-                <p className="text-[11px] text-slate-500 font-medium">Campus Clubs</p>
-              </div>
-            </div>
+          <div className="lg:col-span-8 relative overflow-hidden py-2">
+            {/* Smooth Edge Fades for Seamless Infinite Effect */}
+            <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-16 bg-gradient-to-r from-[#F8FAFC] to-transparent z-10" />
+            <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-16 bg-gradient-to-l from-[#F8FAFC] to-transparent z-10" />
 
-            <div className="rounded-2xl border border-slate-200/70 bg-white p-4 shadow-[0_2px_8px_rgba(0,0,0,0.02)] flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-800 text-lg">
-                <HiOutlineUserGroup />
+            <div className="flex animate-marquee py-1 select-none">
+              {/* Loop Track 1 */}
+              <div className="flex gap-4 shrink-0 pr-4">
+                {[...impactStats, ...impactStats].map((stat, idx) => {
+                  const Icon = stat.icon;
+                  return (
+                    <div
+                      key={`track1-${idx}`}
+                      className="w-[220px] sm:w-[240px] shrink-0 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-md hover:border-slate-300 transition-all flex items-center gap-3.5 group cursor-default"
+                    >
+                      <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border ${stat.accent} text-xl transition-transform group-hover:scale-105`}>
+                        <Icon />
+                      </div>
+                      <div>
+                        <p className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight group-hover:text-blue-600 transition-colors">
+                          {stat.value}
+                        </p>
+                        <p className="text-[11px] sm:text-xs text-slate-500 font-semibold whitespace-nowrap">
+                          {stat.label}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-              <div>
-                <p className="text-xl sm:text-2xl font-black text-slate-900">3,800+</p>
-                <p className="text-[11px] text-slate-500 font-medium">Students Enrolled</p>
-              </div>
-            </div>
 
-            <div className="rounded-2xl border border-slate-200/70 bg-white p-4 shadow-[0_2px_8px_rgba(0,0,0,0.02)] flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-800 text-lg">
-                <HiOutlineCalendarDays />
-              </div>
-              <div>
-                <p className="text-xl sm:text-2xl font-black text-slate-900">150+</p>
-                <p className="text-[11px] text-slate-500 font-medium">Events Hosted</p>
-              </div>
-            </div>
-
-            <div className="rounded-2xl border border-slate-200/70 bg-white p-4 shadow-[0_2px_8px_rgba(0,0,0,0.02)] flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-800 text-lg">
-                <HiOutlineSparkles />
-              </div>
-              <div>
-                <p className="text-xl sm:text-2xl font-black text-slate-900">98%</p>
-                <p className="text-[11px] text-slate-500 font-medium">Student Satisfaction</p>
+              {/* Loop Track 2 (Exact Duplicate for Infinite Seamless Marquee) */}
+              <div className="flex gap-4 shrink-0 pr-4" aria-hidden="true">
+                {[...impactStats, ...impactStats].map((stat, idx) => {
+                  const Icon = stat.icon;
+                  return (
+                    <div
+                      key={`track2-${idx}`}
+                      className="w-[220px] sm:w-[240px] shrink-0 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-md hover:border-slate-300 transition-all flex items-center gap-3.5 group cursor-default"
+                    >
+                      <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border ${stat.accent} text-xl transition-transform group-hover:scale-105`}>
+                        <Icon />
+                      </div>
+                      <div>
+                        <p className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight group-hover:text-blue-600 transition-colors">
+                          {stat.value}
+                        </p>
+                        <p className="text-[11px] sm:text-xs text-slate-500 font-semibold whitespace-nowrap">
+                          {stat.label}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
