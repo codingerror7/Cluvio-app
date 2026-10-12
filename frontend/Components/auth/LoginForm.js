@@ -105,33 +105,33 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="w-full bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7">
+    <div className="w-full bg-white rounded-3xl border border-slate-200/80 shadow-[0_4px_24px_rgba(0,0,0,0.03)] p-6 sm:p-7">
       {/* Header */}
-      <div className="mb-4">
-        <div className="inline-flex items-center gap-1.5 rounded-full border border-blue-200/80 bg-blue-50 px-2.5 py-0.5 text-[11px] font-semibold text-blue-700 mb-2">
-          <HiOutlineSparkles className="text-xs text-blue-600" />
-          <span>Unified Campus Login</span>
+      <div className="mb-4 text-left">
+        <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-800 shadow-[0_1px_4px_rgba(0,0,0,0.02)] mb-3">
+          <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+          <span>Campus Access Portal</span>
         </div>
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+        <h1 className="text-2xl sm:text-[26px] font-black tracking-tight text-slate-900">
           Sign In to BroClubs
         </h1>
-        <p className="mt-0.5 text-xs text-slate-500">
-          Select your campus role and enter your credentials.
+        <p className="mt-1 text-xs text-slate-500 font-normal">
+          Choose your campus role and enter credentials to continue.
         </p>
       </div>
 
       {/* Role Selection Tabs */}
       <div className="mb-3.5">
-        <div className="grid grid-cols-3 gap-1.5 rounded-xl border border-slate-200 bg-slate-50/70 p-1">
+        <div className="grid grid-cols-3 gap-1 rounded-2xl border border-slate-200/70 bg-slate-100/70 p-1">
           <button
             type="button"
             onClick={() => handleRoleChange("student")}
             className={`
-              flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-semibold transition-all cursor-pointer
+              flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl text-xs transition-all cursor-pointer
               ${
                 role === "student"
-                  ? "bg-white text-blue-700 shadow-xs border border-slate-200 font-bold"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
+                  ? "bg-white text-slate-900 shadow-xs border border-slate-200 font-bold"
+                  : "text-slate-600 hover:text-slate-900 font-medium"
               }
             `}
           >
@@ -143,11 +143,11 @@ export default function LoginForm() {
             type="button"
             onClick={() => handleRoleChange("club member")}
             className={`
-              flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-semibold transition-all cursor-pointer
+              flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl text-xs transition-all cursor-pointer
               ${
                 role === "club member"
-                  ? "bg-white text-emerald-700 shadow-xs border border-slate-200 font-bold"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
+                  ? "bg-white text-slate-900 shadow-xs border border-slate-200 font-bold"
+                  : "text-slate-600 hover:text-slate-900 font-medium"
               }
             `}
           >
@@ -159,11 +159,11 @@ export default function LoginForm() {
             type="button"
             onClick={() => handleRoleChange("club head")}
             className={`
-              flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-semibold transition-all cursor-pointer
+              flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl text-xs transition-all cursor-pointer
               ${
                 role === "club head"
-                  ? "bg-white text-amber-700 shadow-xs border border-slate-200 font-bold"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
+                  ? "bg-white text-slate-900 shadow-xs border border-slate-200 font-bold"
+                  : "text-slate-600 hover:text-slate-900 font-medium"
               }
             `}
           >
@@ -174,29 +174,29 @@ export default function LoginForm() {
       </div>
 
       {/* 1-Click Demo Fill bar */}
-      <div className="mb-3.5 flex items-center justify-between rounded-lg border border-slate-200/80 bg-slate-50/60 px-2.5 py-1.5 text-xs">
+      <div className="mb-3.5 flex items-center justify-between rounded-xl border border-slate-200/80 bg-slate-50/70 px-3 py-1.5 text-xs">
         <span className="text-[11px] font-medium text-slate-500">
-          Demo fill:
+          Demo login:
         </span>
         <div className="flex gap-1.5">
           <button
             type="button"
             onClick={() => handleFillDemo("student")}
-            className="rounded-md border border-slate-200 bg-white px-2 py-0.5 text-[10px] font-semibold text-slate-700 hover:border-blue-300 hover:text-blue-600 cursor-pointer shadow-2xs"
+            className="rounded-full border border-slate-200 bg-white px-2.5 py-0.5 text-[10px] font-semibold text-slate-700 hover:border-slate-300 hover:bg-slate-50 cursor-pointer shadow-2xs"
           >
             🎓 Student
           </button>
           <button
             type="button"
             onClick={() => handleFillDemo("club member")}
-            className="rounded-md border border-slate-200 bg-white px-2 py-0.5 text-[10px] font-semibold text-slate-700 hover:border-emerald-300 hover:text-emerald-600 cursor-pointer shadow-2xs"
+            className="rounded-full border border-slate-200 bg-white px-2.5 py-0.5 text-[10px] font-semibold text-slate-700 hover:border-slate-300 hover:bg-slate-50 cursor-pointer shadow-2xs"
           >
             👥 Member
           </button>
           <button
             type="button"
             onClick={() => handleFillDemo("club head")}
-            className="rounded-md border border-slate-200 bg-white px-2 py-0.5 text-[10px] font-semibold text-slate-700 hover:border-amber-300 hover:text-amber-600 cursor-pointer shadow-2xs"
+            className="rounded-full border border-slate-200 bg-white px-2.5 py-0.5 text-[10px] font-semibold text-slate-700 hover:border-slate-300 hover:bg-slate-50 cursor-pointer shadow-2xs"
           >
             👑 Head
           </button>
@@ -205,7 +205,7 @@ export default function LoginForm() {
 
       {/* Error alert */}
       {error && (
-        <div className="mb-3 rounded-xl border border-rose-200 bg-rose-50 p-2.5 text-xs text-rose-700 flex items-center justify-between">
+        <div className="mb-3 rounded-2xl border border-rose-200 bg-rose-50 p-3 text-xs text-rose-700 flex items-center justify-between">
           <span className="font-medium">{error}</span>
           <button
             type="button"
@@ -243,16 +243,16 @@ export default function LoginForm() {
 
         {/* Secret Key Input (Visible only for Club Member & Club Head) */}
         {isSpecialRole && (
-          <div className="rounded-xl border border-amber-200 bg-amber-50/70 p-2.5 space-y-1.5 transition-all">
+          <div className="rounded-2xl border border-amber-200 bg-amber-50/70 p-3 space-y-1.5 transition-all">
             <div className="flex items-center justify-between">
               <label
                 htmlFor="login-secret-key"
                 className="flex items-center gap-1.5 text-xs font-semibold text-amber-900"
               >
                 <HiOutlineKey className="text-sm text-amber-700" />
-                <span>Secret Key (Required)</span>
+                <span>Secret Passkey (Required)</span>
               </label>
-              <span className="text-[10px] font-mono text-amber-800 bg-white border border-amber-200 px-1.5 py-0.2 rounded font-semibold">
+              <span className="text-[10px] font-mono text-amber-800 bg-white border border-amber-200 px-1.5 py-0.2 rounded-md font-semibold">
                 admin123
               </span>
             </div>
@@ -268,7 +268,7 @@ export default function LoginForm() {
                 value={secretKey}
                 onChange={(e) => setSecretKey(e.target.value)}
                 required
-                className="h-9 sm:h-10 w-full rounded-lg border border-amber-200 bg-white pl-9 pr-9 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-200 transition-all font-mono"
+                className="h-10 w-full rounded-xl border border-amber-200 bg-white pl-9 pr-9 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-200 transition-all font-mono"
               />
               <button
                 type="button"
@@ -283,7 +283,7 @@ export default function LoginForm() {
               </button>
             </div>
             <p className="text-[10px] text-amber-800/80 leading-normal">
-              Security validation for {role === "club head" ? "Club Head" : "Club Member"} role.
+              Security validation required for leadership accounts.
             </p>
           </div>
         )}
@@ -295,7 +295,7 @@ export default function LoginForm() {
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              className="h-3.5 w-3.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+              className="h-3.5 w-3.5 rounded border-slate-300 text-slate-900 focus:ring-slate-900 cursor-pointer"
             />
             <span className="text-xs text-slate-600 hover:text-slate-900 transition-colors">
               Remember me
@@ -311,7 +311,7 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={loading}
-          className="mt-2 flex h-10 sm:h-11 w-full items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm transition-all shadow-xs cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+          className="mt-3 flex h-11 w-full items-center justify-center gap-2 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs sm:text-sm transition-all shadow-xs cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed active:scale-[0.98]"
         >
           {loading ? (
             <span>Signing In...</span>
@@ -329,9 +329,9 @@ export default function LoginForm() {
         Don&apos;t have an account yet?{" "}
         <Link
           href="/register"
-          className="font-semibold text-blue-600 hover:underline ml-1"
+          className="font-semibold text-slate-900 hover:text-blue-600 underline decoration-slate-300 ml-1 transition-colors"
         >
-          Create account
+          Create account →
         </Link>
       </p>
     </div>

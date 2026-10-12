@@ -206,21 +206,21 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="w-full bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7">
+    <div className="w-full bg-white rounded-3xl border border-slate-200/80 shadow-[0_4px_24px_rgba(0,0,0,0.03)] p-6 sm:p-7">
       {/* Header & Stepper */}
-      <div className="mb-4">
-        <div className="flex items-center justify-between mb-1.5">
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-blue-200/80 bg-blue-50 px-2.5 py-0.5 text-[11px] font-semibold text-blue-700">
-            <HiOutlineSparkles className="text-xs text-blue-600" />
+      <div className="mb-4 text-left">
+        <div className="flex items-center justify-between mb-2">
+          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-800 shadow-[0_1px_4px_rgba(0,0,0,0.02)]">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
             <span>Campus Registration</span>
           </div>
 
           {/* Stepper indicator */}
-          <div className="flex items-center gap-1 text-[11px] font-semibold text-slate-500">
+          <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-500">
             <span
               className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${
                 step === 1
-                  ? "bg-blue-600 text-white font-bold"
+                  ? "bg-slate-900 text-white font-bold"
                   : "bg-emerald-600 text-white"
               }`}
             >
@@ -230,10 +230,10 @@ export default function RegisterForm() {
           </div>
         </div>
 
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+        <h1 className="text-2xl sm:text-[26px] font-black tracking-tight text-slate-900">
           {step === 1 ? "Create Account" : "Campus Profile"}
         </h1>
-        <p className="mt-0.5 text-xs text-slate-500">
+        <p className="mt-1 text-xs text-slate-500 font-normal">
           {step === 1
             ? "Choose role and set your account login credentials."
             : "Complete your college details and interest areas."}
@@ -243,19 +243,19 @@ export default function RegisterForm() {
         <div className="mt-2.5 grid grid-cols-2 gap-1.5 h-1">
           <div
             className={`h-full rounded-full transition-all duration-200 ${
-              step >= 1 ? "bg-blue-600" : "bg-slate-100"
+              step >= 1 ? "bg-slate-900" : "bg-slate-100"
             }`}
           />
           <div
             className={`h-full rounded-full transition-all duration-200 ${
-              step === 2 ? "bg-blue-600" : "bg-slate-100"
+              step === 2 ? "bg-slate-900" : "bg-slate-100"
             }`}
           />
         </div>
       </div>
 
       {/* 1-Click Demo Presets Bar */}
-      <div className="mb-3.5 flex items-center justify-between rounded-lg border border-slate-200/80 bg-slate-50/60 px-2.5 py-1.5 text-xs">
+      <div className="mb-3.5 flex items-center justify-between rounded-xl border border-slate-200/80 bg-slate-50/70 px-3 py-1.5 text-xs">
         <span className="text-[11px] font-medium text-slate-500">
           Demo fill:
         </span>
@@ -263,21 +263,21 @@ export default function RegisterForm() {
           <button
             type="button"
             onClick={() => handlePresetFill("student")}
-            className="rounded-md border border-slate-200 bg-white px-2 py-0.5 text-[10px] font-semibold text-slate-700 hover:border-blue-300 hover:text-blue-600 cursor-pointer shadow-2xs"
+            className="rounded-full border border-slate-200 bg-white px-2.5 py-0.5 text-[10px] font-semibold text-slate-700 hover:border-slate-300 hover:bg-slate-50 cursor-pointer shadow-2xs"
           >
             🎓 Student
           </button>
           <button
             type="button"
             onClick={() => handlePresetFill("club member")}
-            className="rounded-md border border-slate-200 bg-white px-2 py-0.5 text-[10px] font-semibold text-slate-700 hover:border-emerald-300 hover:text-emerald-600 cursor-pointer shadow-2xs"
+            className="rounded-full border border-slate-200 bg-white px-2.5 py-0.5 text-[10px] font-semibold text-slate-700 hover:border-slate-300 hover:bg-slate-50 cursor-pointer shadow-2xs"
           >
             👥 Member
           </button>
           <button
             type="button"
             onClick={() => handlePresetFill("club head")}
-            className="rounded-md border border-slate-200 bg-white px-2 py-0.5 text-[10px] font-semibold text-slate-700 hover:border-amber-300 hover:text-amber-600 cursor-pointer shadow-2xs"
+            className="rounded-full border border-slate-200 bg-white px-2.5 py-0.5 text-[10px] font-semibold text-slate-700 hover:border-slate-300 hover:bg-slate-50 cursor-pointer shadow-2xs"
           >
             👑 Head
           </button>
@@ -286,7 +286,7 @@ export default function RegisterForm() {
 
       {/* Error alert */}
       {error && (
-        <div className="mb-3 rounded-xl border border-rose-200 bg-rose-50 p-2.5 text-xs text-rose-700 flex items-center justify-between">
+        <div className="mb-3 rounded-2xl border border-rose-200 bg-rose-50 p-3 text-xs text-rose-700 flex items-center justify-between">
           <span className="font-medium">{error}</span>
           <button
             type="button"
@@ -331,7 +331,7 @@ export default function RegisterForm() {
 
           {/* Secret Key Input if Club Member or Club Head */}
           {isSpecialRole && (
-            <div className="rounded-xl border border-amber-200 bg-amber-50/70 p-2.5 space-y-1.5 transition-all">
+            <div className="rounded-2xl border border-amber-200 bg-amber-50/70 p-3 space-y-1.5 transition-all">
               <div className="flex items-center justify-between">
                 <label
                   htmlFor="register-secret-key"
@@ -342,7 +342,7 @@ export default function RegisterForm() {
                     Secret Key ({role === "club head" ? "Club Head" : "Club Member"})
                   </span>
                 </label>
-                <span className="text-[10px] font-mono text-amber-800 bg-white border border-amber-200 px-1.5 py-0.2 rounded font-semibold">
+                <span className="text-[10px] font-mono text-amber-800 bg-white border border-amber-200 px-1.5 py-0.2 rounded-md font-semibold">
                   admin123
                 </span>
               </div>
@@ -358,7 +358,7 @@ export default function RegisterForm() {
                   value={secretKey}
                   onChange={(e) => setSecretKey(e.target.value)}
                   required
-                  className="h-9 sm:h-10 w-full rounded-lg border border-amber-200 bg-white pl-9 pr-9 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-200 transition-all font-mono"
+                  className="h-10 w-full rounded-xl border border-amber-200 bg-white pl-9 pr-9 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-200 transition-all font-mono"
                 />
                 <button
                   type="button"
@@ -399,7 +399,7 @@ export default function RegisterForm() {
           {/* Next Button */}
           <button
             type="submit"
-            className="mt-2 flex h-10 sm:h-11 w-full items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm transition-all shadow-xs cursor-pointer"
+            className="mt-3 flex h-11 w-full items-center justify-center gap-2 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs sm:text-sm transition-all shadow-xs cursor-pointer active:scale-[0.98]"
           >
             <span>Next: Campus Details</span>
             <HiOutlineArrowRight className="text-sm" />
@@ -489,11 +489,11 @@ export default function RegisterForm() {
                       type="button"
                       onClick={() => toggleGenre(genre)}
                       className={`
-                        flex items-center gap-1 rounded-lg border px-2 py-0.5 text-[11px] font-medium transition-all cursor-pointer
+                        flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-medium transition-all cursor-pointer
                         ${
                           selected
-                            ? "border-blue-600 bg-blue-50 text-blue-700 font-semibold"
-                            : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
+                            ? "border-slate-900 bg-slate-900 text-white font-semibold"
+                            : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50"
                         }
                       `}
                     >
@@ -528,12 +528,12 @@ export default function RegisterForm() {
                 checked={agreeTerms}
                 onChange={(e) => setAgreeTerms(e.target.checked)}
                 required
-                className="h-3.5 w-3.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                className="h-3.5 w-3.5 rounded border-slate-300 text-slate-900 focus:ring-slate-900 cursor-pointer"
               />
               <span className="text-[11px] text-slate-600">
                 I agree to the BroClubs{" "}
-                <span className="text-blue-600 font-medium">Terms of Service</span>{" "}
-                & Club Guidelines.
+                <span className="text-slate-900 font-medium underline">Terms of Service</span>{" "}
+                & Guidelines.
               </span>
             </label>
           </div>
@@ -546,7 +546,7 @@ export default function RegisterForm() {
                 setError(null);
                 setStep(1);
               }}
-              className="col-span-1 flex h-10 sm:h-11 items-center justify-center gap-1 rounded-xl border border-slate-200 bg-white text-slate-700 font-semibold text-xs hover:bg-slate-50 cursor-pointer shadow-2xs"
+              className="col-span-1 flex h-11 items-center justify-center gap-1 rounded-full border border-slate-200 bg-white text-slate-700 font-semibold text-xs hover:bg-slate-50 cursor-pointer shadow-2xs"
             >
               <HiOutlineArrowLeft className="text-xs" />
               <span>Back</span>
@@ -555,7 +555,7 @@ export default function RegisterForm() {
             <button
               type="submit"
               disabled={loading}
-              className="col-span-2 flex h-10 sm:h-11 items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm transition-all shadow-xs cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+              className="col-span-2 flex h-11 items-center justify-center gap-2 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs sm:text-sm transition-all shadow-xs cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed active:scale-[0.98]"
             >
               {loading ? (
                 <span>Registering...</span>
@@ -575,9 +575,9 @@ export default function RegisterForm() {
         Already have an account?{" "}
         <Link
           href="/Login"
-          className="font-semibold text-blue-600 hover:underline ml-1"
+          className="font-semibold text-slate-900 hover:text-blue-600 underline decoration-slate-300 ml-1 transition-colors"
         >
-          Sign In
+          Sign In →
         </Link>
       </p>
     </div>

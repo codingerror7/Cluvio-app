@@ -6,7 +6,6 @@ import {
   HiOutlineUserGroup,
   HiOutlineShieldCheck,
   HiOutlineKey,
-  HiCheck,
 } from "react-icons/hi2";
 
 export default function RoleSelector({ role, onChange }) {
@@ -17,16 +16,14 @@ export default function RoleSelector({ role, onChange }) {
       badge: "Open",
       requiresKey: false,
       icon: HiOutlineAcademicCap,
-      activeBg: "bg-blue-50 border-blue-600 text-blue-700 shadow-xs",
       iconColor: "text-blue-600",
     },
     {
       id: "club member",
-      title: "Club Member",
+      title: "Member",
       badge: "admin123",
       requiresKey: true,
       icon: HiOutlineUserGroup,
-      activeBg: "bg-emerald-50 border-emerald-600 text-emerald-800 shadow-xs",
       iconColor: "text-emerald-600",
     },
     {
@@ -35,7 +32,6 @@ export default function RoleSelector({ role, onChange }) {
       badge: "admin123",
       requiresKey: true,
       icon: HiOutlineShieldCheck,
-      activeBg: "bg-amber-50 border-amber-600 text-amber-800 shadow-xs",
       iconColor: "text-amber-600",
     },
   ];
@@ -62,12 +58,12 @@ export default function RoleSelector({ role, onChange }) {
               type="button"
               onClick={() => onChange(item.id)}
               className={`
-                group relative flex flex-col items-center justify-center p-2.5 rounded-xl border text-center
+                group relative flex flex-col items-center justify-center p-2.5 rounded-2xl border text-center
                 transition-all duration-150 cursor-pointer outline-none
                 ${
                   isSelected
-                    ? `${item.activeBg} ring-1 ring-offset-0 font-bold`
-                    : "border-slate-200/90 bg-white hover:border-slate-300 hover:bg-slate-50/70 text-slate-600"
+                    ? "border-slate-900 bg-white text-slate-900 shadow-xs ring-1 ring-slate-900 font-bold"
+                    : "border-slate-200/90 bg-white hover:border-slate-300 hover:bg-slate-50 text-slate-600 font-medium"
                 }
               `}
             >
@@ -79,13 +75,13 @@ export default function RoleSelector({ role, onChange }) {
               <div className="mt-1 flex items-center gap-1">
                 <span
                   className={`
-                    inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 text-[9px] font-semibold
+                    inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-[9px] font-semibold
                     ${
                       isSelected
-                        ? "bg-white/80 border border-slate-200 text-slate-800"
+                        ? "bg-slate-100 text-slate-800"
                         : item.requiresKey
-                        ? "bg-amber-50 text-amber-700 border border-amber-200/60"
-                        : "bg-blue-50 text-blue-700 border border-blue-200/60"
+                        ? "bg-amber-50 text-amber-700 border border-amber-200/70"
+                        : "bg-blue-50 text-blue-700 border border-blue-200/70"
                     }
                   `}
                 >

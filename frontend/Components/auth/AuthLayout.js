@@ -9,18 +9,19 @@ import {
   HiOutlineCalendarDays,
   HiOutlineShieldCheck,
   HiOutlineArrowLeft,
+  HiOutlineCheckCircle,
 } from "react-icons/hi2";
 
 export default function AuthLayout({ children }) {
   return (
-    <main className="min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden bg-[#F8FAFC] text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900">
+    <main className="min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden bg-[#FAFAFA] text-slate-900 font-sans selection:bg-slate-900 selection:text-white">
       <div className="grid min-h-screen lg:h-full lg:grid-cols-12">
-        {/* Left Branding Showcase (Desktop - Light Theme) */}
-        <section className="relative hidden lg:col-span-5 lg:flex xl:col-span-5 flex-col justify-between p-8 xl:p-10 border-r border-slate-200/90 bg-gradient-to-br from-slate-50 via-white to-blue-50/40 overflow-hidden">
-          {/* Subtle decorative dot pattern & ambient glows */}
-          <div className="absolute inset-0 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:20px_20px] opacity-40 pointer-events-none" />
-          <div className="absolute -left-20 top-16 h-72 w-72 rounded-full bg-blue-200/35 blur-[90px] pointer-events-none" />
-          <div className="absolute bottom-10 right-0 h-80 w-80 rounded-full bg-indigo-200/30 blur-[100px] pointer-events-none" />
+        {/* Left Branding Showcase (Desktop - Sleek Landing Page Minimalist Theme) */}
+        <section className="relative hidden lg:col-span-5 lg:flex xl:col-span-5 flex-col justify-between p-8 xl:p-10 border-r border-slate-200/80 bg-gradient-to-br from-slate-50 via-white to-blue-50/30 overflow-hidden">
+          {/* Ambient Lighting Blurs Matching Hero */}
+          <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-blue-100/30 blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full bg-indigo-100/20 blur-3xl pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:24px_24px] opacity-30 pointer-events-none" />
 
           {/* Top Brand Header */}
           <div className="relative z-10 flex items-center justify-between">
@@ -28,7 +29,7 @@ export default function AuthLayout({ children }) {
               href="/"
               className="group inline-flex items-center gap-2.5 transition-transform hover:scale-[1.01]"
             >
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-sm shadow-blue-500/25">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white shadow-xs">
                 <HiOutlineSquares2X2 className="text-xl" />
               </div>
               <div>
@@ -36,11 +37,11 @@ export default function AuthLayout({ children }) {
                   <span className="text-lg font-bold tracking-tight text-slate-900">
                     BroClubs
                   </span>
-                  <span className="rounded-md bg-blue-50 border border-blue-200 px-1.5 py-0.2 text-[10px] font-semibold text-blue-700">
+                  <span className="rounded-full bg-slate-100 border border-slate-200 px-2 py-0.2 text-[10px] font-semibold text-slate-700">
                     Campus OS
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-500">
+                <p className="text-[11px] text-slate-500 font-normal">
                   By BroCodes Technologies
                 </p>
               </div>
@@ -48,98 +49,90 @@ export default function AuthLayout({ children }) {
 
             <Link
               href="/"
-              className="inline-flex items-center gap-1 text-xs font-semibold text-slate-600 hover:text-blue-600 transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-[0_1px_4px_rgba(0,0,0,0.02)]"
             >
-              <HiOutlineArrowLeft className="text-sm" />
-              <span>Back</span>
+              <HiOutlineArrowLeft className="text-xs" />
+              <span>Back to Home</span>
             </Link>
           </div>
 
-          {/* Center Showcase Copy */}
-          <div className="relative z-10 my-auto py-4 max-w-md">
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-blue-200/80 bg-blue-50/90 px-3 py-1 text-xs font-semibold text-blue-700 mb-4 shadow-2xs">
-              <HiOutlineSparkles className="text-sm text-blue-600" />
-              <span>Modern Campus Club Operating System</span>
+          {/* Center Showcase Narrative */}
+          <div className="relative z-10 my-auto py-4 max-w-md space-y-4">
+            <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white px-3 py-1 text-xs font-semibold text-slate-800 shadow-[0_1px_4px_rgba(0,0,0,0.02)]">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+              <span>Next-Gen Campus Life OS</span>
             </div>
 
-            <h2 className="text-3xl xl:text-4xl font-extrabold tracking-tight text-slate-900 leading-tight">
-              One Workspace for All{" "}
-              <span className="text-blue-600 underline decoration-blue-200 underline-offset-4">
-                Campus Clubs.
+            <h2 className="text-3xl xl:text-[38px] font-black tracking-tight text-slate-900 leading-[1.15]">
+              Where Student Ambition{" "}
+              <span className="block bg-gradient-to-r from-slate-900 via-blue-700 to-indigo-600 bg-clip-text text-transparent">
+                Finds Its True Tribe.
               </span>
             </h2>
 
-            <p className="mt-3 text-xs xl:text-sm text-slate-600 leading-relaxed">
-              Empowering students to discover passions, club members to collaborate seamlessly, and club heads to manage registrations, budgets, and campus events.
+            <p className="text-xs xl:text-sm text-slate-600 leading-relaxed font-normal">
+              The all-in-one minimalist platform for university clubs, fests, and verified student memberships.
             </p>
 
-            {/* 3 Metric Badges */}
-            <div className="mt-6 grid grid-cols-3 gap-2.5 border-y border-slate-200/80 py-4">
-              <div className="rounded-xl bg-white/80 p-2.5 border border-slate-200/70 shadow-2xs">
-                <div className="flex items-center gap-1 text-[11px] font-medium text-slate-500 mb-0.5">
-                  <HiOutlineUserGroup className="text-blue-600 text-xs" />
-                  <span>Clubs</span>
-                </div>
-                <p className="text-lg font-bold text-slate-900">50+</p>
-                <p className="text-[10px] text-slate-400">Active Orgs</p>
+            {/* 3 Metric Pills */}
+            <div className="grid grid-cols-3 gap-2 pt-2">
+              <div className="rounded-2xl bg-white border border-slate-200/80 p-3 shadow-[0_2px_8px_rgba(0,0,0,0.02)] text-left">
+                <p className="text-lg font-black text-slate-900">50+</p>
+                <p className="text-[10px] text-slate-500 font-semibold">Campus Clubs</p>
               </div>
 
-              <div className="rounded-xl bg-white/80 p-2.5 border border-slate-200/70 shadow-2xs">
-                <div className="flex items-center gap-1 text-[11px] font-medium text-slate-500 mb-0.5">
-                  <HiOutlineCalendarDays className="text-emerald-600 text-xs" />
-                  <span>Events</span>
-                </div>
-                <p className="text-lg font-bold text-slate-900">200+</p>
-                <p className="text-[10px] text-slate-400">Annual Fests</p>
+              <div className="rounded-2xl bg-white border border-slate-200/80 p-3 shadow-[0_2px_8px_rgba(0,0,0,0.02)] text-left">
+                <p className="text-lg font-black text-slate-900">3,800+</p>
+                <p className="text-[10px] text-slate-500 font-semibold">Students</p>
               </div>
 
-              <div className="rounded-xl bg-white/80 p-2.5 border border-slate-200/70 shadow-2xs">
-                <div className="flex items-center gap-1 text-[11px] font-medium text-slate-500 mb-0.5">
-                  <HiOutlineShieldCheck className="text-amber-600 text-xs" />
-                  <span>Access</span>
-                </div>
-                <p className="text-lg font-bold text-slate-900">100%</p>
-                <p className="text-[10px] text-slate-400">RBAC Verified</p>
+              <div className="rounded-2xl bg-white border border-slate-200/80 p-3 shadow-[0_2px_8px_rgba(0,0,0,0.02)] text-left">
+                <p className="text-lg font-black text-slate-900">98%</p>
+                <p className="text-[10px] text-slate-500 font-semibold">Satisfaction</p>
               </div>
             </div>
 
-            {/* 3 Role Badges */}
-            <div className="mt-4 flex flex-wrap items-center gap-1.5 text-xs">
-              <span className="text-[11px] font-medium text-slate-400 mr-1">
-                Roles:
-              </span>
-              <span className="rounded-lg bg-blue-50 border border-blue-200/70 px-2 py-0.5 text-[11px] font-semibold text-blue-700">
+            {/* Role Badges */}
+            <div className="flex flex-wrap items-center gap-1.5 pt-1 text-xs">
+              <span className="rounded-full bg-blue-50 border border-blue-200 px-2.5 py-0.5 text-[10px] font-semibold text-blue-700">
                 🎓 Student
               </span>
-              <span className="rounded-lg bg-emerald-50 border border-emerald-200/70 px-2 py-0.5 text-[11px] font-semibold text-emerald-700">
-                👥 Club Member
+              <span className="rounded-full bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 text-[10px] font-semibold text-emerald-700">
+                👥 Member (admin123)
               </span>
-              <span className="rounded-lg bg-amber-50 border border-amber-200/70 px-2 py-0.5 text-[11px] font-semibold text-amber-700">
-                👑 Club Head
+              <span className="rounded-full bg-amber-50 border border-amber-200 px-2.5 py-0.5 text-[10px] font-semibold text-amber-700">
+                👑 Club Head (admin123)
               </span>
             </div>
           </div>
 
           {/* Left Footer */}
-          <div className="relative z-10 flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-200/60">
-            <span>© {new Date().getFullYear()} BroClubs by BroCodes</span>
+          <div className="relative z-10 flex items-center justify-between text-xs text-slate-500 pt-3 border-t border-slate-200/70">
+            <span>© {new Date().getFullYear()} BroClubs</span>
             <a
               href="https://brocodestech.in"
               target="_blank"
               rel="noreferrer"
-              className="font-medium text-blue-600 hover:underline"
+              className="font-medium text-slate-700 hover:text-blue-600 transition-colors"
             >
-              brocodestech.in
+              brocodestech.in ↗
             </a>
           </div>
         </section>
 
-        {/* Right Form Container (Centered, light background, no scroll on standard desktop) */}
-        <section className="flex lg:col-span-7 xl:col-span-7 flex-col justify-center items-center px-4 py-4 sm:px-6 lg:px-8 h-full overflow-y-auto lg:overflow-hidden bg-[#F8FAFC]">
+        {/* Right Form Container */}
+        <section className="flex lg:col-span-7 xl:col-span-7 flex-col justify-center items-center px-4 py-6 sm:px-6 lg:px-8 h-full overflow-y-auto bg-[#FAFAFA] relative">
+          {/* Subtle Ambient Background Mesh */}
+          <div className="absolute top-10 right-10 w-72 h-72 rounded-full bg-blue-100/25 blur-3xl pointer-events-none" />
+          <div className="absolute bottom-10 left-10 w-72 h-72 rounded-full bg-indigo-100/20 blur-3xl pointer-events-none" />
+
           {/* Mobile Top Brand Header */}
-          <div className="w-full max-w-[440px] mb-3 flex items-center justify-between lg:hidden">
+          <div className="w-full max-w-[460px] mb-4 flex items-center justify-between lg:hidden z-10">
             <Link href="/" className="inline-flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white shadow-2xs">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-slate-900 text-white shadow-2xs">
                 <HiOutlineSquares2X2 className="text-base" />
               </div>
               <span className="text-base font-bold text-slate-900">BroClubs</span>
@@ -147,14 +140,15 @@ export default function AuthLayout({ children }) {
 
             <Link
               href="/"
-              className="text-xs font-semibold text-slate-600 hover:text-blue-600 transition-colors"
+              className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-2xs"
             >
-              ← Home
+              <HiOutlineArrowLeft className="text-xs" />
+              <span>Home</span>
             </Link>
           </div>
 
           {/* Form Content Area */}
-          <div className="w-full max-w-[440px] my-auto">
+          <div className="w-full max-w-[460px] sm:max-w-[480px] my-auto relative z-10">
             {children}
           </div>
         </section>
