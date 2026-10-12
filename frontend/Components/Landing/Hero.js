@@ -116,21 +116,21 @@ export default function ClubsGrid() {
     <section id="clubs" className="py-16 text-left w-full">
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div className="max-w-2xl">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3.5 py-1 text-xs font-semibold text-blue-700">
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200/80 bg-white px-3.5 py-1 text-xs font-semibold text-slate-800 shadow-[0_1px_4px_rgba(0,0,0,0.02)]">
+            <span className="h-1.5 w-1.5 rounded-full bg-slate-900" />
             Live Database Sync
           </span>
-          <h2 className="mt-3 text-3xl font-extrabold text-slate-900 sm:text-4xl tracking-tight">
+          <h2 className="mt-3 text-3xl font-black text-slate-900 sm:text-4xl tracking-tight">
             Discover Active Communities Ready to Grow.
           </h2>
-          <p className="mt-2 text-base text-slate-600">
+          <p className="mt-2 text-base text-slate-500 font-normal">
             Real-time college clubs powered by live database persistence. Explore charters, meet presidents, and join with a single click.
           </p>
         </div>
 
         <Link
           href="/register"
-          className="inline-flex items-center justify-center gap-1.5 rounded-full border border-slate-300 bg-white px-5 py-2.5 text-xs font-bold text-slate-700 transition hover:bg-slate-50 hover:border-slate-400 cursor-pointer shadow-xs"
+          className="inline-flex items-center justify-center gap-1.5 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 hover:border-slate-300 cursor-pointer shadow-[0_1px_4px_rgba(0,0,0,0.02)]"
         >
           <span>Explore All 50+ Clubs</span>
           <HiOutlineArrowRight className="text-xs" />
@@ -156,8 +156,8 @@ export default function ClubsGrid() {
         </div>
       )}
 
-      {/* Clubs Grid in Clean Light SaaS Theme */}
-      <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {/* Clubs Grid in Minimalist Theme */}
+      <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {clubs.slice(0, 6).map((club, idx) => {
           const isMember = club.isMember;
           const isPending = club.membershipStatus === "Pending";
@@ -165,14 +165,14 @@ export default function ClubsGrid() {
           return (
             <div
               key={club.id || club._id || idx}
-              className="group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-slate-200/90 bg-white p-7 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:border-blue-300 hover:shadow-xl"
+              className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-slate-200/70 bg-white p-7 shadow-[0_2px_12px_rgba(0,0,0,0.02)] transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_12px_32px_rgba(0,0,0,0.05)]"
             >
               <div>
                 <div className="flex items-center justify-between">
-                  <span className="inline-flex rounded-full bg-blue-50 border border-blue-100 px-3 py-1 text-xs font-bold text-blue-700">
+                  <span className="inline-flex rounded-full bg-slate-50 border border-slate-200/70 px-2.5 py-0.5 text-[10px] font-semibold text-slate-700">
                     {club.category}
                   </span>
-                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-50 border border-slate-100 shadow-2xs">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 border border-slate-200/50">
                     {getClubCategoryIcon(club.category, club.name)}
                   </div>
                 </div>
@@ -180,7 +180,7 @@ export default function ClubsGrid() {
                 <h3 className="mt-5 text-xl font-bold text-slate-900 tracking-tight">
                   {club.name}
                 </h3>
-                <p className="mt-2 text-xs sm:text-sm text-slate-600 line-clamp-2 leading-relaxed">
+                <p className="mt-2 text-xs sm:text-sm text-slate-500 line-clamp-2 leading-relaxed font-normal">
                   {club.description}
                 </p>
               </div>
@@ -194,11 +194,11 @@ export default function ClubsGrid() {
                         `https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80`
                       }
                       alt={club.president?.name || "President"}
-                      className="h-10 w-10 rounded-full object-cover ring-2 ring-slate-100 shrink-0"
+                      className="h-9 w-9 rounded-full object-cover ring-2 ring-slate-100 shrink-0"
                     />
 
                     <div className="min-w-0">
-                      <p className="text-xs font-bold text-slate-800 truncate">
+                      <p className="text-xs font-bold text-slate-900 truncate">
                         {club.president?.name || "Club President"}
                       </p>
                       <div className="flex items-center gap-1 text-[11px] text-slate-400">
@@ -209,12 +209,12 @@ export default function ClubsGrid() {
                   </div>
 
                   {isMember ? (
-                    <span className="rounded-full bg-emerald-50 border border-emerald-200 px-3.5 py-1.5 text-xs font-bold text-emerald-700 flex items-center gap-1">
+                    <span className="rounded-full bg-emerald-50 border border-emerald-200 px-3 py-1 text-xs font-semibold text-emerald-700 flex items-center gap-1">
                       <HiOutlineCheckCircle />
                       <span>Joined</span>
                     </span>
                   ) : isPending ? (
-                    <span className="rounded-full bg-amber-50 border border-amber-200 px-3 py-1.5 text-xs font-bold text-amber-700 flex items-center gap-1">
+                    <span className="rounded-full bg-amber-50 border border-amber-200 px-3 py-1 text-xs font-semibold text-amber-700 flex items-center gap-1">
                       <HiOutlineClock />
                       <span>Pending</span>
                     </span>
@@ -223,7 +223,7 @@ export default function ClubsGrid() {
                       type="button"
                       disabled={joiningId === (club.id || club._id)}
                       onClick={() => handleJoin(club)}
-                      className="rounded-full bg-[#2563EB] px-4.5 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#1D4ED8] transition-all cursor-pointer disabled:opacity-50"
+                      className="rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-slate-800 transition-all cursor-pointer disabled:opacity-50"
                     >
                       {joiningId === (club.id || club._id) ? "Joining..." : "Join Club"}
                     </button>

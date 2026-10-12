@@ -80,33 +80,34 @@ export default function RoleShowcase() {
 
   return (
     <section id="roles" className="py-16 relative">
-      <div className="mx-auto w-full max-w-[1560px] px-2 sm:px-4">
+      <div className="mx-auto w-full max-w-[1440px] px-2 sm:px-4">
         <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-semibold text-blue-700">
+          <span className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white px-3.5 py-1 text-xs font-semibold text-slate-800 shadow-[0_1px_4px_rgba(0,0,0,0.02)]">
+            <span className="h-1.5 w-1.5 rounded-full bg-slate-900" />
             Role-Based Campus Architecture
           </span>
-          <h2 className="mt-4 text-3xl font-extrabold text-slate-900 sm:text-4xl lg:text-5xl tracking-tight">
+          <h2 className="mt-4 text-3xl font-black text-slate-900 sm:text-4xl lg:text-5xl tracking-tight">
             Built for Students,
-            <span className="block text-blue-600">Trusted by Club Leaders.</span>
+            <span className="block text-slate-900">Trusted by Club Leaders.</span>
           </h2>
-          <p className="mt-4 text-base sm:text-lg leading-relaxed text-slate-600">
-            Cluvio features dedicated portals tailored to each participant's campus duties. Secret key authorization protects leadership accounts.
+          <p className="mt-4 text-base sm:text-lg leading-relaxed text-slate-500 font-normal">
+            BroClubs features dedicated portals tailored to each participant's campus duties. Secret key authorization protects leadership accounts.
           </p>
         </div>
 
         {/* Roles 3-Column Grid */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+        <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
           {roles.map((r) => {
             const Icon = r.icon;
             return (
               <div
                 key={r.title}
-                className={`relative flex flex-col justify-between rounded-3xl border bg-white p-7 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:shadow-xl ${r.cardBorder}`}
+                className="relative flex flex-col justify-between rounded-2xl border border-slate-200/70 bg-white p-7 shadow-[0_2px_12px_rgba(0,0,0,0.02)] transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_12px_32px_rgba(0,0,0,0.05)]"
               >
                 <div>
                   {/* Header */}
                   <div className="flex items-start justify-between">
-                    <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${r.iconBg} text-2xl`}>
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-slate-800 text-xl">
                       <Icon />
                     </div>
 

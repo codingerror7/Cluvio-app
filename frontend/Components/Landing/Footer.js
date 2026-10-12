@@ -9,43 +9,43 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="mt-16 w-full rounded-[36px] border border-slate-200/90 bg-white p-6 sm:p-10 lg:p-12 shadow-xs text-left">
-      <div className="mx-auto w-full max-w-[1560px]">
+    <footer className="mt-16 w-full rounded-3xl border border-slate-200/70 bg-white p-6 sm:p-10 lg:p-12 shadow-[0_2px_12px_rgba(0,0,0,0.02)] text-left">
+      <div className="mx-auto w-full max-w-[1440px]">
         <div className="grid gap-12 lg:grid-cols-12">
           {/* Brand & BroCodes Column */}
           <div className="lg:col-span-5 space-y-4">
             <Link href="/" className="inline-flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#2563EB] text-white shadow-[0_4px_14px_rgba(37,99,235,0.25)]">
-                <HiOutlineSquares2X2 className="text-2xl font-bold" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white shadow-xs">
+                <HiOutlineSquares2X2 className="text-xl font-bold" />
               </div>
               <div>
-                <span className="text-2xl font-black tracking-tight text-slate-900">
-                  Cluvio
+                <span className="text-xl font-extrabold tracking-tight text-slate-900">
+                  BroClubs
                 </span>
-                <p className="text-[11px] font-semibold text-blue-600">
-                  College Club Operations System
+                <p className="text-[11px] font-medium text-slate-400">
+                  Campus Club Operations System
                 </p>
               </div>
             </Link>
 
-            <p className="max-w-md text-sm leading-relaxed text-slate-600">
-              Cluvio is a modern campus operating platform empowering student organizations, clubs, and college leaders to manage memberships, requests, and events from one unified interface.
+            <p className="max-w-md text-sm leading-relaxed text-slate-500 font-normal">
+              BroClubs is a modern campus operating platform empowering student organizations, clubs, and college leaders to manage memberships, requests, and events from one unified interface.
             </p>
 
             {/* BroCodes Technologies Showcase Badge */}
-            <div className="rounded-2xl border border-blue-200/80 bg-blue-50/60 p-4 text-xs space-y-2">
+            <div className="rounded-2xl border border-slate-200/70 bg-slate-50/60 p-4 text-xs space-y-2">
               <div className="flex items-center gap-1.5 font-bold text-slate-900">
-                <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+                <span className="h-1.5 w-1.5 rounded-full bg-slate-900" />
                 <span>A Product by BroCodes Technologies</span>
               </div>
-              <p className="text-slate-600 text-[11px] leading-relaxed">
+              <p className="text-slate-500 text-[11px] leading-relaxed font-normal">
                 Engineering intelligent web architectures and transformative platforms for higher education and digital enterprises.
               </p>
               <a
                 href="https://brocodestech.in"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 font-mono text-blue-700 font-bold hover:underline pt-1"
+                className="inline-flex items-center gap-1.5 font-mono text-slate-900 font-bold hover:underline pt-1"
               >
                 <span>Visit brocodestech.in</span>
                 <HiOutlineArrowTopRightOnSquare className="text-xs" />
@@ -176,7 +176,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-slate-200/80 pt-8 sm:flex-row text-xs text-slate-500">
           <p>
-            © {new Date().getFullYear()} Cluvio. Developed & Engineered by{" "}
+            © {new Date().getFullYear()} BroClubs. Developed & Engineered by{" "}
             <a
               href="https://brocodestech.in"
               target="_blank"

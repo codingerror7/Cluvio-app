@@ -27,16 +27,16 @@ const docsData = [
   {
     id: "intro",
     category: "Getting Started",
-    title: "Introduction to Cluvio",
+    title: "Introduction to BroClubs",
     role: "all",
     lastUpdated: "October 2026",
     content: {
       summary:
-        "Cluvio is the unified operating system for college clubs, extracurricular activities, and campus leadership.",
+        "BroClubs is the unified operating system for college clubs, extracurricular activities, and campus leadership.",
       sections: [
         {
-          heading: "What is Cluvio?",
-          body: "Cluvio replaces fragmented WhatsApp chats, paper sign-up sheets, and disconnected spreadsheets with a single, verified campus workspace. Whether you are a student discovering clubs or a club president running a technical society, Cluvio provides the digital infrastructure to streamline community engagement.",
+          heading: "What is BroClubs?",
+          body: "BroClubs replaces fragmented WhatsApp chats, paper sign-up sheets, and disconnected spreadsheets with a single, verified campus workspace. Whether you are a student discovering clubs or a club president running a technical society, BroClubs provides the digital infrastructure to streamline community engagement.",
         },
         {
           heading: "Core Principles",
@@ -52,7 +52,7 @@ const docsData = [
         type: "note",
         title: "Campus Access Note",
         message:
-          "Cluvio accounts are tied to your official university enrollment number. Make sure to register with your verified campus email address.",
+          "BroClubs accounts are tied to your official university enrollment number. Make sure to register with your verified campus email address.",
       },
     },
   },
@@ -64,11 +64,11 @@ const docsData = [
     lastUpdated: "October 2026",
     content: {
       summary:
-        "Step-by-step guide on creating and verifying your Cluvio Student or Club President profile.",
+        "Step-by-step guide on creating and verifying your BroClubs Student or Club President profile.",
       sections: [
         {
           heading: "Choosing the Right Role",
-          body: "During registration, Cluvio prompts you to select either a 'Student' or 'Club President' account. Students can browse, join, and RSVP to events across campus. Club Presidents receive an additional command console to manage their organization's roster, events, and broadcast notices.",
+          body: "During registration, BroClubs prompts you to select either a 'Student' or 'Club President' account. Students can browse, join, and RSVP to events across campus. Club Presidents receive an additional command console to manage their organization's roster, events, and broadcast notices.",
         },
         {
           heading: "Required Information",
@@ -100,11 +100,11 @@ const docsData = [
       sections: [
         {
           heading: "Filtering by Domain",
-          body: "The Cluvio directory groups student organizations into distinct domains: Technology, Creative Design, Artificial Intelligence, Robotics, Cultural & Performing Arts, and Entrepreneurship. Use the search bar to locate specific clubs by name, keywords, or faculty advisor.",
+          body: "The BroClubs directory groups student organizations into distinct domains: Technology, Creative Design, Artificial Intelligence, Robotics, Cultural & Performing Arts, and Entrepreneurship. Use the search bar to locate specific clubs by name, keywords, or faculty advisor.",
         },
         {
           heading: "Joining a Club",
-          body: "Clubs on Cluvio operate under two formats: Open Membership (instant 1-click enrollment) and Application-Based (requires portfolio submission or technical audition). Check the club profile badge to determine recruitment status.",
+          body: "Clubs on BroClubs operate under two formats: Open Membership (instant 1-click enrollment) and Application-Based (requires portfolio submission or technical audition). Check the club profile badge to determine recruitment status.",
         },
       ],
       callout: {
@@ -127,11 +127,11 @@ const docsData = [
       sections: [
         {
           heading: "1-Click Ticket Reservation",
-          body: "When a club publishes an upcoming workshop or conference, verified students can RSVP with a single click. Your pass is automatically saved to your Cluvio dashboard and sent with a calendar invite.",
+          body: "When a club publishes an upcoming workshop or conference, verified students can RSVP with a single click. Your pass is automatically saved to your BroClubs dashboard and sent with a calendar invite.",
         },
         {
           heading: "QR Attendance Check-in",
-          body: "At the event entrance, simply display your unique event QR code from the Cluvio mobile web app. The organizing executive team will scan your code to log verified attendance.",
+          body: "At the event entrance, simply display your unique event QR code from the BroClubs mobile web app. The organizing executive team will scan your code to log verified attendance.",
         },
       ],
     },
@@ -184,7 +184,7 @@ const docsData = [
         },
         {
           heading: "Door Scanning & Real-time Turnout",
-          body: "Use the Cluvio Mobile Scanner tool to scan attendee QR tickets in under 2 seconds. The dashboard displays live turnout numbers and generates an attendance report exportable as CSV.",
+          body: "Use the BroClubs Mobile Scanner tool to scan attendee QR tickets in under 2 seconds. The dashboard displays live turnout numbers and generates an attendance report exportable as CSV.",
         },
       ],
     },
@@ -197,7 +197,7 @@ const docsData = [
     lastUpdated: "October 2026",
     content: {
       summary:
-        "Learn how Cluvio safeguards student privacy, prevents spam, and enforces safety.",
+        "Learn how BroClubs safeguards student privacy, prevents spam, and enforces safety.",
       sections: [
         {
           heading: "Campus Privacy Standards",
@@ -212,7 +212,7 @@ const docsData = [
         type: "note",
         title: "Data Protection Guarantee",
         message:
-          "Cluvio adheres to institutional student privacy standards. Extracurricular data is strictly used for campus community engagement.",
+          "BroClubs adheres to institutional student privacy standards. Extracurricular data is strictly used for campus community engagement.",
       },
     },
   },
@@ -258,11 +258,11 @@ export default function DocumentationPage() {
           <div className="mx-auto max-w-4xl text-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1 text-xs font-semibold text-[var(--accent)]">
               <HiOutlineSparkles className="text-sm" />
-              <span>CLUVIO KNOWLEDGE BASE</span>
+              <span>BROCLUBS KNOWLEDGE BASE</span>
             </div>
 
             <h1 className="mt-5 text-3xl font-extrabold tracking-tight text-white sm:text-5xl">
-              Cluvio Documentation
+              BroClubs Documentation
             </h1>
 
             <p className="mt-3 text-base text-white/60 sm:text-lg">

@@ -1,7 +1,7 @@
 export const metadata = {
-  title: "Cluvio Documentation — Knowledge Base & User Guides",
+  title: "BroClubs Documentation — Knowledge Base & User Guides",
   description:
-    "Comprehensive guides and technical documentation for campus students, club presidents, and organizations using Cluvio.",
+    "Comprehensive guides and technical documentation for campus students, club presidents, and organizations using BroClubs.",
 };
 
 export default function DocumentationLayout({ children }) {

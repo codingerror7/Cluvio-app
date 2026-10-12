@@ -108,7 +108,7 @@ export default function AboutPage() {
           <div className="mx-auto max-w-4xl text-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-semibold text-[var(--accent)] backdrop-blur-md">
               <HiOutlineSparkles className="text-sm" />
-              <span>ABOUT CLUVIO</span>
+              <span>ABOUT BROCLUBS</span>
             </div>
 
             <h1 className="mt-8 text-4xl font-extrabold tracking-tight text-white sm:text-6xl sm:leading-[1.15]">
@@ -119,7 +119,7 @@ export default function AboutPage() {
             </h1>
 
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/60 sm:text-xl sm:leading-8">
-              Cluvio is a modern platform built to make college club discovery, participation, and management simpler for everyone on campus.
+              BroClubs is a modern platform built to make college club discovery, participation, and management simpler for everyone on campus.
             </p>
 
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
@@ -127,7 +127,7 @@ export default function AboutPage() {
                 href="/register"
                 className="flex items-center gap-2 rounded-xl bg-[var(--accent)] px-6 py-3.5 text-sm font-semibold text-black transition hover:brightness-110 hover:shadow-[0_0_30px_rgba(34,211,238,0.35)] active:scale-95"
               >
-                <span>Get Started with Cluvio</span>
+                <span>Get Started with BroClubs</span>
                 <HiOutlineArrowRight className="text-sm" />
               </Link>
 
@@ -201,7 +201,7 @@ export default function AboutPage() {
                 The campus, connected.
               </h2>
               <p className="mt-4 text-base leading-relaxed text-white/60">
-                Cluvio acts as the central digital nervous system for student life—connecting students, clubs, executive leadership, and campus activities seamlessly.
+                BroClubs acts as the central digital nervous system for student life—connecting students, clubs, executive leadership, and campus activities seamlessly.
               </p>
             </div>
 
@@ -243,7 +243,7 @@ export default function AboutPage() {
                     <HiOutlineSparkles className="text-xl" />
                   </div>
                   <span className="rounded-full bg-[var(--accent)] px-2.5 py-0.5 text-[11px] font-bold text-black uppercase tracking-wider">
-                    Cluvio Hub
+                    BroClubs Hub
                   </span>
                 </div>
 
@@ -302,7 +302,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* 4. WHAT CLUVIO ENABLES */}
+        {/* 4. WHAT BROCLUBS ENABLES */}
         <section className="relative border-t border-white/10 bg-[#0B1120]/40 py-20 px-4 sm:px-6 sm:py-28 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <div className="max-w-2xl">
@@ -310,7 +310,7 @@ export default function AboutPage() {
                 Core Capabilities
               </span>
               <h2 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                What Cluvio enables across campus.
+                What BroClubs enables across campus.
               </h2>
               <p className="mt-4 text-base text-white/60">
                 Six foundational pillars engineered to elevate extracurricular participation from chaos to clarity.
@@ -360,7 +360,7 @@ export default function AboutPage() {
                   A better campus experience for students.
                 </h2>
                 <p className="mt-4 text-base leading-relaxed text-white/60">
-                  College is about more than lectures. Cluvio empowers you to uncover clubs aligned with your career goals, passion projects, and cultural interests.
+                  College is about more than lectures. BroClubs empowers you to uncover clubs aligned with your career goals, passion projects, and cultural interests.
                 </p>
 
                 <div className="mt-8 space-y-4 text-sm text-white/70">
@@ -494,7 +494,7 @@ export default function AboutPage() {
                   Built for the people who run campus communities.
                 </h2>
                 <p className="mt-4 text-base leading-relaxed text-white/60">
-                  Leading a student organization shouldn&apos;t feel like a full-time administrative burden. Cluvio gives leaders the dedicated workspace they need.
+                  Leading a student organization shouldn&apos;t feel like a full-time administrative burden. BroClubs gives leaders the dedicated workspace they need.
                 </p>
 
                 <div className="mt-8 space-y-4 text-sm text-white/70">
@@ -538,7 +538,7 @@ export default function AboutPage() {
               Make campus communities easier to discover, simpler to manage, and profoundly meaningful to participate in.
             </h2>
             <p className="mt-6 text-base text-white/60 sm:text-lg">
-              We believe a university education is only complete when students find their tribe, build real projects, and lead with purpose. Cluvio provides the digital foundation for those memories to take shape.
+              We believe a university education is only complete when students find their tribe, build real projects, and lead with purpose. BroClubs provides the digital foundation for those memories to take shape.
             </p>
 
             <div className="mt-14 grid grid-cols-2 gap-6 sm:grid-cols-4 border-t border-white/10 pt-10">
@@ -569,7 +569,7 @@ export default function AboutPage() {
               Your next campus community might be one click away.
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-white/60">
-              Explore Cluvio and discover what&apos;s happening across your campus today.
+              Explore BroClubs and discover what&apos;s happening across your campus today.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
@@ -577,7 +577,7 @@ export default function AboutPage() {
                 href="/register"
                 className="rounded-xl bg-[var(--accent)] px-7 py-3.5 text-sm font-semibold text-black transition hover:brightness-110 hover:shadow-[0_0_30px_rgba(34,211,238,0.35)] active:scale-95"
               >
-                Explore Cluvio Now
+                Explore BroClubs Now
               </Link>
               <Link
                 href="/Contact"

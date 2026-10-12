@@ -131,7 +131,7 @@ export default function HowItWorksPage() {
           <div className="mx-auto max-w-4xl text-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-semibold text-[var(--accent)] backdrop-blur-md">
               <HiOutlineSparkles className="text-sm" />
-              <span>HOW CLUVIO WORKS</span>
+              <span>HOW BROCLUBS WORKS</span>
             </div>
 
             <h1 className="mt-8 text-4xl font-extrabold tracking-tight text-white sm:text-6xl sm:leading-[1.15]">
@@ -142,7 +142,7 @@ export default function HowItWorksPage() {
             </h1>
 
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/60 sm:text-xl sm:leading-8">
-              Cluvio connects students and club leaders through one simple campus experience. Explore the step-by-step journey below.
+              BroClubs connects students and club leaders through one simple campus experience. Explore the step-by-step journey below.
             </p>
 
             {/* Role Tab Selector */}
@@ -191,7 +191,7 @@ export default function HowItWorksPage() {
               </span>
               <h2 className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
                 {activeTab === "student"
-                  ? "How students get involved on Cluvio"
+                  ? "How students get involved on BroClubs"
                   : "How club leaders run their organization"}
               </h2>
             </div>
@@ -232,7 +232,7 @@ export default function HowItWorksPage() {
                           <div className="flex items-center gap-2">
                             <Icon className="text-lg text-[var(--accent)]" />
                             <span className="text-xs font-semibold text-white">
-                              Cluvio Module • Step {item.step}
+                              BroClubs Module • Step {item.step}
                             </span>
                           </div>
                           <span className="h-2 w-2 rounded-full bg-emerald-400" />
@@ -310,7 +310,7 @@ export default function HowItWorksPage() {
                                 <span className="text-[10px] text-emerald-400">Active Stage</span>
                               </div>
                               <p className="text-[11px] text-white/60 leading-relaxed">
-                                Integrated with Cluvio Campus Protocol. Zero spreadsheets required.
+                                Integrated with BroClubs Campus Protocol. Zero spreadsheets required.
                               </p>
                             </div>
                           )}
@@ -324,14 +324,14 @@ export default function HowItWorksPage() {
           </div>
         </section>
 
-        {/* 3. THE CLUVIO ECOSYSTEM DIAGRAM */}
+        {/* 3. THE BROCLUBS ECOSYSTEM DIAGRAM */}
         <section className="relative py-20 px-4 sm:px-6 sm:py-28 lg:px-8 border-t border-white/10">
           <div className="mx-auto max-w-6xl text-center">
             <span className="text-xs font-semibold uppercase tracking-wider text-[var(--accent)]">
               Architecture
             </span>
             <h2 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-5xl">
-              The Cluvio Ecosystem
+              The BroClubs Ecosystem
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-base text-white/60">
               A triangular synchronization system connecting students, student organizations, and leadership into one seamless campus ecosystem.
@@ -356,7 +356,7 @@ export default function HowItWorksPage() {
                   <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--accent)] text-black">
                     <HiOutlineSparkles className="text-2xl" />
                   </div>
-                  <h4 className="mt-4 font-bold text-white text-lg">Cluvio Engine</h4>
+                  <h4 className="mt-4 font-bold text-white text-lg">BroClubs Engine</h4>
                   <p className="mt-2 text-xs text-white/70">
                     Unified platform syncing attendance, rosters, announcements, and campus activities.
                   </p>
@@ -407,7 +407,7 @@ export default function HowItWorksPage() {
                 href="/register"
                 className="rounded-xl bg-[var(--accent)] px-7 py-3.5 text-sm font-semibold text-black transition hover:brightness-110 hover:shadow-[0_0_30px_rgba(34,211,238,0.35)] active:scale-95"
               >
-                Explore Clubs on Cluvio
+                Explore Clubs on BroClubs
               </Link>
               <Link
                 href="/About"

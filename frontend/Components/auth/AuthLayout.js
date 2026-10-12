@@ -34,7 +34,7 @@ export default function AuthLayout({ children }) {
               <div>
                 <div className="flex items-center gap-1.5">
                   <span className="text-lg font-bold tracking-tight text-slate-900">
-                    Cluvio
+                    BroClubs
                   </span>
                   <span className="rounded-md bg-blue-50 border border-blue-200 px-1.5 py-0.2 text-[10px] font-semibold text-blue-700">
                     Campus OS
@@ -122,7 +122,7 @@ export default function AuthLayout({ children }) {
 
           {/* Left Footer */}
           <div className="relative z-10 flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-200/60">
-            <span>© {new Date().getFullYear()} Cluvio by BroCodes</span>
+            <span>© {new Date().getFullYear()} BroClubs by BroCodes</span>
             <a
               href="https://brocodestech.in"
               target="_blank"
@@ -142,7 +142,7 @@ export default function AuthLayout({ children }) {
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white shadow-2xs">
                 <HiOutlineSquares2X2 className="text-base" />
               </div>
-              <span className="text-base font-bold text-slate-900">Cluvio</span>
+              <span className="text-base font-bold text-slate-900">BroClubs</span>
             </Link>
 
             <Link

@@ -531,7 +531,7 @@ export default function RegisterForm() {
                 className="h-3.5 w-3.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
               />
               <span className="text-[11px] text-slate-600">
-                I agree to the Cluvio{" "}
+                I agree to the BroClubs{" "}
                 <span className="text-blue-600 font-medium">Terms of Service</span>{" "}
                 & Club Guidelines.
               </span>

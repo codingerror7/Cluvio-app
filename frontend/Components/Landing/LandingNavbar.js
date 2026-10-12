@@ -50,7 +50,7 @@ export default function LandingNavbar() {
         <div className="mx-auto flex max-w-[1560px] items-center justify-center gap-2 flex-wrap">
           <span className="flex items-center gap-1.5 text-blue-600 font-bold">
             <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
-            <span>Join the Cluvio Community</span>
+            <span>Join the BroClubs Community</span>
           </span>
           <span className="text-slate-400">•</span>
           <span className="text-slate-600">
@@ -69,31 +69,29 @@ export default function LandingNavbar() {
         </div>
       </div>
 
-      {/* Main Light Theme Sticky Navbar */}
+      {/* Main Minimalist Sticky Navbar */}
       <header
-        className={`sticky top-0 z-40 w-full transition-all duration-200 ${
+        className={`sticky top-0 z-40 w-full transition-all duration-300 ${
           scrolled
-            ? "bg-white/95 backdrop-blur-xl border-b border-slate-200/90 shadow-[0_4px_20px_rgba(0,0,0,0.04)]"
-            : "bg-white/80 backdrop-blur-md border-b border-slate-200/60"
+            ? "bg-white/85 backdrop-blur-xl border-b border-slate-200/60 shadow-[0_4px_24px_rgba(0,0,0,0.02)]"
+            : "bg-white/60 backdrop-blur-md border-b border-slate-100"
         }`}
       >
-        <div className="mx-auto flex h-20 max-w-[1560px] items-center justify-between px-3 sm:px-6 lg:px-8">
+        <div className="mx-auto flex h-20 max-w-[1560px] items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Left Brand Logo */}
           <div className="flex items-center gap-4">
             <Link href="/" className="group flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#2563EB] text-white shadow-[0_4px_14px_rgba(37,99,235,0.3)] transition-transform group-hover:scale-105">
-                <HiOutlineSquares2X2 className="text-2xl text-white font-bold" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white shadow-xs transition-transform group-hover:scale-105">
+                <HiOutlineSquares2X2 className="text-xl text-white font-bold" />
               </div>
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
-                  <span className="text-2xl font-black tracking-tight text-slate-900">
-                    Cluvio
+                  <span className="text-xl font-extrabold tracking-tight text-slate-900">
+                    BroClubs
                   </span>
                 </div>
-                <div className="flex items-center gap-1 text-[11px] font-medium text-slate-500">
-                  <span>Manage Clubs</span>
-                  <span>•</span>
-                  <span>Build Community</span>
+                <div className="flex items-center gap-1 text-[11px] font-medium text-slate-400 tracking-wide">
+                  <span>Campus Club OS</span>
                 </div>
               </div>
             </Link>

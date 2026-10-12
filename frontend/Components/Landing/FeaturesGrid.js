@@ -74,48 +74,48 @@ export default function FeaturesGrid() {
     <section id="features" className="py-16 relative">
       <div className="mx-auto w-full max-w-[1560px] px-2 sm:px-4">
         <div className="mx-auto max-w-3xl text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-semibold text-blue-700 mb-3">
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white px-3.5 py-1 text-xs font-semibold text-slate-800 shadow-[0_1px_4px_rgba(0,0,0,0.02)] mb-3">
+            <span className="h-1.5 w-1.5 rounded-full bg-slate-900" />
             <span>High-Velocity Architecture</span>
           </div>
-          <h2 className="text-3xl font-extrabold text-slate-900 sm:text-4xl lg:text-5xl tracking-tight">
+          <h2 className="text-3xl font-black text-slate-900 sm:text-4xl lg:text-5xl tracking-tight">
             Everything Required to Run
-            <span className="block text-blue-600">World-Class Campus Clubs.</span>
+            <span className="block text-slate-900">World-Class Campus Clubs.</span>
           </h2>
-          <p className="mt-4 text-base sm:text-lg leading-relaxed text-slate-600">
-            Say goodbye to scattered WhatsApp groups, lost Google Forms, and chaotic spreadsheets. Cluvio unifies your entire student club operations.
+          <p className="mt-4 text-base sm:text-lg leading-relaxed text-slate-500 font-normal">
+            Say goodbye to scattered WhatsApp groups, lost Google Forms, and chaotic spreadsheets. BroClubs unifies your entire student club operations.
           </p>
         </div>
 
-        {/* 6 Grid Cards in Clean Light Mode */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+        {/* 6 Grid Cards in Minimalist Light Mode */}
+        <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 text-left">
           {features.map((f) => {
             const Icon = f.icon;
             return (
               <div
                 key={f.title}
-                className="group relative rounded-3xl border border-slate-200/90 bg-white p-7 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:border-blue-300 hover:shadow-xl"
+                className="group relative rounded-2xl border border-slate-200/70 bg-white p-7 shadow-[0_2px_12px_rgba(0,0,0,0.02)] transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_12px_32px_rgba(0,0,0,0.05)]"
               >
                 <div className="flex items-center justify-between">
-                  <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${f.iconBg} text-2xl transition-transform group-hover:scale-105`}>
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-slate-800 text-xl transition-transform group-hover:scale-105">
                     <Icon />
                   </div>
-                  <span className="rounded-full bg-slate-100 border border-slate-200 px-3 py-1 text-[11px] font-bold text-slate-600">
+                  <span className="rounded-full bg-slate-50 border border-slate-200/70 px-2.5 py-0.5 text-[10px] font-semibold text-slate-600">
                     {f.tag}
                   </span>
                 </div>
 
-                <h3 className="mt-6 text-xl font-bold text-slate-900 tracking-tight">
+                <h3 className="mt-5 text-lg font-bold text-slate-900 tracking-tight">
                   {f.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-500 font-normal">
                   {f.description}
                 </p>
 
-                <div className="mt-6 pt-4 border-t border-slate-100">
+                <div className="mt-6 pt-4 border-t border-slate-100/80">
                   <Link
                     href="/register"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 group-hover:text-blue-700 transition-colors"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-900 hover:text-blue-600 transition-colors"
                   >
                     <span>Get started with this feature</span>
                     <HiOutlineArrowRight className="text-xs transition-transform group-hover:translate-x-1" />

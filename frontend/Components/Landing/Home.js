@@ -14,7 +14,7 @@ import Footer from "./Footer.js";
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen bg-[#FAFAFA] text-slate-900 selection:bg-slate-900 selection:text-white">
       {/* Top Navbar with BroCodes Technologies banner & Login/Register buttons */}
       <LandingNavbar />
 
@@ -23,7 +23,7 @@ const Home = () => {
         {/* 1. Hero Showcase Section */}
         <HeroShowcase />
 
-        <div className="w-full max-w-[1560px] mx-auto flex flex-col px-3 sm:px-6 lg:px-8 space-y-12">
+        <div className="w-full max-w-[1440px] mx-auto flex flex-col px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-24">
           {/* 2. Core Features Grid */}
           <FeaturesGrid />
 
@@ -36,7 +36,7 @@ const Home = () => {
           {/* 5. Live Active Clubs Showcase */}
           <ClubsGrid />
 
-          {/* 6. How Cluvio Works (3 Steps) */}
+          {/* 6. How BroClubs Works (3 Steps) */}
           <Steps />
 
           {/* 7. FAQ */}

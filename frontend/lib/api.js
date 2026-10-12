@@ -3,17 +3,22 @@ const API_BASE_URL =
 
 export const getAuthToken = () => {
   if (typeof window === "undefined") return null;
-  return localStorage.getItem("cluvio_token");
+  return (
+    localStorage.getItem("broclubs_token") ||
+    localStorage.getItem("cluvio_token")
+  );
 };
 
 export const setAuthToken = (token) => {
   if (typeof window !== "undefined") {
-    localStorage.setItem("cluvio_token", token);
+    localStorage.setItem("broclubs_token", token);
   }
 };
 
 export const clearAuthToken = () => {
   if (typeof window !== "undefined") {
+    localStorage.removeItem("broclubs_token");
+    localStorage.removeItem("broclubs_user");
     localStorage.removeItem("cluvio_token");
     localStorage.removeItem("cluvio_user");
   }
@@ -21,13 +26,15 @@ export const clearAuthToken = () => {
 
 export const getStoredUser = () => {
   if (typeof window === "undefined") return null;
-  const user = localStorage.getItem("cluvio_user");
+  const user =
+    localStorage.getItem("broclubs_user") ||
+    localStorage.getItem("cluvio_user");
   return user ? JSON.parse(user) : null;
 };
 
 export const setStoredUser = (user) => {
   if (typeof window !== "undefined") {
-    localStorage.setItem("cluvio_user", JSON.stringify(user));
+    localStorage.setItem("broclubs_user", JSON.stringify(user));
   }
 };
 

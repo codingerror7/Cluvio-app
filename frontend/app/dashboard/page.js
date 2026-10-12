@@ -327,7 +327,7 @@ export default function StudentDashboardPage() {
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="text-lg font-bold tracking-tight text-slate-900">
-                  Cluvio
+                  BroClubs
                 </span>
                 <span
                   className={`rounded-md px-2 py-0.5 text-[10px] font-semibold border ${

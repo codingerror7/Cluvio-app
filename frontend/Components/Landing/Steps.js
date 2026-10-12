@@ -41,57 +41,58 @@ const steps = [
 export default function Steps() {
   return (
     <section id="how-it-works" className="py-16 text-left">
-      <div className="mx-auto w-full max-w-[1560px] px-2 sm:px-4">
+      <div className="mx-auto w-full max-w-[1440px] px-2 sm:px-4">
         <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-semibold text-blue-700">
+          <span className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white px-3.5 py-1 text-xs font-semibold text-slate-800 shadow-[0_1px_4px_rgba(0,0,0,0.02)]">
+            <span className="h-1.5 w-1.5 rounded-full bg-slate-900" />
             Simplified Workflow
           </span>
 
-          <h2 className="mt-4 text-3xl font-extrabold text-slate-900 sm:text-4xl lg:text-5xl tracking-tight">
+          <h2 className="mt-4 text-3xl font-black text-slate-900 sm:text-4xl lg:text-5xl tracking-tight">
             From Setup to
-            <span className="block text-blue-600">Thriving Club Community.</span>
+            <span className="block text-slate-900">Thriving Club Community.</span>
           </h2>
 
-          <p className="mt-4 text-base sm:text-lg leading-relaxed text-slate-600">
-            Cluvio simplifies every stage of student club management so your campus leaders can focus on building relationships rather than juggling scattered tools.
+          <p className="mt-4 text-base sm:text-lg leading-relaxed text-slate-500 font-normal">
+            BroClubs simplifies every stage of student club management so your campus leaders can focus on building relationships rather than juggling scattered tools.
           </p>
         </div>
 
         {/* 3 Step Timeline Cards */}
-        <div className="mx-auto mt-14 max-w-5xl space-y-6">
+        <div className="mx-auto mt-14 max-w-4xl space-y-5">
           {steps.map((step) => {
             const Icon = step.icon;
 
             return (
               <div
                 key={step.number}
-                className="flex flex-col sm:flex-row items-start gap-6 rounded-3xl border border-slate-200/90 bg-white p-7 shadow-xs hover:border-blue-300 hover:shadow-lg transition-all"
+                className="flex flex-col sm:flex-row items-start gap-6 rounded-2xl border border-slate-200/70 bg-white p-7 shadow-[0_2px_12px_rgba(0,0,0,0.02)] hover:border-slate-300 hover:shadow-[0_12px_32px_rgba(0,0,0,0.05)] transition-all duration-300"
               >
-                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 text-2xl font-bold">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-800 text-2xl font-bold">
                   <Icon />
                 </div>
 
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-extrabold tracking-wider text-blue-600">
+                    <span className="text-xs font-bold tracking-wider text-slate-400 font-mono">
                       STEP {step.number}
                     </span>
                   </div>
 
-                  <h3 className="mt-1.5 text-xl sm:text-2xl font-bold text-slate-900">
+                  <h3 className="mt-1 text-xl font-bold text-slate-900 tracking-tight">
                     {step.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                  <p className="mt-2 text-sm leading-relaxed text-slate-500 font-normal">
                     {step.description}
                   </p>
 
-                  <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                  <div className="mt-5 grid gap-2.5 sm:grid-cols-3">
                     {step.points.map((point) => (
                       <div
                         key={point}
-                        className="flex items-center gap-2 rounded-xl border border-slate-100 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-700"
+                        className="flex items-center gap-2 rounded-xl border border-slate-100 bg-slate-50/70 px-3 py-2 text-xs font-medium text-slate-700"
                       >
-                        <HiOutlineCheckCircle className="text-sm text-blue-600 shrink-0" />
+                        <HiOutlineCheckCircle className="text-sm text-slate-900 shrink-0" />
                         <span>{point}</span>
                       </div>
                     ))}

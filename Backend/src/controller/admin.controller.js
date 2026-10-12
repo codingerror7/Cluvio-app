@@ -328,7 +328,7 @@ export const deleteStudent = async (req, res) => {
 
     await ActivityLog.create({
       title: "Student Removed",
-      description: `${student.name} profile was removed from Cluvio.`,
+      description: `${student.name} profile was removed from BroClubs.`,
       type: "alert",
     });
 

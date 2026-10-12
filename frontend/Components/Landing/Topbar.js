@@ -40,7 +40,7 @@ const Topbar = () => {
           </span>
         </h1>
         <p className="mt-1 text-sm text-white/50">
-          Welcome to Cluvio. Real-time college club management.
+          Welcome to BroClubs. Real-time college club management.
         </p>
       </div>
 

@@ -42,7 +42,7 @@ const Sidebar = () => {
         </div>
 
         <div>
-          <h1 className="text-xl font-bold tracking-tight text-white">Cluvio</h1>
+          <h1 className="text-xl font-bold tracking-tight text-white">BroClubs</h1>
           <p className="text-xs text-white/45">Club Management</p>
         </div>
       </div>
@@ -86,7 +86,7 @@ const Sidebar = () => {
             className="group flex w-full items-center gap-4 rounded-2xl px-4 py-3.5 text-white/65 hover:bg-white/5 hover:text-white transition-all"
           >
             <HiOutlineInformationCircle className="text-xl text-white/60 group-hover:text-white" />
-            <span className="font-medium">About Cluvio</span>
+            <span className="font-medium">About BroClubs</span>
           </Link>
         </div>
       </nav>

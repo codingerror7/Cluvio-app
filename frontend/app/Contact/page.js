@@ -41,7 +41,7 @@ export default function ContactPage() {
 
   const faqs = [
     {
-      q: "How do I create a Cluvio account?",
+      q: "How do I create a BroClubs account?",
       a: "Click on 'Get Started' or 'Sign In' at the top of the page. You will be prompted to register as either a Student or Club President using your official college enrollment number and campus email.",
     },
     {
@@ -49,7 +49,7 @@ export default function ContactPage() {
       a: "Browse the clubs directory from the homepage or student dashboard. For open clubs, click 'Join' to instantly become a member. For competitive or technical societies, submit the short recruitment application.",
     },
     {
-      q: "Can I register my own club on Cluvio?",
+      q: "Can I register my own club on BroClubs?",
       a: "Yes! If you are a campus group founder or elected club president, sign up as a 'Club President'. Once verified by platform administrators against your college charter, your club dashboard will be activated.",
     },
     {
@@ -62,7 +62,7 @@ export default function ContactPage() {
     },
     {
       q: "How can I report a problem or suggest a new feature?",
-      a: "You can submit the contact form on this page or email support@cluvio.com. Our campus technical development team reviews student suggestions weekly.",
+      a: "You can submit the contact form on this page or email support@broclubs.in. Our campus technical development team reviews student suggestions weekly.",
     },
   ];
 
@@ -88,7 +88,7 @@ export default function ContactPage() {
             </h1>
 
             <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-white/60 sm:text-xl">
-              Have a question, need help with your student organization, or want to bring Cluvio to your campus? We&apos;re here to help.
+              Have a question, need help with your student organization, or want to bring BroClubs to your campus? We&apos;re here to help.
             </p>
           </div>
         </section>
@@ -101,7 +101,7 @@ export default function ContactPage() {
               <div className="lg:col-span-5 space-y-6">
                 <div>
                   <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                    Reach out to the Cluvio team.
+                    Reach out to the BroClubs team.
                   </h2>
                   <p className="mt-2.5 text-sm leading-relaxed text-white/60">
                     Our campus response desk is staffed by student leads and platform administrators.
@@ -124,10 +124,10 @@ export default function ContactPage() {
                           Questions about accounts, login, or general inquiries.
                         </p>
                         <a
-                          href="mailto:support@cluvio.com"
+                          href="mailto:support@broclubs.in"
                           className="mt-2.5 inline-block text-xs font-semibold text-[var(--accent)] hover:underline"
                         >
-                          support@cluvio.com
+                          support@broclubs.in
                         </a>
                       </div>
                     </div>
@@ -147,10 +147,10 @@ export default function ContactPage() {
                           Dedicated help for verified presidents, rosters & event approvals.
                         </p>
                         <a
-                          href="mailto:presidents@cluvio.com"
+                          href="mailto:presidents@broclubs.in"
                           className="mt-2.5 inline-block text-xs font-semibold text-violet-400 hover:underline"
                         >
-                          presidents@cluvio.com
+                          presidents@broclubs.in
                         </a>
                       </div>
                     </div>
@@ -410,7 +410,7 @@ export default function ContactPage() {
                 <HiOutlineArrowRight className="text-xs" />
               </Link>
               <a
-                href="mailto:support@cluvio.com"
+                href="mailto:support@broclubs.in"
                 className="rounded-xl border border-white/10 bg-white/5 px-6 py-3.5 text-sm font-medium text-white transition hover:bg-white/10"
               >
                 Email Support Directly

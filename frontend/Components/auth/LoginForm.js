@@ -113,7 +113,7 @@ export default function LoginForm() {
           <span>Unified Campus Login</span>
         </div>
         <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-          Sign In to Cluvio
+          Sign In to BroClubs
         </h1>
         <p className="mt-0.5 text-xs text-slate-500">
           Select your campus role and enter your credentials.

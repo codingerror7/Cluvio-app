@@ -606,7 +606,7 @@ export default function PresidentDashboardPage() {
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="text-lg font-bold tracking-tight text-slate-900">
-                  Cluvio
+                  BroClubs
                 </span>
                 <span className="rounded-md bg-amber-50 border border-amber-200 px-2 py-0.5 text-[10px] font-semibold text-amber-800">
                   {user?.role === "club head"

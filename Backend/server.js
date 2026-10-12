@@ -42,6 +42,6 @@ app.use((err, req, res, next) => {
 
 // Start Server
 app.listen(PORT, async () => {
-  console.log(`Cluvio Backend server running on port ${PORT}`);
+  console.log(`BroClubs Backend server running on port ${PORT}`);
   await connectDB();
 });

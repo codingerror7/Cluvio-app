@@ -37,7 +37,7 @@ export default function Navbar() {
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="text-xl font-bold tracking-tight text-white">Cluvio</span>
+              <span className="text-xl font-bold tracking-tight text-white">BroClubs</span>
               <span className="rounded-full bg-[var(--accent)]/15 px-2 py-0.5 text-[10px] font-semibold text-[var(--accent)] uppercase tracking-wider">
                 Campus
               </span>
