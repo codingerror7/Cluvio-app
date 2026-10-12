@@ -4,7 +4,7 @@ import ActivityLog from "../models/ActivityLog.js";
 
 const generateToken = (id) => {
   const secret = process.env.JWT_SECRET || "cluvio_jwt_secret_college_demo_key_2026";
-  return jwt.sign({ id }, secret, { expiresIn: "7d" });
+  return jwt.sign({ id }, secret, { expiresIn: "30d" });
 };
 
 export const register = async (req, res) => {
@@ -61,7 +61,7 @@ export const register = async (req, res) => {
       if (!secretKey || secretKey.trim() !== "admin123") {
         return res.status(400).json({
           success: false,
-          message: `Invalid secret key. Secret key 'admin123' is required for ${
+          message: `Invalid secret key. Authorized secret key is required for ${
             role === "club head" ? "Club Head" : "Club Member"
           }.`,
         });
@@ -228,7 +228,7 @@ export const login = async (req, res) => {
       if (!secretKey || secretKey.trim() !== "admin123") {
         return res.status(400).json({
           success: false,
-          message: `Invalid secret key. Secret key 'admin123' is required for ${
+          message: `Invalid secret key. Authorized secret key is required for ${
             targetRole === "club head" ? "Club Head" : "Club Member"
           }.`,
         });

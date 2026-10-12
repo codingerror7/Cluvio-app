@@ -21,7 +21,7 @@ export default function RoleSelector({ role, onChange }) {
     {
       id: "club member",
       title: "Member",
-      badge: "admin123",
+      badge: "Passkey",
       requiresKey: true,
       icon: HiOutlineUserGroup,
       iconColor: "text-emerald-600",
@@ -29,7 +29,7 @@ export default function RoleSelector({ role, onChange }) {
     {
       id: "club head",
       title: "Club Head",
-      badge: "admin123",
+      badge: "Passkey",
       requiresKey: true,
       icon: HiOutlineShieldCheck,
       iconColor: "text-amber-600",

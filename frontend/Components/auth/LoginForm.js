@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -26,9 +26,23 @@ export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [secretKey, setSecretKey] = useState("");
   const [showSecretKey, setShowSecretKey] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const reason = params.get("reason");
+      if (reason === "inactive") {
+        setError(
+          "Your session expired after 30 days of inactivity. Please sign in again."
+        );
+      } else if (reason === "expired") {
+        setError("Your session has expired. Please sign in again.");
+      }
+    }
+  }, []);
 
   const isSpecialRole = role === "club member" || role === "club head";
 
@@ -48,9 +62,9 @@ export default function LoginForm() {
     if (isSpecialRole) {
       if (!secretKey || secretKey.trim() !== "admin123") {
         setError(
-          `Secret key is required for ${
+          `Valid secret passkey is required for ${
             role === "club head" ? "Club Head" : "Club Member"
-          }. Please enter 'admin123'.`
+          }.`
         );
         return;
       }
@@ -252,8 +266,8 @@ export default function LoginForm() {
                 <HiOutlineKey className="text-sm text-amber-700" />
                 <span>Secret Passkey (Required)</span>
               </label>
-              <span className="text-[10px] font-mono text-amber-800 bg-white border border-amber-200 px-1.5 py-0.2 rounded-md font-semibold">
-                admin123
+              <span className="text-[10px] text-amber-800 bg-white border border-amber-200 px-2 py-0.5 rounded-full font-semibold">
+                Authorized Key
               </span>
             </div>
 
@@ -264,7 +278,7 @@ export default function LoginForm() {
               <input
                 id="login-secret-key"
                 type={showSecretKey ? "text" : "password"}
-                placeholder="Enter 'admin123'"
+                placeholder="Enter secret passkey"
                 value={secretKey}
                 onChange={(e) => setSecretKey(e.target.value)}
                 required
@@ -298,7 +312,7 @@ export default function LoginForm() {
               className="h-3.5 w-3.5 rounded border-slate-300 text-slate-900 focus:ring-slate-900 cursor-pointer"
             />
             <span className="text-xs text-slate-600 hover:text-slate-900 transition-colors">
-              Remember me
+              Keep signed in for 30 days
             </span>
           </label>
 

@@ -1,4 +1,5 @@
 import "./globals.css";
+import SessionManager from "@/Components/auth/SessionManager";
 
 export const metadata = {
   title: "BroClubs - Campus Club Platform | A BroCodes Technologies Product",
@@ -9,7 +10,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <SessionManager />
+        {children}
+      </body>
     </html>
   );
 }

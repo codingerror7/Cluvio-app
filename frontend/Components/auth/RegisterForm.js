@@ -93,7 +93,7 @@ export default function RegisterForm() {
     if (isSpecialRole) {
       if (!secretKey || secretKey.trim() !== "admin123") {
         setError(
-          `Secret key 'admin123' is required for ${
+          `Valid secret passkey is required for ${
             role === "club head" ? "Club Head" : "Club Member"
           }.`
         );
@@ -342,8 +342,8 @@ export default function RegisterForm() {
                     Secret Key ({role === "club head" ? "Club Head" : "Club Member"})
                   </span>
                 </label>
-                <span className="text-[10px] font-mono text-amber-800 bg-white border border-amber-200 px-1.5 py-0.2 rounded-md font-semibold">
-                  admin123
+                <span className="text-[10px] text-amber-800 bg-white border border-amber-200 px-2 py-0.5 rounded-full font-semibold">
+                  Authorized Key
                 </span>
               </div>
 
@@ -354,7 +354,7 @@ export default function RegisterForm() {
                 <input
                   id="register-secret-key"
                   type={showSecretKey ? "text" : "password"}
-                  placeholder="Enter 'admin123'"
+                  placeholder="Enter secret passkey"
                   value={secretKey}
                   onChange={(e) => setSecretKey(e.target.value)}
                   required

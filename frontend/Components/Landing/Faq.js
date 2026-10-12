@@ -25,7 +25,7 @@ const faqs = [
     category: "Roles & Access",
     question: "How does the Secret Key authorization work?",
     answer:
-      "To protect leadership accounts, registering as a Club Member or Club Head requires the passkey 'admin123'. Standard student accounts require zero keys.",
+      "To protect leadership accounts, registering as a Club Member or Club Head requires an authorized secret passkey. Standard student accounts require zero keys.",
   },
   {
     category: "Operations",

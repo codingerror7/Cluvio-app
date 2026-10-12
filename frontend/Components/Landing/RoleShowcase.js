@@ -29,20 +29,20 @@ export default function RoleShowcase() {
     {
       title: "Club Member",
       subtitle: "Active Contributor",
-      badge: "Key: admin123",
+      badge: "Key Required",
       keyRequired: true,
       icon: HiOutlineUserGroup,
       description: "Participate in internal committees, societies, and member-only fests.",
       features: [
         "Verified member status badge",
         "Exclusive event RSVP access",
-        "Protected with passcode 'admin123'",
+        "Protected with secret key",
       ],
     },
     {
       title: "Club Head",
       subtitle: "Club President & Executive Leader",
-      badge: "Key: admin123",
+      badge: "Key Required",
       keyRequired: true,
       icon: HiOutlineShieldCheck,
       description: "Full administrative power to approve candidates, publish events, and manage rosters.",
@@ -152,7 +152,7 @@ export default function RoleShowcase() {
                     </div>
                     <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold border bg-emerald-50 border-emerald-200 text-emerald-700">
                       <HiOutlineKey className="text-xs" />
-                      Key: admin123
+                      Key Required
                     </span>
                   </div>
 
@@ -199,7 +199,7 @@ export default function RoleShowcase() {
                           </h3>
                           <span className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold border bg-amber-50 border-amber-200 text-amber-700">
                             <HiOutlineKey className="text-xs" />
-                            admin123
+                            Key Required
                           </span>
                         </div>
                         <p className="text-xs font-semibold text-amber-600">
@@ -226,7 +226,7 @@ export default function RoleShowcase() {
                   {/* Right Actions Box */}
                   <div className="md:col-span-4 flex flex-col justify-center items-stretch md:items-end border-t md:border-t-0 md:border-l border-slate-100 pt-3 md:pt-0 md:pl-5 space-y-2">
                     <p className="text-[11px] font-semibold text-slate-500 text-center md:text-right">
-                      Passcode: <span className="font-mono text-slate-900 font-bold">admin123</span>
+                      Passkey authorization required
                     </p>
                     <Link
                       href="/Login"
