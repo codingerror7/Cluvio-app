@@ -22,9 +22,24 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["student", "club member", "club head", "president", "admin"],
+      enum: ["student", "club member", "club head", "president", "admin", "college-admin", "college admin"],
       default: "student",
       required: true,
+    },
+    collegeName: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    collegeCode: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    designation: {
+      type: String,
+      trim: true,
+      default: "",
     },
     enrollmentNumber: {
       type: String,

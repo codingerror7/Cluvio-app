@@ -8,6 +8,11 @@ const clubSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
+    collegeName: {
+      type: String,
+      trim: true,
+      default: "",
+    },
     description: {
       type: String,
       required: [true, "Description is required"],

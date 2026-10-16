@@ -580,6 +580,18 @@ export default function RegisterForm() {
           Sign In →
         </Link>
       </p>
+
+      <div className="mt-3 text-center border-t border-slate-100 pt-3">
+        <a
+          href="http://localhost:5173"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-indigo-600 hover:text-indigo-800 transition-colors"
+        >
+          <span>🏛️ Looking to register a College? Go to College Admin Console</span>
+          <span className="text-[10px]">↗</span>
+        </a>
+      </div>
     </div>
   );
 }

@@ -32,6 +32,27 @@ const seed = async () => {
       console.log("Admin account already exists.");
     }
 
+    // 1b. Check or create College Admin
+    let collegeAdmin = await User.findOne({ email: "collegeadmin@dtu.ac.in" });
+    if (!collegeAdmin) {
+      collegeAdmin = await User.create({
+        name: "Dr. Rajesh K. Sharma",
+        email: "collegeadmin@dtu.ac.in",
+        password: "Admin@123",
+        role: "college-admin",
+        collegeName: "Delhi Technological University (DTU)",
+        collegeCode: "DTU",
+        designation: "Dean of Student Welfare & Clubs",
+        department: "Student Affairs",
+        year: "Faculty / Administration",
+        avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop&q=80",
+        status: "Active",
+      });
+      console.log("Created initial College Admin account: collegeadmin@dtu.ac.in / Admin@123");
+    } else {
+      console.log("College Admin account already exists.");
+    }
+
   // 2. Check or create Presidents / Club Heads
     const presidentsData = [
       {

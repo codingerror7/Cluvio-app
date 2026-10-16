@@ -23,6 +23,9 @@ export const register = async (req, res) => {
       favouriteGenres,
       department,
       year,
+      collegeName,
+      collegeCode,
+      designation,
     } = req.body;
 
     // Validation
@@ -47,12 +50,28 @@ export const register = async (req, res) => {
       });
     }
 
-    // Role safety: Public registration allows student, club member, club head, or president
-    const validRoles = ["student", "club member", "club head", "president"];
+    // Role safety: Public registration allows student, club member, club head, president, or college-admin
+    const validRoles = [
+      "student",
+      "club member",
+      "club head",
+      "president",
+      "college-admin",
+      "college admin",
+    ];
     if (!validRoles.includes(role)) {
       return res.status(400).json({
         success: false,
-        message: "Invalid role specified. Role must be 'student', 'club member', or 'club head'.",
+        message: "Invalid role specified.",
+      });
+    }
+
+    // Mandatory college name validation for college admin
+    const isCollegeAdmin = role === "college-admin" || role === "college admin";
+    if (isCollegeAdmin && (!collegeName || !collegeName.trim())) {
+      return res.status(400).json({
+        success: false,
+        message: "College Name is strictly required for College Admin registration.",
       });
     }
 
@@ -106,15 +125,20 @@ export const register = async (req, res) => {
       email: email.toLowerCase().trim(),
       password,
       role,
+      collegeName: collegeName ? collegeName.trim() : "",
+      collegeCode: collegeCode ? collegeCode.trim().toUpperCase() : "",
+      designation: designation ? designation.trim() : (isCollegeAdmin ? "College Administrator" : ""),
       enrollmentNumber: enroll || "",
       studentId: enroll || "",
       age: age ? Number(age) : undefined,
       bio: bio ? bio.trim() : "",
       favouriteGenres: Array.isArray(favouriteGenres) ? favouriteGenres : [],
-      department: department || (role === "student" ? "Computer Science" : "General"),
-      year: year || "1st Year",
+      department: department || (isCollegeAdmin ? "Administration" : role === "student" ? "Computer Science" : "General"),
+      year: year || (isCollegeAdmin ? "Faculty / Authority" : "1st Year"),
       avatar:
-        role === "president" || role === "club head"
+        isCollegeAdmin
+          ? "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop&q=80"
+          : role === "president" || role === "club head"
           ? "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
           : role === "club member"
           ? "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80"
@@ -125,15 +149,19 @@ export const register = async (req, res) => {
     try {
       const isLead = role === "president" || role === "club head";
       await ActivityLog.create({
-        title: isLead
+        title: isCollegeAdmin
+          ? "New College Admin Registered"
+          : isLead
           ? "New Club Head Registered"
           : role === "club member"
           ? "New Club Member Registered"
           : "New Student Registered",
-        description: `${user.name} registered as ${
-          isLead ? "Club Head" : role === "club member" ? "Club Member" : "Student"
-        } (${user.department})`,
-        type: isLead ? "president" : "student",
+        description: isCollegeAdmin
+          ? `${user.name} registered as College Administrator (${user.collegeName})`
+          : `${user.name} registered as ${
+              isLead ? "Club Head" : role === "club member" ? "Club Member" : "Student"
+            } (${user.department})`,
+        type: isCollegeAdmin ? "admin" : isLead ? "president" : "student",
         user: user._id,
       });
     } catch (e) {
@@ -152,6 +180,9 @@ export const register = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        collegeName: user.collegeName,
+        collegeCode: user.collegeCode,
+        designation: user.designation,
         enrollmentNumber: user.enrollmentNumber,
         studentId: user.studentId,
         age: user.age,
@@ -213,11 +244,20 @@ export const login = async (req, res) => {
       const isMemberCompatible =
         (role === "club member" || role === "student") &&
         (user.role === "club member" || user.role === "student");
+      const isCollegeAdminCompatible =
+        (role === "college-admin" || role === "college admin") &&
+        (user.role === "college-admin" || user.role === "college admin" || user.role === "admin");
 
-      if (role !== user.role && !isLeadCompatible && !isMemberCompatible && user.role !== "admin") {
+      if (
+        role !== user.role &&
+        !isLeadCompatible &&
+        !isMemberCompatible &&
+        !isCollegeAdminCompatible &&
+        user.role !== "admin"
+      ) {
         return res.status(400).json({
           success: false,
-          message: `This account is registered as '${user.role}'. Please select the '${user.role}' role to sign in.`,
+          message: `This account is registered as '${user.role}'. Please select the appropriate portal to sign in.`,
         });
       }
     }
@@ -247,6 +287,9 @@ export const login = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        collegeName: user.collegeName || "",
+        collegeCode: user.collegeCode || "",
+        designation: user.designation || "",
         enrollmentNumber: user.enrollmentNumber,
         studentId: user.studentId,
         age: user.age,
@@ -277,6 +320,23 @@ export const getMe = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: error.message || "Failed to retrieve user profile.",
+    });
+  }
+};
+
+export const getColleges = async (req, res) => {
+  try {
+    const colleges = await User.distinct("collegeName", {
+      collegeName: { $exists: true, $ne: "" },
+    });
+    return res.status(200).json({
+      success: true,
+      colleges,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Failed to retrieve colleges list.",
     });
   }
 };

@@ -83,6 +83,8 @@ export default function LoginForm() {
       if (response.success && response.user) {
         if (response.user.role === "president" || response.user.role === "club head") {
           router.push("/president/dashboard");
+        } else if (response.user.role === "college-admin" || response.user.role === "college admin") {
+          window.location.href = "http://localhost:5173";
         } else if (response.user.role === "admin") {
           window.location.href = "http://localhost:3001/dashboard";
         } else {
@@ -348,6 +350,18 @@ export default function LoginForm() {
           Create account →
         </Link>
       </p>
+
+      <div className="mt-3 text-center border-t border-slate-100 pt-3">
+        <a
+          href="http://localhost:5173"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-indigo-600 hover:text-indigo-800 transition-colors"
+        >
+          <span>🏛️ College Administrator Portal (Port 5173)</span>
+          <span className="text-[10px]">↗</span>
+        </a>
+      </div>
     </div>
   );
 }
