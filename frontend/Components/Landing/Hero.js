@@ -13,7 +13,6 @@ import {
   HiOutlineQrCode,
   HiOutlineBell,
   HiOutlineBolt,
-  HiOutlineCommandLine,
 } from "react-icons/hi2";
 
 const mockClubs = [
@@ -69,7 +68,6 @@ const mockEvents = [
 ];
 
 export default function Hero() {
-  const [activeTab, setActiveTab] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredClubs = mockClubs.filter(
@@ -83,15 +81,15 @@ export default function Hero() {
       id="home"
       className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 overflow-hidden text-center"
     >
-      {/* Background radial glow & dot grid (Strictly Monochrome) */}
+      {/* Background radial glow & dot grid with subtle violet depth */}
       <div className="absolute inset-0 bg-dot-grid opacity-25 pointer-events-none" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[550px] bg-subtle-glow pointer-events-none" />
-      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-white/[0.04] blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-violet-600/[0.06] blur-[140px] rounded-full pointer-events-none" />
 
       <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col items-center">
-        {/* Eyebrow Pill */}
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 text-xs text-neutral-300 backdrop-blur-md shadow-[0_2px_12px_rgba(0,0,0,0.4)] mb-6 transition-all hover:border-white/20">
-          <span className="flex h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
+        {/* Eyebrow Pill with subtle violet indicator */}
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 text-xs text-neutral-300 backdrop-blur-md shadow-[0_2px_12px_rgba(0,0,0,0.4)] mb-6 transition-all hover:border-violet-500/30">
+          <span className="flex h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse" />
           <span className="font-mono text-[11px] uppercase tracking-wider text-neutral-300">
             A BroCodes Technologies Product
           </span>
@@ -105,7 +103,7 @@ export default function Hero() {
         <h1 className="max-w-4xl text-4xl sm:text-6xl lg:text-[4.25rem] font-black tracking-tight text-white leading-[1.1] sm:leading-[1.08]">
           The Next-Gen OS for
           <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-neutral-200 to-neutral-500">
+          <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-neutral-200 to-neutral-400">
             College Clubs & Campus Life.
           </span>
         </h1>
@@ -121,15 +119,15 @@ export default function Hero() {
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3.5 w-full sm:w-auto">
           <a
             href="#about"
-            className="group flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-white px-7 text-sm font-semibold text-black transition-all hover:bg-neutral-200 active:scale-95 shadow-[0_4px_20px_rgba(255,255,255,0.12)] cursor-pointer"
+            className="group flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-white px-7 text-sm font-semibold text-black transition-all hover:bg-neutral-200 hover:shadow-[0_0_24px_rgba(255,255,255,0.2)] active:scale-95 shadow-[0_4px_20px_rgba(255,255,255,0.12)] cursor-pointer"
           >
             <span>Explore How It Works</span>
             <HiOutlineArrowRight className="text-xs transition-transform group-hover:translate-x-1" />
           </a>
 
           <Link
-            href="/Login"
-            className="flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-7 text-sm font-medium text-white transition-all hover:bg-white/[0.08] hover:border-white/20 active:scale-95 cursor-pointer backdrop-blur-md"
+            href="/Login?role=president"
+            className="flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-7 text-sm font-medium text-white transition-all hover:bg-white/[0.08] hover:border-violet-500/30 active:scale-95 cursor-pointer backdrop-blur-md"
           >
             <HiOutlineShieldCheck className="text-base text-neutral-400" />
             <span>President Portal</span>
@@ -138,12 +136,12 @@ export default function Hero() {
 
         {/* STYLIZED PRODUCT VISUALIZATION (Interactive-feel Glass Dashboard) */}
         <div className="mt-14 sm:mt-20 w-full max-w-5xl relative">
-          {/* Subtle Outer Frame Glow */}
-          <div className="absolute -inset-1 rounded-3xl bg-gradient-to-b from-white/15 via-white/5 to-transparent blur-xl opacity-30 pointer-events-none" />
+          {/* Subtle Outer Frame Violet Glow (Soft, controlled, barely visible depth) */}
+          <div className="absolute -inset-1 rounded-3xl bg-[radial-gradient(ellipse_70%_50%_at_50%_50%,rgba(139,92,246,0.12),transparent_70%)] blur-2xl pointer-events-none" />
 
-          {/* Floating UI Badges (Gen-Z layer depth) */}
+          {/* Floating UI Badges (Layer depth) */}
           {/* Floating Badge 1: Top-Right Verified Pass */}
-          <div className="hidden lg:flex absolute -top-6 -right-6 z-20 items-center gap-3 rounded-2xl border border-white/15 bg-[#0e0e12]/90 p-3 shadow-[0_16px_36px_rgba(0,0,0,0.8)] backdrop-blur-2xl animate-bounce [animation-duration:5s]">
+          <div className="hidden lg:flex absolute -top-6 -right-6 z-20 items-center gap-3 rounded-2xl border border-white/15 bg-[#0e0e12]/90 p-3 shadow-[0_16px_36px_rgba(0,0,0,0.8),0_0_20px_rgba(139,92,246,0.06)] backdrop-blur-2xl animate-bounce [animation-duration:5s]">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-black shadow-xs">
               <HiOutlineQrCode className="text-lg" />
             </div>
@@ -152,7 +150,7 @@ export default function Hero() {
                 <span className="text-xs font-bold text-white">
                   Verified Member Pass
                 </span>
-                <HiOutlineCheckCircle className="text-neutral-400 text-xs" />
+                <HiOutlineCheckCircle className="text-violet-400 text-xs" />
               </div>
               <p className="text-[10px] font-mono text-neutral-400">
                 #BC-2026-904 • Active
@@ -174,8 +172,8 @@ export default function Hero() {
           </div>
 
           {/* Floating Badge 3: Top-Left Leadership Signoff */}
-          <div className="hidden xl:flex absolute -top-5 -left-8 z-20 items-center gap-2.5 rounded-full border border-white/15 bg-[#0e0e12]/90 px-3.5 py-1.5 shadow-[0_16px_36px_rgba(0,0,0,0.8)] backdrop-blur-2xl">
-            <span className="h-2 w-2 rounded-full bg-white animate-pulse" />
+          <div className="hidden xl:flex absolute -top-5 -left-8 z-20 items-center gap-2.5 rounded-full border border-violet-500/20 bg-[#0e0e12]/90 px-3.5 py-1.5 shadow-[0_16px_36px_rgba(0,0,0,0.8)] backdrop-blur-2xl">
+            <span className="h-2 w-2 rounded-full bg-violet-400 animate-pulse" />
             <span className="text-[11px] font-mono font-medium text-neutral-300">
               Passkey Auth: Club Head Verified
             </span>
@@ -196,7 +194,7 @@ export default function Hero() {
               </div>
 
               {/* Miniature Search / Filter Input */}
-              <div className="flex items-center gap-2 rounded-xl border border-white/8 bg-white/[0.03] px-3 py-1.5 text-xs text-neutral-400 w-48 sm:w-72">
+              <div className="flex items-center gap-2 rounded-xl border border-white/8 bg-white/[0.03] px-3 py-1.5 text-xs text-neutral-400 w-48 sm:w-72 transition-colors focus-within:border-violet-500/40 focus-within:bg-white/[0.05]">
                 <HiOutlineMagnifyingGlass className="text-sm shrink-0" />
                 <input
                   type="text"
@@ -212,7 +210,7 @@ export default function Hero() {
 
               {/* Status Indicator */}
               <div className="hidden sm:flex items-center gap-2">
-                <span className="flex h-2 w-2 rounded-full bg-white" />
+                <span className="flex h-2 w-2 rounded-full bg-violet-400" />
                 <span className="text-[11px] font-mono text-neutral-400">
                   Network Online
                 </span>
@@ -242,16 +240,16 @@ export default function Hero() {
                   {filteredClubs.map((club) => (
                     <div
                       key={club.id}
-                      className="group rounded-xl border border-white/6 bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/15 p-3.5 sm:p-4 transition-all duration-200"
+                      className="group rounded-xl border border-white/6 bg-white/[0.02] hover:bg-white/[0.05] hover:border-violet-500/30 p-3.5 sm:p-4 transition-all duration-200"
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex items-start gap-3">
-                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-white font-mono font-bold text-sm">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-white font-mono font-bold text-sm group-hover:border-violet-500/30">
                             {club.name[0]}
                           </div>
                           <div>
                             <div className="flex items-center gap-2 flex-wrap">
-                              <h4 className="text-xs sm:text-sm font-bold text-white group-hover:text-neutral-200">
+                              <h4 className="text-xs sm:text-sm font-bold text-white group-hover:text-neutral-100">
                                 {club.name}
                               </h4>
                               <span className="text-[10px] font-mono text-neutral-400 bg-white/[0.04] px-2 py-0.5 rounded border border-white/5">
@@ -266,8 +264,8 @@ export default function Hero() {
 
                         {/* Status Tag */}
                         <div className="shrink-0 text-right">
-                          <span className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-0.5 text-[10px] font-mono font-medium text-neutral-300">
-                            <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                          <span className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-0.5 text-[10px] font-mono font-medium text-neutral-300 group-hover:border-violet-500/20">
+                            <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
                             {club.status}
                           </span>
                           <p className="text-[10px] text-neutral-500 font-mono mt-1">
@@ -291,7 +289,7 @@ export default function Hero() {
                       Digital passes & live broadcasts
                     </p>
                   </div>
-                  <span className="flex h-2 w-2 rounded-full bg-white animate-pulse" />
+                  <span className="flex h-2 w-2 rounded-full bg-violet-400 animate-pulse" />
                 </div>
 
                 {/* Events Preview Cards */}
@@ -299,7 +297,7 @@ export default function Hero() {
                   {mockEvents.map((event, idx) => (
                     <div
                       key={idx}
-                      className="rounded-xl border border-white/6 bg-white/[0.02] p-3.5 space-y-2"
+                      className="rounded-xl border border-white/6 bg-white/[0.02] hover:border-white/12 p-3.5 space-y-2 transition-all duration-200"
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div className="space-y-0.5">
@@ -310,7 +308,7 @@ export default function Hero() {
                             {event.title}
                           </h4>
                         </div>
-                        <span className="text-[10px] font-mono text-white bg-white/[0.06] border border-white/10 px-2 py-0.5 rounded-full shrink-0">
+                        <span className="text-[10px] font-mono text-neutral-300 bg-white/[0.06] border border-white/10 px-2 py-0.5 rounded-full shrink-0">
                           {event.attendees}
                         </span>
                       </div>

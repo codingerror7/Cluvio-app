@@ -48,7 +48,7 @@ export default function LandingNavbar() {
       <div
         className={`pointer-events-auto w-full max-w-5xl transition-all duration-300 rounded-2xl border ${
           scrolled
-            ? "bg-[#09090b]/85 border-white/12 shadow-[0_12px_36px_rgba(0,0,0,0.7)] backdrop-blur-2xl"
+            ? "bg-[#09090b]/85 border-white/12 shadow-[0_12px_36px_rgba(0,0,0,0.7),0_0_24px_rgba(139,92,246,0.04)] backdrop-blur-2xl"
             : "bg-[#0c0c0e]/65 border-white/8 shadow-[0_8px_24px_rgba(0,0,0,0.4)] backdrop-blur-xl"
         } px-4 sm:px-6 py-3`}
       >
@@ -66,7 +66,7 @@ export default function LandingNavbar() {
                 <span className="text-base sm:text-lg font-bold tracking-tight text-white">
                   BroClubs
                 </span>
-                <span className="hidden sm:inline-block rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[10px] font-mono font-medium text-neutral-400">
+                <span className="hidden sm:inline-block rounded-full border border-violet-500/20 bg-violet-500/[0.06] px-2 py-0.5 text-[10px] font-mono font-medium text-violet-300">
                   Campus OS
                 </span>
               </div>
@@ -74,7 +74,7 @@ export default function LandingNavbar() {
           </Link>
 
           {/* Center: Minimalist Navigation Links */}
-          <nav className="hidden md:flex items-center gap-8 text-xs sm:text-sm font-medium text-neutral-400">
+          <nav className="hidden md:flex items-center gap-7 text-xs sm:text-sm font-medium text-neutral-400">
             <a
               href="#home"
               className="hover:text-white transition-colors duration-150"
@@ -86,6 +86,12 @@ export default function LandingNavbar() {
               className="hover:text-white transition-colors duration-150"
             >
               About
+            </a>
+            <a
+              href="#faq"
+              className="hover:text-white transition-colors duration-150"
+            >
+              FAQ
             </a>
             <a
               href="#feedback"
@@ -110,9 +116,9 @@ export default function LandingNavbar() {
               <div className="flex items-center gap-2">
                 <Link
                   href={getDashboardHref()}
-                  className="flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] hover:bg-white/[0.1] px-4 py-1.5 text-xs font-medium text-white transition-all shadow-xs"
+                  className="flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/[0.08] hover:bg-violet-500/[0.15] px-4 py-1.5 text-xs font-medium text-white transition-all shadow-xs"
                 >
-                  <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse" />
                   <span>
                     {user.name?.split(" ")[0] || "User"} •{" "}
                     <span className="capitalize text-neutral-300">
@@ -141,8 +147,8 @@ export default function LandingNavbar() {
                 </Link>
 
                 <Link
-                  href="/Login"
-                  className="flex items-center gap-1.5 rounded-full bg-white hover:bg-neutral-200 px-4 py-1.5 text-xs font-semibold text-black transition-all cursor-pointer shadow-xs active:scale-95"
+                  href="/Login?role=president"
+                  className="flex items-center gap-1.5 rounded-full bg-white hover:bg-neutral-200 px-4 py-1.5 text-xs font-semibold text-black transition-all cursor-pointer shadow-xs hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] active:scale-95"
                 >
                   <span>President Login</span>
                   <HiOutlineArrowRight className="text-xs" />
@@ -195,6 +201,13 @@ export default function LandingNavbar() {
                 About BroClubs
               </a>
               <a
+                href="#faq"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-1 px-2 rounded-lg hover:bg-white/[0.05] hover:text-white transition-colors"
+              >
+                FAQ
+              </a>
+              <a
                 href="#feedback"
                 onClick={() => setMobileMenuOpen(false)}
                 className="py-1 px-2 rounded-lg hover:bg-white/[0.05] hover:text-white transition-colors"
@@ -244,7 +257,7 @@ export default function LandingNavbar() {
                     Student Login
                   </Link>
                   <Link
-                    href="/Login"
+                    href="/Login?role=president"
                     onClick={() => setMobileMenuOpen(false)}
                     className="flex h-10 items-center justify-center rounded-xl bg-white text-black font-semibold text-xs hover:bg-neutral-200"
                   >

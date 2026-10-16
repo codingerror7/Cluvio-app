@@ -5,6 +5,7 @@ import LandingNavbar from "./LandingNavbar.js";
 import Hero from "./Hero.js";
 import About from "./About.js";
 import LoginCTA from "./LoginCTA.js";
+import Faq from "./Faq.js";
 import Feedback from "./Feedback.js";
 import Footer from "./Footer.js";
 
@@ -25,11 +26,14 @@ export default function Home() {
         {/* 4. CTA + Login Options (Student vs President Glass Panels) */}
         <LoginCTA />
 
-        {/* 5. Feedback Section (Help Us Build Better Campus Communities) */}
+        {/* 5. 5-Question FAQ Section */}
+        <Faq />
+
+        {/* 6. Feedback Section (Help Us Build Better Campus Communities) */}
         <Feedback />
       </main>
 
-      {/* 6. Minimal Professional Footer */}
+      {/* 7. Minimal Professional Footer */}
       <Footer />
     </div>
   );

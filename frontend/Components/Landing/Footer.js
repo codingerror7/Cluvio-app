@@ -74,6 +74,14 @@ export default function Footer() {
                 </li>
                 <li>
                   <a
+                    href="#faq"
+                    className="hover:text-white transition-colors"
+                  >
+                    FAQ
+                  </a>
+                </li>
+                <li>
+                  <a
                     href="#feedback"
                     className="hover:text-white transition-colors"
                   >
@@ -91,7 +99,7 @@ export default function Footer() {
               <ul className="space-y-2 text-neutral-400">
                 <li>
                   <Link
-                    href="/Login"
+                    href="/Login?role=student"
                     className="hover:text-white transition-colors"
                   >
                     Student Login
@@ -99,7 +107,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="/Login"
+                    href="/Login?role=president"
                     className="hover:text-white transition-colors"
                   >
                     President Login

@@ -2,10 +2,8 @@
 
 import React, { useState } from "react";
 import {
-  HiOutlineChatBubbleLeftRight,
   HiOutlinePaperAirplane,
   HiOutlineCheckCircle,
-  HiOutlineSparkles,
 } from "react-icons/hi2";
 
 export default function Feedback() {
@@ -27,7 +25,6 @@ export default function Feedback() {
 
     setStatus("submitting");
 
-    // Persist feedback locally and simulate clean submission
     try {
       const feedbackEntry = {
         name: name.trim(),
@@ -45,7 +42,6 @@ export default function Feedback() {
         localStorage.setItem("broclubs_feedback", JSON.stringify(existing));
       }
 
-      // Brief artificial delay for smooth UX transition
       await new Promise((resolve) => setTimeout(resolve, 600));
 
       setStatus("success");
@@ -70,9 +66,9 @@ export default function Feedback() {
           {/* Header */}
           <div className="text-center space-y-3 mb-12">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 text-xs text-neutral-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-white" />
+              <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
               <span className="font-mono text-[11px] uppercase tracking-wider text-neutral-300">
-                03 / Community Input
+                04 / Community Input
               </span>
             </div>
 
@@ -116,7 +112,7 @@ export default function Feedback() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Error Banner */}
                 {errorMessage && (
-                  <div className="rounded-xl border border-red-500/30 bg-red-950/20 px-4 py-3 text-xs text-red-300">
+                  <div className="rounded-xl border border-rose-500/30 bg-rose-950/20 px-4 py-3 text-xs text-rose-300">
                     {errorMessage}
                   </div>
                 )}
@@ -137,7 +133,7 @@ export default function Feedback() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       required
-                      className="h-12 w-full rounded-2xl border border-white/10 bg-white/[0.03] px-4 text-sm text-white placeholder:text-neutral-500 outline-none transition-all focus:border-white/30 focus:bg-white/[0.06] focus:ring-1 focus:ring-white/20"
+                      className="h-12 w-full rounded-2xl border border-white/10 bg-white/[0.03] px-4 text-sm text-white placeholder:text-neutral-500 outline-none transition-all focus:border-violet-500/50 focus:bg-white/[0.06] focus:ring-1 focus:ring-violet-500/25"
                     />
                   </div>
 
@@ -156,7 +152,7 @@ export default function Feedback() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
-                      className="h-12 w-full rounded-2xl border border-white/10 bg-white/[0.03] px-4 text-sm text-white placeholder:text-neutral-500 outline-none transition-all focus:border-white/30 focus:bg-white/[0.06] focus:ring-1 focus:ring-white/20"
+                      className="h-12 w-full rounded-2xl border border-white/10 bg-white/[0.03] px-4 text-sm text-white placeholder:text-neutral-500 outline-none transition-all focus:border-violet-500/50 focus:bg-white/[0.06] focus:ring-1 focus:ring-violet-500/25"
                     />
                   </div>
                 </div>
@@ -199,7 +195,7 @@ export default function Feedback() {
                     value={feedback}
                     onChange={(e) => setFeedback(e.target.value)}
                     required
-                    className="w-full rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-sm text-white placeholder:text-neutral-500 outline-none transition-all focus:border-white/30 focus:bg-white/[0.06] focus:ring-1 focus:ring-white/20 resize-y"
+                    className="w-full rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-sm text-white placeholder:text-neutral-500 outline-none transition-all focus:border-violet-500/50 focus:bg-white/[0.06] focus:ring-1 focus:ring-violet-500/25 resize-y"
                   />
                 </div>
 
@@ -207,7 +203,7 @@ export default function Feedback() {
                 <button
                   type="submit"
                   disabled={status === "submitting"}
-                  className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-white text-black font-semibold text-xs sm:text-sm transition-all hover:bg-neutral-200 active:scale-98 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_20px_rgba(255,255,255,0.12)]"
+                  className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-white text-black font-semibold text-xs sm:text-sm transition-all hover:bg-neutral-200 hover:shadow-[0_0_24px_rgba(255,255,255,0.2)] active:scale-98 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_20px_rgba(255,255,255,0.12)]"
                 >
                   {status === "submitting" ? (
                     <span className="flex items-center gap-2">

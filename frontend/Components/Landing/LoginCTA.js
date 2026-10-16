@@ -6,10 +6,6 @@ import {
   HiOutlineAcademicCap,
   HiOutlineShieldCheck,
   HiOutlineArrowRight,
-  HiOutlineCheckCircle2,
-  HiOutlineQrCode,
-  HiOutlineKey,
-  HiOutlineUserGroup,
 } from "react-icons/hi2";
 
 export default function LoginCTA() {
@@ -19,7 +15,7 @@ export default function LoginCTA() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 text-xs text-neutral-300">
-            <span className="h-1.5 w-1.5 rounded-full bg-white" />
+            <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
             <span className="font-mono text-[11px] uppercase tracking-wider text-neutral-300">
               02 / Role-Based Portals
             </span>
@@ -39,7 +35,6 @@ export default function LoginCTA() {
         <div className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
           {/* Panel 1: Student / Member */}
           <div className="group relative rounded-3xl border border-white/12 bg-[#0b0b0e]/90 p-8 sm:p-9 backdrop-blur-2xl shadow-[0_16px_40px_rgba(0,0,0,0.6)] flex flex-col justify-between transition-all duration-300 hover:border-white/25 hover:bg-[#101014] hover:-translate-y-1">
-            {/* Inner highlight */}
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-black shadow-xs">
@@ -62,15 +57,15 @@ export default function LoginCTA() {
               {/* Feature Checklist */}
               <div className="pt-2 space-y-2.5 border-t border-white/8 text-xs text-neutral-300">
                 <div className="flex items-center gap-2.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
                   <span>Instant membership applications with real-time status</span>
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
                   <span>Digital QR event passes for campus workshops and hackathons</span>
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
                   <span>Official club announcements and direct recruitment alerts</span>
                 </div>
               </div>
@@ -79,8 +74,8 @@ export default function LoginCTA() {
             {/* Actions */}
             <div className="mt-8 pt-6 border-t border-white/8 space-y-3">
               <Link
-                href="/Login"
-                className="group/btn flex h-12 w-full items-center justify-center gap-2 rounded-full bg-white text-black font-semibold text-xs sm:text-sm transition-all hover:bg-neutral-200 active:scale-95 cursor-pointer shadow-xs"
+                href="/Login?role=student"
+                className="group/btn flex h-12 w-full items-center justify-center gap-2 rounded-full bg-white text-black font-semibold text-xs sm:text-sm transition-all hover:bg-neutral-200 hover:shadow-[0_0_24px_rgba(255,255,255,0.2)] active:scale-95 cursor-pointer shadow-xs"
               >
                 <span>Login as Student</span>
                 <HiOutlineArrowRight className="text-xs transition-transform group-hover/btn:translate-x-1" />
@@ -98,13 +93,13 @@ export default function LoginCTA() {
           </div>
 
           {/* Panel 2: Club President / Leadership */}
-          <div className="group relative rounded-3xl border border-white/12 bg-[#0b0b0e]/90 p-8 sm:p-9 backdrop-blur-2xl shadow-[0_16px_40px_rgba(0,0,0,0.6)] flex flex-col justify-between transition-all duration-300 hover:border-white/25 hover:bg-[#101014] hover:-translate-y-1">
+          <div className="group relative rounded-3xl border border-white/12 bg-[#0b0b0e]/90 p-8 sm:p-9 backdrop-blur-2xl shadow-[0_16px_40px_rgba(0,0,0,0.6)] flex flex-col justify-between transition-all duration-300 hover:border-violet-500/30 hover:bg-[#101014] hover:-translate-y-1">
             <div className="space-y-6">
               <div className="flex items-center justify-between">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/20 bg-white/[0.08] text-white">
-                  <HiOutlineShieldCheck className="text-2xl text-white" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-violet-500/30 bg-violet-500/[0.08] text-violet-300">
+                  <HiOutlineShieldCheck className="text-2xl" />
                 </div>
-                <span className="font-mono text-xs text-neutral-400 uppercase tracking-widest bg-white/[0.04] border border-white/8 px-3 py-1 rounded-full">
+                <span className="font-mono text-xs text-violet-300 uppercase tracking-widest bg-violet-500/[0.06] border border-violet-500/20 px-3 py-1 rounded-full">
                   Executive Console
                 </span>
               </div>
@@ -121,15 +116,15 @@ export default function LoginCTA() {
               {/* Feature Checklist */}
               <div className="pt-2 space-y-2.5 border-t border-white/8 text-xs text-neutral-300">
                 <div className="flex items-center gap-2.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
                   <span>Passkey-protected executive authorization and signoffs</span>
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
                   <span>1-click candidate review, approvals, and roster controls</span>
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
                   <span>Publish official events with attendance tracking</span>
                 </div>
               </div>
@@ -138,8 +133,8 @@ export default function LoginCTA() {
             {/* Actions */}
             <div className="mt-8 pt-6 border-t border-white/8 space-y-3">
               <Link
-                href="/Login"
-                className="group/btn flex h-12 w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.06] text-white font-semibold text-xs sm:text-sm transition-all hover:bg-white/[0.12] hover:border-white/30 active:scale-95 cursor-pointer backdrop-blur-md"
+                href="/Login?role=president"
+                className="group/btn flex h-12 w-full items-center justify-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/[0.06] text-white font-semibold text-xs sm:text-sm transition-all hover:bg-violet-500/[0.12] hover:border-violet-500/50 hover:shadow-[0_0_24px_rgba(139,92,246,0.15)] active:scale-95 cursor-pointer backdrop-blur-md"
               >
                 <span>Login as President</span>
                 <HiOutlineArrowRight className="text-xs transition-transform group-hover/btn:translate-x-1" />

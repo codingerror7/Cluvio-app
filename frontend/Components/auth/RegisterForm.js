@@ -9,18 +9,12 @@ import {
   HiOutlineIdentification,
   HiOutlineArrowRight,
   HiOutlineArrowLeft,
-  HiOutlineSparkles,
-  HiOutlineCalendar,
-  HiOutlineAcademicCap,
   HiOutlineKey,
   HiOutlineLockClosed,
   HiOutlineEye,
   HiOutlineEyeSlash,
   HiCheck,
 } from "react-icons/hi2";
-import FormInput from "./FormInput";
-import PasswordInput from "./PasswordInput";
-import RoleSelector from "./RoleSelector";
 import { api } from "@/lib/api";
 
 const AVAILABLE_GENRES = [
@@ -29,7 +23,6 @@ const AVAILABLE_GENRES = [
   "Robotics",
   "Design",
   "Cultural",
-  "E-Cell",
   "Sports",
   "Social",
 ];
@@ -38,14 +31,16 @@ export default function RegisterForm() {
   const router = useRouter();
   const [step, setStep] = useState(1); // 1: Account & Credentials | 2: Campus Details & Terms
 
-  const [role, setRole] = useState("student"); // 'student' | 'club member' | 'club head'
+  const [role, setRole] = useState("student"); // 'student' | 'club member'
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-  const [secretKey, setSecretKey] = useState("");
-  const [showSecretKey, setShowSecretKey] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [secretKey, setSecretKey] = useState("");
+  const [showSecretKey, setShowSecretKey] = useState(false);
+
   // Step 2 fields
   const [enrollment, setEnrollment] = useState("");
   const [age, setAge] = useState("20");
@@ -58,8 +53,7 @@ export default function RegisterForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const isSpecialRole = role === "club member" || role === "club head";
-  const isHead = role === "club head";
+  const isClubMember = role === "club member";
 
   const toggleGenre = (genre) => {
     if (favouriteGenres.includes(genre)) {
@@ -69,19 +63,10 @@ export default function RegisterForm() {
     }
   };
 
-  const handleRoleChange = (newRole) => {
-    setRole(newRole);
-    setError(null);
-    if (newRole === "student") {
-      setSecretKey("");
-    }
-  };
-
   const handleNextStep = (e) => {
     e.preventDefault();
     setError(null);
 
-    // Validate Step 1
     if (!fullName.trim()) {
       setError("Please enter your full name.");
       return;
@@ -90,13 +75,9 @@ export default function RegisterForm() {
       setError("Please enter a valid campus email address.");
       return;
     }
-    if (isSpecialRole) {
+    if (isClubMember) {
       if (!secretKey || secretKey.trim() !== "admin123") {
-        setError(
-          `Valid secret passkey is required for ${
-            role === "club head" ? "Club Head" : "Club Member"
-          }.`
-        );
+        setError('Valid secret passkey ("admin123") is required for Club Member.');
         return;
       }
     }
@@ -116,7 +97,6 @@ export default function RegisterForm() {
     e.preventDefault();
     setError(null);
 
-    // Validate Step 2
     if (!enrollment.trim()) {
       setError("Please enter your Enrollment / Student ID.");
       return;
@@ -136,22 +116,18 @@ export default function RegisterForm() {
         password,
         confirmPassword,
         role,
-        secretKey: isSpecialRole ? secretKey.trim() : undefined,
+        secretKey: isClubMember ? secretKey.trim() : undefined,
         enrollmentNumber: enrollment.trim(),
         studentId: enrollment.trim(),
         age: Number(age) || 20,
         bio: bio.trim() || "Active campus enthusiast.",
         department,
         year,
-        favouriteGenres: isHead ? [] : favouriteGenres,
+        favouriteGenres,
       });
 
       if (response.success) {
-        if (role === "club head" || role === "president") {
-          router.push("/president/dashboard");
-        } else {
-          router.push("/dashboard");
-        }
+        router.push("/dashboard");
       }
     } catch (err) {
       setError(err.message || "Registration failed. Please check your details.");
@@ -165,8 +141,8 @@ export default function RegisterForm() {
     const rand = Math.floor(100 + Math.random() * 900);
     if (type === "student") {
       setRole("student");
-      setFullName("Kabir Das");
-      setEmail(`kabir.${rand}@campus.edu`);
+      setFullName("Alex Morgan");
+      setEmail(`alex.${rand}@campus.edu`);
       setEnrollment(`STU-2024-${rand}`);
       setPassword("Student@123");
       setConfirmPassword("Student@123");
@@ -176,10 +152,10 @@ export default function RegisterForm() {
       setYear("1st Year");
       setBio("Excited to explore campus clubs!");
       setAgreeTerms(true);
-    } else if (type === "club member") {
+    } else if (type === "member") {
       setRole("club member");
-      setFullName("Neha Varma");
-      setEmail(`neha.${rand}@campus.edu`);
+      setFullName("Rohan Gupta");
+      setEmail(`rohan.${rand}@campus.edu`);
       setEnrollment(`MEM-2024-${rand}`);
       setPassword("Member@123");
       setConfirmPassword("Member@123");
@@ -187,183 +163,205 @@ export default function RegisterForm() {
       setAge("20");
       setDepartment("Data Science & AI");
       setYear("2nd Year");
-      setBio("Active club member coordinating events.");
-      setAgreeTerms(true);
-    } else if (type === "club head") {
-      setRole("club head");
-      setFullName("Aditya Roy");
-      setEmail(`aditya.${rand}@campus.edu`);
-      setEnrollment(`HEAD-2024-${rand}`);
-      setPassword("Head@123");
-      setConfirmPassword("Head@123");
-      setSecretKey("admin123");
-      setAge("21");
-      setDepartment("Computer Science");
-      setYear("3rd Year");
-      setBio("Leading campus technical club society.");
+      setBio("Active club member coordinating hackathons.");
       setAgreeTerms(true);
     }
   };
 
   return (
-    <div className="w-full bg-white rounded-3xl border border-slate-200/80 shadow-[0_4px_24px_rgba(0,0,0,0.03)] p-6 sm:p-7">
+    <div className="w-full rounded-3xl border border-white/10 bg-[#0c0c0f]/85 p-6 sm:p-8 backdrop-blur-2xl shadow-[0_24px_64px_rgba(0,0,0,0.8)] text-left relative">
       {/* Header & Stepper */}
-      <div className="mb-4 text-left">
-        <div className="flex items-center justify-between mb-2">
-          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-800 shadow-[0_1px_4px_rgba(0,0,0,0.02)]">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-            <span>Campus Registration</span>
+      <div className="mb-6 space-y-1.5">
+        <div className="flex items-center justify-between mb-1">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-neutral-300">
+            <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
+            <span className="font-mono text-[10px] uppercase tracking-wider text-neutral-300">
+              Student Registration
+            </span>
           </div>
 
-          {/* Stepper indicator */}
-          <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-500">
-            <span
-              className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${
-                step === 1
-                  ? "bg-slate-900 text-white font-bold"
-                  : "bg-emerald-600 text-white"
-              }`}
-            >
-              {step === 2 ? "✓" : "1"}
+          <div className="flex items-center gap-1.5 text-[11px] font-mono text-neutral-400">
+            <span className="h-4 w-4 rounded-full bg-white text-black flex items-center justify-center font-bold text-[9px]">
+              {step}
             </span>
-            <span>Step {step} of 2</span>
+            <span>of 2</span>
           </div>
         </div>
 
-        <h1 className="text-2xl sm:text-[26px] font-black tracking-tight text-slate-900">
-          {step === 1 ? "Create Account" : "Campus Profile"}
+        <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+          {step === 1 ? "Create Your Account" : "Campus Profile"}
         </h1>
-        <p className="mt-1 text-xs text-slate-500 font-normal">
+
+        <p className="text-xs sm:text-sm text-neutral-400 font-normal leading-relaxed">
           {step === 1
-            ? "Choose role and set your account login credentials."
-            : "Complete your college details and interest areas."}
+            ? "Enter your details to create your student identity."
+            : "Complete your college background and club interests."}
         </p>
 
-        {/* Progress bar */}
-        <div className="mt-2.5 grid grid-cols-2 gap-1.5 h-1">
+        {/* Progress Bar */}
+        <div className="grid grid-cols-2 gap-1.5 h-1 pt-1">
           <div
-            className={`h-full rounded-full transition-all duration-200 ${
-              step >= 1 ? "bg-slate-900" : "bg-slate-100"
+            className={`h-full rounded-full transition-all duration-300 ${
+              step >= 1 ? "bg-white" : "bg-white/10"
             }`}
           />
           <div
-            className={`h-full rounded-full transition-all duration-200 ${
-              step === 2 ? "bg-slate-900" : "bg-slate-100"
+            className={`h-full rounded-full transition-all duration-300 ${
+              step === 2 ? "bg-white" : "bg-white/10"
             }`}
           />
         </div>
       </div>
 
-      {/* 1-Click Demo Presets Bar */}
-      <div className="mb-3.5 flex items-center justify-between rounded-xl border border-slate-200/80 bg-slate-50/70 px-3 py-1.5 text-xs">
-        <span className="text-[11px] font-medium text-slate-500">
-          Demo fill:
-        </span>
+      {/* 1-Click Demo Fill */}
+      <div className="mb-5 flex items-center justify-between rounded-xl border border-white/8 bg-white/[0.02] px-3 py-1.5 text-xs">
+        <span className="text-[11px] font-mono text-neutral-400">Demo fill:</span>
         <div className="flex gap-1.5">
           <button
             type="button"
             onClick={() => handlePresetFill("student")}
-            className="rounded-full border border-slate-200 bg-white px-2.5 py-0.5 text-[10px] font-semibold text-slate-700 hover:border-slate-300 hover:bg-slate-50 cursor-pointer shadow-2xs"
+            className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-0.5 text-[10px] font-mono text-neutral-300 hover:bg-white/[0.08] cursor-pointer"
           >
             🎓 Student
           </button>
           <button
             type="button"
-            onClick={() => handlePresetFill("club member")}
-            className="rounded-full border border-slate-200 bg-white px-2.5 py-0.5 text-[10px] font-semibold text-slate-700 hover:border-slate-300 hover:bg-slate-50 cursor-pointer shadow-2xs"
+            onClick={() => handlePresetFill("member")}
+            className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-0.5 text-[10px] font-mono text-neutral-300 hover:bg-white/[0.08] cursor-pointer"
           >
             👥 Member
-          </button>
-          <button
-            type="button"
-            onClick={() => handlePresetFill("club head")}
-            className="rounded-full border border-slate-200 bg-white px-2.5 py-0.5 text-[10px] font-semibold text-slate-700 hover:border-slate-300 hover:bg-slate-50 cursor-pointer shadow-2xs"
-          >
-            👑 Head
           </button>
         </div>
       </div>
 
-      {/* Error alert */}
+      {/* Error Alert */}
       {error && (
-        <div className="mb-3 rounded-2xl border border-rose-200 bg-rose-50 p-3 text-xs text-rose-700 flex items-center justify-between">
-          <span className="font-medium">{error}</span>
+        <div className="mb-4 rounded-xl border border-rose-500/30 bg-rose-950/25 p-3 text-xs text-rose-300 flex items-start justify-between">
+          <span className="leading-relaxed">{error}</span>
           <button
             type="button"
             onClick={() => setError(null)}
-            className="ml-2 text-rose-500 hover:text-rose-800 font-bold cursor-pointer"
+            className="ml-2 text-rose-400 hover:text-white font-bold cursor-pointer"
           >
             ✕
           </button>
         </div>
       )}
 
-      {/* STEP 1: ROLE & CREDENTIALS */}
+      {/* STEP 1: CREDENTIALS */}
       {step === 1 && (
-        <form onSubmit={handleNextStep} className="space-y-3">
-          {/* Role selector */}
-          <RoleSelector role={role} onChange={handleRoleChange} />
-
-          {/* Full Name & Email in compact grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-            <FormInput
-              label="Full Name"
-              id="register-name"
-              type="text"
-              placeholder="e.g. Kabir Das"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              icon={HiOutlineUser}
-              required
-            />
-
-            <FormInput
-              label="Campus Email"
-              id="register-email"
-              type="email"
-              placeholder="name@campus.edu"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              icon={HiOutlineEnvelope}
-              required
-            />
+        <form onSubmit={handleNextStep} className="space-y-4">
+          {/* Role selector pill */}
+          <div className="space-y-1.5">
+            <label className="block text-xs font-mono uppercase tracking-wider text-neutral-300">
+              Role
+            </label>
+            <div className="grid grid-cols-2 gap-2 p-1 rounded-xl border border-white/10 bg-white/[0.02]">
+              <button
+                type="button"
+                onClick={() => {
+                  setRole("student");
+                  setSecretKey("");
+                }}
+                className={`h-9 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  role === "student"
+                    ? "bg-white text-black font-bold shadow-xs"
+                    : "text-neutral-400 hover:text-white"
+                }`}
+              >
+                Student
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setRole("club member");
+                  setSecretKey("admin123");
+                }}
+                className={`h-9 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  role === "club member"
+                    ? "bg-white text-black font-bold shadow-xs"
+                    : "text-neutral-400 hover:text-white"
+                }`}
+              >
+                Club Member
+              </button>
+            </div>
           </div>
 
-          {/* Secret Key Input if Club Member or Club Head */}
-          {isSpecialRole && (
-            <div className="rounded-2xl border border-amber-200 bg-amber-50/70 p-3 space-y-1.5 transition-all">
+          {/* Full Name */}
+          <div className="space-y-1.5">
+            <label
+              htmlFor="reg-name"
+              className="block text-xs font-mono uppercase tracking-wider text-neutral-300"
+            >
+              Full Name
+            </label>
+            <div className="relative">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-neutral-400">
+                <HiOutlineUser className="text-sm" />
+              </div>
+              <input
+                id="reg-name"
+                type="text"
+                placeholder="e.g. Alex Morgan"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                required
+                className="h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] pl-10 pr-4 text-xs sm:text-sm text-white placeholder:text-neutral-500 outline-none transition-all focus:border-violet-500/50 focus:bg-white/[0.05] focus:ring-1 focus:ring-violet-500/25"
+              />
+            </div>
+          </div>
+
+          {/* Email */}
+          <div className="space-y-1.5">
+            <label
+              htmlFor="reg-email"
+              className="block text-xs font-mono uppercase tracking-wider text-neutral-300"
+            >
+              Campus Email
+            </label>
+            <div className="relative">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-neutral-400">
+                <HiOutlineEnvelope className="text-sm" />
+              </div>
+              <input
+                id="reg-email"
+                type="email"
+                placeholder="alex@campus.edu"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] pl-10 pr-4 text-xs sm:text-sm text-white placeholder:text-neutral-500 outline-none transition-all focus:border-violet-500/50 focus:bg-white/[0.05] focus:ring-1 focus:ring-violet-500/25"
+              />
+            </div>
+          </div>
+
+          {/* Secret Key if Club Member */}
+          {isClubMember && (
+            <div className="rounded-2xl border border-violet-500/30 bg-violet-500/[0.05] p-3 space-y-1.5">
               <div className="flex items-center justify-between">
                 <label
-                  htmlFor="register-secret-key"
-                  className="flex items-center gap-1.5 text-xs font-semibold text-amber-900"
+                  htmlFor="reg-secret"
+                  className="flex items-center gap-1.5 text-xs font-mono font-semibold text-violet-200"
                 >
-                  <HiOutlineKey className="text-sm text-amber-700" />
-                  <span>
-                    Secret Key ({role === "club head" ? "Club Head" : "Club Member"})
-                  </span>
+                  <HiOutlineKey className="text-sm text-violet-300" />
+                  <span>Passkey (admin123)</span>
                 </label>
-                <span className="text-[10px] text-amber-800 bg-white border border-amber-200 px-2 py-0.5 rounded-full font-semibold">
-                  Authorized Key
-                </span>
               </div>
-
               <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                  <HiOutlineLockClosed className="text-sm" />
-                </div>
                 <input
-                  id="register-secret-key"
+                  id="reg-secret"
                   type={showSecretKey ? "text" : "password"}
                   placeholder="Enter secret passkey"
                   value={secretKey}
                   onChange={(e) => setSecretKey(e.target.value)}
                   required
-                  className="h-10 w-full rounded-xl border border-amber-200 bg-white pl-9 pr-9 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-200 transition-all font-mono"
+                  className="h-10 w-full rounded-xl border border-violet-500/40 bg-black/40 pl-3.5 pr-10 text-xs text-white placeholder:text-neutral-500 outline-none font-mono focus:border-violet-400"
                 />
                 <button
                   type="button"
                   onClick={() => setShowSecretKey(!showSecretKey)}
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-700 cursor-pointer"
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-neutral-400 hover:text-white cursor-pointer"
                 >
                   {showSecretKey ? (
                     <HiOutlineEyeSlash className="text-sm" />
@@ -375,78 +373,138 @@ export default function RegisterForm() {
             </div>
           )}
 
-          {/* Password & Confirm Password (2-col grid) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-            <PasswordInput
-              label="Password"
-              id="register-password"
-              placeholder="Min. 6 chars"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+          {/* Password & Confirm Password */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <label
+                htmlFor="reg-password"
+                className="block text-xs font-mono uppercase tracking-wider text-neutral-300"
+              >
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  id="reg-password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Min. 6 chars"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] pl-3.5 pr-9 text-xs sm:text-sm text-white placeholder:text-neutral-500 outline-none transition-all focus:border-violet-500/50 focus:bg-white/[0.05] focus:ring-1 focus:ring-violet-500/25"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 flex items-center pr-2.5 text-neutral-400 hover:text-white cursor-pointer"
+                >
+                  {showPassword ? (
+                    <HiOutlineEyeSlash className="text-sm" />
+                  ) : (
+                    <HiOutlineEye className="text-sm" />
+                  )}
+                </button>
+              </div>
+            </div>
 
-            <PasswordInput
-              label="Confirm Password"
-              id="register-confirm-password"
-              placeholder="Re-enter password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
+            <div className="space-y-1.5">
+              <label
+                htmlFor="reg-confirm-password"
+                className="block text-xs font-mono uppercase tracking-wider text-neutral-300"
+              >
+                Confirm
+              </label>
+              <div className="relative">
+                <input
+                  id="reg-confirm-password"
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="Re-enter password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  className="h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] pl-3.5 pr-9 text-xs sm:text-sm text-white placeholder:text-neutral-500 outline-none transition-all focus:border-violet-500/50 focus:bg-white/[0.05] focus:ring-1 focus:ring-violet-500/25"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute inset-y-0 right-0 flex items-center pr-2.5 text-neutral-400 hover:text-white cursor-pointer"
+                >
+                  {showConfirmPassword ? (
+                    <HiOutlineEyeSlash className="text-sm" />
+                  ) : (
+                    <HiOutlineEye className="text-sm" />
+                  )}
+                </button>
+              </div>
+            </div>
           </div>
 
           {/* Next Button */}
           <button
             type="submit"
-            className="mt-3 flex h-11 w-full items-center justify-center gap-2 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs sm:text-sm transition-all shadow-xs cursor-pointer active:scale-[0.98]"
+            className="mt-2 flex h-11 w-full items-center justify-center gap-2 rounded-full bg-white hover:bg-neutral-200 text-black font-semibold text-xs sm:text-sm transition-all hover:shadow-[0_0_24px_rgba(255,255,255,0.2)] active:scale-98 cursor-pointer shadow-xs"
           >
-            <span>Next: Campus Details</span>
-            <HiOutlineArrowRight className="text-sm" />
+            <span>Continue to Campus Profile</span>
+            <HiOutlineArrowRight className="text-xs" />
           </button>
         </form>
       )}
 
-      {/* STEP 2: CAMPUS PROFILE & FINISH */}
+      {/* STEP 2: PROFILE & FINISH */}
       {step === 2 && (
-        <form onSubmit={handleSubmit} className="space-y-3">
-          {/* Enrollment ID and Age */}
-          <div className="grid grid-cols-2 gap-2.5">
-            <FormInput
-              label="Enrollment ID"
-              id="register-enrollment"
-              type="text"
-              placeholder="e.g. STU-2024-..."
-              value={enrollment}
-              onChange={(e) => setEnrollment(e.target.value)}
-              icon={HiOutlineIdentification}
-              required
-            />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <label
+                htmlFor="reg-enrollment"
+                className="block text-xs font-mono uppercase tracking-wider text-neutral-300"
+              >
+                Enrollment ID
+              </label>
+              <div className="relative">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-neutral-400">
+                  <HiOutlineIdentification className="text-sm" />
+                </div>
+                <input
+                  id="reg-enrollment"
+                  type="text"
+                  placeholder="STU-2024-..."
+                  value={enrollment}
+                  onChange={(e) => setEnrollment(e.target.value)}
+                  required
+                  className="h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] pl-9 pr-3 text-xs sm:text-sm text-white placeholder:text-neutral-500 outline-none transition-all focus:border-violet-500/50 focus:bg-white/[0.05]"
+                />
+              </div>
+            </div>
 
-            <FormInput
-              label="Age"
-              id="register-age"
-              type="number"
-              min="16"
-              max="99"
-              placeholder="20"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-              icon={HiOutlineCalendar}
-              required
-            />
+            <div className="space-y-1.5">
+              <label
+                htmlFor="reg-age"
+                className="block text-xs font-mono uppercase tracking-wider text-neutral-300"
+              >
+                Age
+              </label>
+              <input
+                id="reg-age"
+                type="number"
+                min="16"
+                max="99"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                required
+                className="h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] px-3 text-xs sm:text-sm text-white placeholder:text-neutral-500 outline-none transition-all focus:border-violet-500/50 focus:bg-white/[0.05]"
+              />
+            </div>
           </div>
 
-          {/* Department and Academic Year */}
-          <div className="grid grid-cols-2 gap-2.5 text-xs">
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+          <div className="grid grid-cols-2 gap-3 text-xs">
+            <div className="space-y-1.5">
+              <label className="block text-xs font-mono uppercase tracking-wider text-neutral-300">
                 Department
               </label>
               <select
                 value={department}
                 onChange={(e) => setDepartment(e.target.value)}
-                className="h-10 sm:h-11 w-full rounded-xl border border-slate-200/90 bg-white px-2.5 text-xs text-slate-800 outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 cursor-pointer"
+                className="h-11 w-full rounded-xl border border-white/10 bg-[#121217] px-3 text-xs text-white outline-none cursor-pointer focus:border-violet-500/50"
               >
                 <option value="Computer Science">Computer Science</option>
                 <option value="Electronics & Communication">Electronics & Comm.</option>
@@ -457,14 +515,14 @@ export default function RegisterForm() {
               </select>
             </div>
 
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+            <div className="space-y-1.5">
+              <label className="block text-xs font-mono uppercase tracking-wider text-neutral-300">
                 Academic Year
               </label>
               <select
                 value={year}
                 onChange={(e) => setYear(e.target.value)}
-                className="h-10 sm:h-11 w-full rounded-xl border border-slate-200/90 bg-white px-2.5 text-xs text-slate-800 outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 cursor-pointer"
+                className="h-11 w-full rounded-xl border border-white/10 bg-[#121217] px-3 text-xs text-white outline-none cursor-pointer focus:border-violet-500/50"
               >
                 <option value="1st Year">1st Year</option>
                 <option value="2nd Year">2nd Year</option>
@@ -474,79 +532,74 @@ export default function RegisterForm() {
             </div>
           </div>
 
-          {/* Areas of interest chips */}
-          {!isHead && (
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                Club Interests (Pick 1 or more)
-              </label>
-              <div className="flex flex-wrap gap-1.5">
-                {AVAILABLE_GENRES.map((genre) => {
-                  const selected = favouriteGenres.includes(genre);
-                  return (
-                    <button
-                      key={genre}
-                      type="button"
-                      onClick={() => toggleGenre(genre)}
-                      className={`
-                        flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-medium transition-all cursor-pointer
-                        ${
-                          selected
-                            ? "border-slate-900 bg-slate-900 text-white font-semibold"
-                            : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50"
-                        }
-                      `}
-                    >
-                      {selected && <HiCheck className="text-[10px]" />}
-                      <span>{genre}</span>
-                    </button>
-                  );
-                })}
-              </div>
+          {/* Club Interests */}
+          <div className="space-y-1.5">
+            <label className="block text-xs font-mono uppercase tracking-wider text-neutral-300">
+              Club Interests
+            </label>
+            <div className="flex flex-wrap gap-1.5">
+              {AVAILABLE_GENRES.map((genre) => {
+                const selected = favouriteGenres.includes(genre);
+                return (
+                  <button
+                    key={genre}
+                    type="button"
+                    onClick={() => toggleGenre(genre)}
+                    className={`flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-mono transition-all cursor-pointer ${
+                      selected
+                        ? "border-violet-400 bg-violet-400/15 text-violet-200 font-semibold"
+                        : "border-white/10 bg-white/[0.03] text-neutral-400 hover:text-white hover:bg-white/[0.06]"
+                    }`}
+                  >
+                    {selected && <HiCheck className="text-[10px]" />}
+                    <span>{genre}</span>
+                  </button>
+                );
+              })}
             </div>
-          )}
+          </div>
 
-          {/* Brief Bio */}
-          <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+          {/* Bio */}
+          <div className="space-y-1.5">
+            <label
+              htmlFor="reg-bio"
+              className="block text-xs font-mono uppercase tracking-wider text-neutral-300"
+            >
               Short Bio (Optional)
             </label>
             <input
+              id="reg-bio"
               type="text"
+              placeholder="e.g. Passionate about robotics and competitive coding."
               value={bio}
               onChange={(e) => setBio(e.target.value)}
-              placeholder="Brief tagline about yourself or your goals"
-              className="h-10 w-full rounded-xl border border-slate-200/90 bg-white px-3 text-xs text-slate-800 placeholder:text-slate-400 outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+              className="h-11 w-full rounded-xl border border-white/10 bg-white/[0.03] px-3 text-xs text-white placeholder:text-neutral-500 outline-none transition-all focus:border-violet-500/50"
             />
           </div>
 
-          {/* Terms Checkbox */}
-          <div className="pt-0.5">
-            <label className="flex items-center gap-2 cursor-pointer select-none">
-              <input
-                type="checkbox"
-                checked={agreeTerms}
-                onChange={(e) => setAgreeTerms(e.target.checked)}
-                required
-                className="h-3.5 w-3.5 rounded border-slate-300 text-slate-900 focus:ring-slate-900 cursor-pointer"
-              />
-              <span className="text-[11px] text-slate-600">
-                I agree to the BroClubs{" "}
-                <span className="text-slate-900 font-medium underline">Terms of Service</span>{" "}
-                & Guidelines.
-              </span>
-            </label>
-          </div>
+          {/* Terms checkbox */}
+          <label className="flex items-center gap-2 cursor-pointer select-none text-xs">
+            <input
+              type="checkbox"
+              checked={agreeTerms}
+              onChange={(e) => setAgreeTerms(e.target.checked)}
+              required
+              className="h-3.5 w-3.5 rounded border-white/20 bg-white/5 text-black focus:ring-0 cursor-pointer"
+            />
+            <span className="text-neutral-400 text-[11px]">
+              I agree to the BroClubs Terms of Service & Campus Guidelines.
+            </span>
+          </label>
 
-          {/* Back & Submit Button Group */}
-          <div className="grid grid-cols-3 gap-2 pt-1">
+          {/* Back & Submit */}
+          <div className="grid grid-cols-3 gap-2 pt-2">
             <button
               type="button"
               onClick={() => {
                 setError(null);
                 setStep(1);
               }}
-              className="col-span-1 flex h-11 items-center justify-center gap-1 rounded-full border border-slate-200 bg-white text-slate-700 font-semibold text-xs hover:bg-slate-50 cursor-pointer shadow-2xs"
+              className="col-span-1 flex h-11 items-center justify-center gap-1 rounded-full border border-white/10 bg-white/[0.04] text-neutral-300 font-semibold text-xs hover:bg-white/[0.08] cursor-pointer"
             >
               <HiOutlineArrowLeft className="text-xs" />
               <span>Back</span>
@@ -555,14 +608,17 @@ export default function RegisterForm() {
             <button
               type="submit"
               disabled={loading}
-              className="col-span-2 flex h-11 items-center justify-center gap-2 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs sm:text-sm transition-all shadow-xs cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed active:scale-[0.98]"
+              className="col-span-2 flex h-11 items-center justify-center gap-2 rounded-full bg-white hover:bg-neutral-200 text-black font-semibold text-xs sm:text-sm transition-all hover:shadow-[0_0_24px_rgba(255,255,255,0.2)] active:scale-98 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shadow-xs"
             >
               {loading ? (
-                <span>Registering...</span>
+                <span className="flex items-center gap-2">
+                  <span className="h-4 w-4 rounded-full border-2 border-black border-t-transparent animate-spin" />
+                  Creating Account...
+                </span>
               ) : (
                 <>
                   <span>Create Account</span>
-                  <HiOutlineArrowRight className="text-sm" />
+                  <HiOutlineArrowRight className="text-xs" />
                 </>
               )}
             </button>
@@ -570,27 +626,15 @@ export default function RegisterForm() {
         </form>
       )}
 
-      {/* Footer */}
-      <p className="mt-4 text-center text-xs text-slate-500">
+      {/* Footer Navigation */}
+      <div className="mt-6 pt-5 border-t border-white/8 text-center text-xs text-neutral-400">
         Already have an account?{" "}
         <Link
           href="/Login"
-          className="font-semibold text-slate-900 hover:text-blue-600 underline decoration-slate-300 ml-1 transition-colors"
+          className="text-white font-semibold underline hover:text-neutral-200 transition-colors"
         >
           Sign In →
         </Link>
-      </p>
-
-      <div className="mt-3 text-center border-t border-slate-100 pt-3">
-        <a
-          href="http://localhost:5173"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-indigo-600 hover:text-indigo-800 transition-colors"
-        >
-          <span>🏛️ Looking to register a College? Go to College Admin Console</span>
-          <span className="text-[10px]">↗</span>
-        </a>
       </div>
     </div>
   );
