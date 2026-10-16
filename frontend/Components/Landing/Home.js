@@ -2,55 +2,35 @@
 
 import React from "react";
 import LandingNavbar from "./LandingNavbar.js";
-import HeroShowcase from "./HeroShowcase.js";
-import FeaturesGrid from "./FeaturesGrid.js";
-import BroCodesSpotlight from "./BroCodesSpotlight.js";
-import RoleShowcase from "./RoleShowcase.js";
-import ClubsGrid from "./Hero.js";
-import Steps from "./Steps.js";
-import Faq from "./Faq.js";
-import CtaBanner from "./CtaBanner.js";
+import Hero from "./Hero.js";
+import About from "./About.js";
+import LoginCTA from "./LoginCTA.js";
+import Feedback from "./Feedback.js";
 import Footer from "./Footer.js";
 
-const Home = () => {
+export default function Home() {
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-slate-900 selection:bg-slate-900 selection:text-white">
-      {/* Top Navbar with BroCodes Technologies banner & Login/Register buttons */}
+    <div className="min-h-screen bg-[#070709] text-neutral-100 selection:bg-white selection:text-black relative overflow-x-hidden font-sans">
+      {/* 1. Floating Glassmorphic Navbar */}
       <LandingNavbar />
 
-      {/* Main Landing Page Content */}
+      {/* Main Content Area */}
       <main className="relative flex flex-col w-full">
-        {/* 1. Hero Showcase Section */}
-        <HeroShowcase />
+        {/* 2. High-Impact Hero with Stylized Product Visualization */}
+        <Hero />
 
-        <div className="w-full max-w-[1440px] mx-auto flex flex-col px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-8">
-          {/* 2. Core Features Grid */}
-          <FeaturesGrid />
+        {/* 3. About / How BroClubs Works (3 connected conceptual steps) */}
+        <About />
 
-          {/* 3. BroCodes Technologies Dedicated Spotlight */}
-          <BroCodesSpotlight />
+        {/* 4. CTA + Login Options (Student vs President Glass Panels) */}
+        <LoginCTA />
 
-          {/* 4. 3-Role Architecture & Access Tiers */}
-          <RoleShowcase />
-
-          {/* 5. Live Active Clubs Showcase */}
-          <ClubsGrid />
-
-          {/* 6. How BroClubs Works (3 Steps) */}
-          <Steps />
-
-          {/* 7. FAQ */}
-          <Faq />
-
-          {/* 8. Conversion CTA Banner with Login & Register */}
-          <CtaBanner />
-
-          {/* 9. Full Footer with BroCodes Technologies details */}
-          <Footer />
-        </div>
+        {/* 5. Feedback Section (Help Us Build Better Campus Communities) */}
+        <Feedback />
       </main>
+
+      {/* 6. Minimal Professional Footer */}
+      <Footer />
     </div>
   );
-};
-
-export default Home;
+}

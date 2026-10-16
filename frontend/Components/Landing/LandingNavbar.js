@@ -5,11 +5,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   HiOutlineSquares2X2,
-  HiOutlineArrowTopRightOnSquare,
   HiOutlineArrowRight,
   HiOutlineBars3,
   HiXMark,
   HiOutlineArrowLeftOnRectangle,
+  HiOutlineArrowTopRightOnSquare,
 } from "react-icons/hi2";
 import { getStoredUser, clearAuthToken } from "@/lib/api";
 
@@ -23,9 +23,9 @@ export default function LandingNavbar() {
     setUser(getStoredUser());
 
     const handleScroll = () => {
-      setScrolled(window.scrollY > 15);
+      setScrolled(window.scrollY > 20);
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -44,165 +44,133 @@ export default function LandingNavbar() {
   };
 
   return (
-    <>
-      {/* Top Banner Capsule (Black background with Blue highlights) */}
-      <div className="bg-black border-b border-slate-900 py-2.5 px-3 sm:px-6 text-center text-xs font-medium text-slate-300">
-        <div className="mx-auto flex max-w-[1560px] items-center justify-center gap-2 flex-wrap">
-          <span className="flex items-center gap-1.5 text-blue-400 font-bold">
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse" />
-            <span>Join the BroClubs Community</span>
-          </span>
-          <span className="text-slate-600">•</span>
-          <span className="text-slate-300">
-            Discover, join & lead vibrant campus clubs
-          </span>
-          <span className="text-slate-600">•</span>
-          <a
-            href="https://brocodestech.in"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-semibold text-blue-400 hover:text-blue-300 transition-colors inline-flex items-center gap-1"
-          >
-            A BroCodes Technologies Product
-            <HiOutlineArrowTopRightOnSquare className="text-xs" />
-          </a>
-        </div>
-      </div>
-
-      {/* Main Minimalist Sticky Navbar */}
-      <header
-        className={`sticky top-0 z-40 w-full transition-all duration-300 ${
+    <header className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4 sm:px-6 pointer-events-none">
+      <div
+        className={`pointer-events-auto w-full max-w-5xl transition-all duration-300 rounded-2xl border ${
           scrolled
-            ? "bg-white/85 backdrop-blur-xl border-b border-slate-200/60 shadow-[0_4px_24px_rgba(0,0,0,0.02)]"
-            : "bg-white/60 backdrop-blur-md border-b border-slate-100"
-        }`}
+            ? "bg-[#09090b]/85 border-white/12 shadow-[0_12px_36px_rgba(0,0,0,0.7)] backdrop-blur-2xl"
+            : "bg-[#0c0c0e]/65 border-white/8 shadow-[0_8px_24px_rgba(0,0,0,0.4)] backdrop-blur-xl"
+        } px-4 sm:px-6 py-3`}
       >
-        <div className="mx-auto flex h-20 max-w-[1560px] items-center justify-between px-4 sm:px-6 lg:px-8">
-          {/* Left Brand Logo */}
-          <div className="flex items-center gap-4">
-            <Link href="/" className="group flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white shadow-xs transition-transform group-hover:scale-105">
-                <HiOutlineSquares2X2 className="text-xl text-white font-bold" />
+        <div className="flex items-center justify-between gap-4">
+          {/* Left: Brand Logo & Wordmark */}
+          <Link
+            href="/"
+            className="group flex items-center gap-2.5 transition-transform hover:opacity-90"
+          >
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-black shadow-xs transition-transform group-hover:scale-105">
+              <HiOutlineSquares2X2 className="text-lg font-bold" />
+            </div>
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                <span className="text-base sm:text-lg font-bold tracking-tight text-white">
+                  BroClubs
+                </span>
+                <span className="hidden sm:inline-block rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[10px] font-mono font-medium text-neutral-400">
+                  Campus OS
+                </span>
               </div>
-              <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <span className="text-xl font-extrabold tracking-tight text-slate-900">
-                    BroClubs
-                  </span>
-                </div>
-                <div className="flex items-center gap-1 text-[11px] font-medium text-slate-400 tracking-wide">
-                  <span>Campus Club OS</span>
-                </div>
-              </div>
-            </Link>
-          </div>
+            </div>
+          </Link>
 
-          {/* Center Navigation Links (Matching Screenshot) */}
-          <nav className="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-600">
+          {/* Center: Minimalist Navigation Links */}
+          <nav className="hidden md:flex items-center gap-8 text-xs sm:text-sm font-medium text-neutral-400">
             <a
               href="#home"
-              className="relative text-blue-600 transition-colors py-1"
+              className="hover:text-white transition-colors duration-150"
             >
               Home
-              <span className="absolute bottom-[-10px] left-0 right-0 h-0.5 rounded-full bg-blue-600" />
             </a>
             <a
-              href="#features"
-              className="hover:text-blue-600 transition-colors"
+              href="#about"
+              className="hover:text-white transition-colors duration-150"
             >
-              Features
+              About
             </a>
             <a
-              href="#roles"
-              className="hover:text-blue-600 transition-colors"
+              href="#feedback"
+              className="hover:text-white transition-colors duration-150"
             >
-              Roles & Access
-            </a>
-            <a
-              href="#clubs"
-              className="hover:text-blue-600 transition-colors"
-            >
-              Active Clubs
+              Feedback
             </a>
             <a
               href="https://brocodestech.in"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 hover:text-blue-600 transition-colors"
+              className="flex items-center gap-1 text-neutral-400 hover:text-white transition-colors duration-150"
             >
               <span>BroCodes Tech</span>
-              <HiOutlineArrowTopRightOnSquare className="text-xs text-blue-500" />
-            </a>
-            <a
-              href="#faq"
-              className="hover:text-blue-600 transition-colors"
-            >
-              FAQ
+              <HiOutlineArrowTopRightOnSquare className="text-[11px] opacity-70" />
             </a>
           </nav>
 
-          {/* Right Action Buttons: Sign In + Get Started */}
-          <div className="hidden sm:flex items-center gap-3">
+          {/* Right: Auth Buttons */}
+          <div className="hidden sm:flex items-center gap-2.5">
             {user ? (
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <Link
                   href={getDashboardHref()}
-                  className="flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-xs font-semibold text-blue-700 hover:bg-blue-100 transition-all shadow-xs"
+                  className="flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] hover:bg-white/[0.1] px-4 py-1.5 text-xs font-medium text-white transition-all shadow-xs"
                 >
-                  <span className="h-2 w-2 rounded-full bg-blue-600 animate-pulse" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
                   <span>
                     {user.name?.split(" ")[0] || "User"} •{" "}
-                    <span className="capitalize">{user.role}</span> Portal
+                    <span className="capitalize text-neutral-300">
+                      {user.role}
+                    </span>
                   </span>
-                  <HiOutlineArrowRight className="text-xs" />
+                  <HiOutlineArrowRight className="text-xs text-neutral-400" />
                 </Link>
 
                 <button
                   type="button"
                   onClick={handleLogout}
                   title="Sign Out"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 hover:bg-rose-50 hover:border-rose-200 hover:text-rose-600 transition-colors cursor-pointer"
+                  className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-neutral-400 hover:text-white hover:border-white/20 hover:bg-white/[0.08] transition-colors cursor-pointer"
                 >
-                  <HiOutlineArrowLeftOnRectangle className="text-base" />
+                  <HiOutlineArrowLeftOnRectangle className="text-sm" />
                 </button>
               </div>
             ) : (
               <>
                 <Link
                   href="/Login"
-                  className="rounded-full border border-slate-200/90 bg-white px-5 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all cursor-pointer shadow-xs"
+                  className="rounded-full border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/20 px-3.5 py-1.5 text-xs font-medium text-neutral-300 hover:text-white transition-all cursor-pointer"
                 >
-                  Sign In
+                  Student Login
                 </Link>
 
                 <Link
-                  href="/register"
-                  className="group flex items-center gap-1.5 rounded-full bg-[#2563EB] px-5.5 py-2.5 text-xs font-bold text-white shadow-[0_4px_14px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] active:scale-[0.98] transition-all cursor-pointer"
+                  href="/Login"
+                  className="flex items-center gap-1.5 rounded-full bg-white hover:bg-neutral-200 px-4 py-1.5 text-xs font-semibold text-black transition-all cursor-pointer shadow-xs active:scale-95"
                 >
-                  <span>Get Started</span>
-                  <HiOutlineArrowRight className="text-xs transition-transform group-hover:translate-x-0.5" />
+                  <span>President Login</span>
+                  <HiOutlineArrowRight className="text-xs" />
                 </Link>
               </>
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="flex sm:hidden items-center gap-2">
-            <Link
-              href="/Login"
-              className="rounded-full bg-slate-100 border border-slate-200 px-3.5 py-1.5 text-xs font-semibold text-slate-700"
-            >
-              Sign In
-            </Link>
+          {/* Mobile Menu Trigger */}
+          <div className="flex md:hidden items-center gap-2">
+            {!user && (
+              <Link
+                href="/Login"
+                className="rounded-full bg-white/[0.06] border border-white/10 px-3 py-1 text-xs font-medium text-neutral-200"
+              >
+                Login
+              </Link>
+            )}
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700"
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-neutral-300 hover:text-white cursor-pointer"
+              aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? (
-                <HiXMark className="text-2xl" />
+                <HiXMark className="text-xl" />
               ) : (
-                <HiOutlineBars3 className="text-2xl" />
+                <HiOutlineBars3 className="text-xl" />
               )}
             </button>
           </div>
@@ -210,73 +178,84 @@ export default function LandingNavbar() {
 
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
-          <div className="sm:hidden border-t border-slate-200 bg-white px-6 py-6 space-y-4 shadow-lg">
-            <nav className="flex flex-col space-y-3 text-sm font-semibold text-slate-700">
+          <div className="md:hidden mt-3 pt-3 border-t border-white/10 flex flex-col space-y-3 pb-2 animate-in fade-in duration-200">
+            <nav className="flex flex-col space-y-2 text-sm font-medium text-neutral-300">
               <a
                 href="#home"
                 onClick={() => setMobileMenuOpen(false)}
-                className="py-1 text-blue-600"
+                className="py-1 px-2 rounded-lg hover:bg-white/[0.05] hover:text-white transition-colors"
               >
                 Home
               </a>
               <a
-                href="#features"
+                href="#about"
                 onClick={() => setMobileMenuOpen(false)}
-                className="py-1 hover:text-blue-600"
+                className="py-1 px-2 rounded-lg hover:bg-white/[0.05] hover:text-white transition-colors"
               >
-                Features
+                About BroClubs
               </a>
               <a
-                href="#roles"
+                href="#feedback"
                 onClick={() => setMobileMenuOpen(false)}
-                className="py-1 hover:text-blue-600"
+                className="py-1 px-2 rounded-lg hover:bg-white/[0.05] hover:text-white transition-colors"
               >
-                Roles & Access
-              </a>
-              <a
-                href="#clubs"
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-1 hover:text-blue-600"
-              >
-                Active Clubs
+                Feedback
               </a>
               <a
                 href="https://brocodestech.in"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="py-1 text-blue-600 flex items-center justify-between"
+                className="py-1 px-2 rounded-lg hover:bg-white/[0.05] hover:text-white transition-colors flex items-center justify-between"
               >
-                <span>BroCodes Technologies (brocodestech.in)</span>
-                <HiOutlineArrowTopRightOnSquare className="text-sm" />
-              </a>
-              <a
-                href="#faq"
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-1 hover:text-blue-600"
-              >
-                FAQ
+                <span>Built by BroCodes Technologies</span>
+                <HiOutlineArrowTopRightOnSquare className="text-xs" />
               </a>
             </nav>
 
-            <div className="pt-4 border-t border-slate-100 flex flex-col gap-2">
-              <Link
-                href="/Login"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex h-11 w-full items-center justify-center rounded-full border border-slate-200 bg-white font-semibold text-slate-800 text-xs shadow-xs"
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/register"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex h-11 w-full items-center justify-center rounded-full bg-[#2563EB] font-bold text-white text-xs shadow-sm"
-              >
-                Get Started Free →
-              </Link>
+            <div className="pt-2 border-t border-white/10 flex flex-col gap-2">
+              {user ? (
+                <div className="flex flex-col gap-2">
+                  <Link
+                    href={getDashboardHref()}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-white text-black font-semibold text-xs"
+                  >
+                    <span>Go to {user.role} Dashboard</span>
+                    <HiOutlineArrowRight className="text-xs" />
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      handleLogout();
+                    }}
+                    className="flex h-9 w-full items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-neutral-300 text-xs"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-2">
+                  <Link
+                    href="/Login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex h-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-neutral-200 font-medium text-xs hover:bg-white/[0.08]"
+                  >
+                    Student Login
+                  </Link>
+                  <Link
+                    href="/Login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex h-10 items-center justify-center rounded-xl bg-white text-black font-semibold text-xs hover:bg-neutral-200"
+                  >
+                    President Login
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         )}
-      </header>
-    </>
+      </div>
+    </header>
   );
 }
