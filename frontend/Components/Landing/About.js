@@ -9,6 +9,7 @@ import {
   HiOutlineArrowRight,
   HiOutlineCheck,
 } from "react-icons/hi2";
+import SpotlightCard from "@/Components/ui/SpotlightCard";
 
 const steps = [
   {
@@ -47,8 +48,8 @@ export default function About() {
         {/* Header Block */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/8 pb-8">
           <div className="max-w-2xl space-y-3">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 text-xs text-neutral-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-white" />
+            <div className="eyebrow-pill inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 text-xs text-neutral-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
               <span className="font-mono text-[11px] uppercase tracking-wider text-neutral-300">
                 01 / Platform Architecture
               </span>
@@ -68,33 +69,33 @@ export default function About() {
 
           <Link
             href="/register"
-            className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-5 py-2.5 text-xs font-semibold text-white hover:bg-white/[0.08] hover:border-white/20 transition-all self-start md:self-end"
+            className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-5 py-2.5 text-xs font-semibold text-white hover:bg-white/[0.08] hover:border-violet-500/30 transition-all self-start md:self-end"
           >
             <span>Join Campus Network</span>
             <HiOutlineArrowRight className="text-xs" />
           </Link>
         </div>
 
-        {/* 3 Connected Step Cards with subtle horizontal line */}
+        {/* 3 Connected Step Cards with Skipper UI SpotlightCard */}
         <div className="relative mt-12">
           {/* Subtle connecting line across cards on desktop */}
           <div className="hidden lg:block absolute top-1/2 left-10 right-10 h-[1px] bg-gradient-to-r from-transparent via-white/15 to-transparent pointer-events-none -translate-y-12 z-0" />
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {steps.map((item, idx) => {
+            {steps.map((item) => {
               const Icon = item.icon;
               return (
-                <div
+                <SpotlightCard
                   key={item.step}
-                  className="group relative rounded-2xl sm:rounded-3xl border border-white/10 bg-[#0c0c0f]/80 p-6 sm:p-7 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5)] transition-all duration-300 hover:border-white/20 hover:bg-[#111116]/90 hover:-translate-y-1 flex flex-col justify-between"
+                  className="p-6 sm:p-7 flex flex-col justify-between shadow-[0_8px_32px_rgba(0,0,0,0.5)] hover:-translate-y-1 transition-transform duration-300"
                 >
                   <div>
                     {/* Top Step Number & Icon */}
                     <div className="flex items-center justify-between">
-                      <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/12 bg-white/[0.05] text-white transition-transform group-hover:scale-105">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/12 bg-white/[0.05] text-white transition-transform group-hover:scale-105 group-hover:border-violet-500/30">
                         <Icon className="text-xl" />
                       </div>
-                      <span className="font-mono text-xs font-bold tracking-wider text-neutral-400 bg-white/[0.04] border border-white/8 px-3 py-1 rounded-full">
+                      <span className="badge-pill font-mono text-xs font-bold tracking-wider text-neutral-400 bg-white/[0.04] border border-white/8 px-3 py-1 rounded-full">
                         STEP {item.step}
                       </span>
                     </div>
@@ -129,7 +130,7 @@ export default function About() {
                       </div>
                     ))}
                   </div>
-                </div>
+                </SpotlightCard>
               );
             })}
           </div>

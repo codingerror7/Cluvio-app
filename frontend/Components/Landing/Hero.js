@@ -4,8 +4,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import {
   HiOutlineArrowRight,
-  HiOutlineSparkles,
-  HiOutlineUserGroup,
   HiOutlineCalendarDays,
   HiOutlineShieldCheck,
   HiOutlineMagnifyingGlass,
@@ -14,6 +12,9 @@ import {
   HiOutlineBell,
   HiOutlineBolt,
 } from "react-icons/hi2";
+import BackgroundBeam from "@/Components/ui/BackgroundBeam";
+import SpotlightCard from "@/Components/ui/SpotlightCard";
+import RollingText from "@/Components/ui/RollingText";
 
 const mockClubs = [
   {
@@ -22,7 +23,6 @@ const mockClubs = [
     category: "Hardware & AI",
     members: 94,
     status: "Recruiting",
-    statusVariant: "open",
     badge: "Charter Approved",
     tagline: "Autonomous systems, ROS2, and competitive robotics.",
   },
@@ -32,7 +32,6 @@ const mockClubs = [
     category: "Software & Web3",
     members: 142,
     status: "Active Sprint",
-    statusVariant: "active",
     badge: "Official Chapter",
     tagline: "Full-stack development, open source, and hackathons.",
   },
@@ -42,7 +41,6 @@ const mockClubs = [
     category: "Product & UI/UX",
     members: 68,
     status: "Portfolio Review",
-    statusVariant: "open",
     badge: "Creative Guild",
     tagline: "Design systems, 3D modeling, and branding sprints.",
   },
@@ -54,7 +52,6 @@ const mockEvents = [
     club: "CodeLabs Dev Guild",
     date: "Oct 28 • 09:00 AM",
     venue: "Main Engineering Arena",
-    passStatus: "Verified QR Pass",
     attendees: "320 RSVP",
   },
   {
@@ -62,7 +59,6 @@ const mockEvents = [
     club: "Hyperion AI & Robotics",
     date: "Nov 04 • 04:30 PM",
     venue: "North Campus Quad",
-    passStatus: "Open Entry",
     attendees: "180 RSVP",
   },
 ];
@@ -81,14 +77,14 @@ export default function Hero() {
       id="home"
       className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 overflow-hidden text-center"
     >
-      {/* Background radial glow & dot grid with subtle violet depth */}
+      {/* Background radial glow & dot grid with Skipper BackgroundBeam */}
       <div className="absolute inset-0 bg-dot-grid opacity-25 pointer-events-none" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[550px] bg-subtle-glow pointer-events-none" />
-      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-violet-600/[0.06] blur-[140px] rounded-full pointer-events-none" />
+      <BackgroundBeam />
 
       <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col items-center">
         {/* Eyebrow Pill with subtle violet indicator */}
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 text-xs text-neutral-300 backdrop-blur-md shadow-[0_2px_12px_rgba(0,0,0,0.4)] mb-6 transition-all hover:border-violet-500/30">
+        <div className="eyebrow-pill inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 text-xs text-neutral-300 backdrop-blur-md shadow-[0_2px_12px_rgba(0,0,0,0.4)] mb-6 transition-all hover:border-violet-500/30">
           <span className="flex h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse" />
           <span className="font-mono text-[11px] uppercase tracking-wider text-neutral-300">
             A BroCodes Technologies Product
@@ -99,11 +95,18 @@ export default function Hero() {
           </span>
         </div>
 
-        {/* Hero Headline */}
+        {/* Hero Headline with Skipper UI RollingText on "Next-Gen OS" */}
         <h1 className="max-w-4xl text-4xl sm:text-6xl lg:text-[4.25rem] font-black tracking-tight text-white leading-[1.1] sm:leading-[1.08]">
-          The Next-Gen OS for
+          The{" "}
+          <span className="hero-rolling-underline relative inline-block border-b-2 border-violet-500/30 pb-0.5">
+            <RollingText
+              text="Next-Gen OS"
+              className="rolling-text text-white drop-shadow-[0_0_24px_rgba(255,255,255,0.25)]"
+            />
+          </span>{" "}
+          for
           <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-neutral-200 to-neutral-400">
+          <span className="hero-gradient-text text-transparent bg-clip-text bg-gradient-to-b from-white via-neutral-200 to-neutral-400">
             College Clubs & Campus Life.
           </span>
         </h1>
@@ -119,7 +122,7 @@ export default function Hero() {
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3.5 w-full sm:w-auto">
           <a
             href="#about"
-            className="group flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-white px-7 text-sm font-semibold text-black transition-all hover:bg-neutral-200 hover:shadow-[0_0_24px_rgba(255,255,255,0.2)] active:scale-95 shadow-[0_4px_20px_rgba(255,255,255,0.12)] cursor-pointer"
+            className="btn-primary group flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-white px-7 text-sm font-semibold text-black transition-all hover:bg-neutral-200 hover:shadow-[0_0_28px_rgba(255,255,255,0.25)] active:scale-95 shadow-[0_4px_20px_rgba(255,255,255,0.12)] cursor-pointer"
           >
             <span>Explore How It Works</span>
             <HiOutlineArrowRight className="text-xs transition-transform group-hover:translate-x-1" />
@@ -127,48 +130,55 @@ export default function Hero() {
 
           <Link
             href="/Login?role=president"
-            className="flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-7 text-sm font-medium text-white transition-all hover:bg-white/[0.08] hover:border-violet-500/30 active:scale-95 cursor-pointer backdrop-blur-md"
+            className="btn-secondary flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-7 text-sm font-medium text-white transition-all hover:bg-white/[0.08] hover:border-violet-500/30 hover:shadow-[0_0_24px_rgba(139,92,246,0.12)] active:scale-95 cursor-pointer backdrop-blur-md"
           >
             <HiOutlineShieldCheck className="text-base text-neutral-400" />
             <span>President Portal</span>
           </Link>
         </div>
 
-        {/* STYLIZED PRODUCT VISUALIZATION (Interactive-feel Glass Dashboard) */}
+        {/* STYLIZED PRODUCT VISUALIZATION (With Skipper UI Floating Spotlight Badges) */}
         <div className="mt-14 sm:mt-20 w-full max-w-5xl relative">
-          {/* Subtle Outer Frame Violet Glow (Soft, controlled, barely visible depth) */}
+          {/* Subtle Outer Frame Violet Glow */}
           <div className="absolute -inset-1 rounded-3xl bg-[radial-gradient(ellipse_70%_50%_at_50%_50%,rgba(139,92,246,0.12),transparent_70%)] blur-2xl pointer-events-none" />
 
-          {/* Floating UI Badges (Layer depth) */}
-          {/* Floating Badge 1: Top-Right Verified Pass */}
-          <div className="hidden lg:flex absolute -top-6 -right-6 z-20 items-center gap-3 rounded-2xl border border-white/15 bg-[#0e0e12]/90 p-3 shadow-[0_16px_36px_rgba(0,0,0,0.8),0_0_20px_rgba(139,92,246,0.06)] backdrop-blur-2xl animate-bounce [animation-duration:5s]">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-black shadow-xs">
-              <HiOutlineQrCode className="text-lg" />
-            </div>
-            <div className="text-left">
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs font-bold text-white">
-                  Verified Member Pass
-                </span>
-                <HiOutlineCheckCircle className="text-violet-400 text-xs" />
+          {/* Skipper Spotlight Badge 1: Top-Right Verified Pass */}
+          <div className="hidden lg:block absolute -top-6 -right-6 z-20">
+            <SpotlightCard className="p-3 rounded-2xl border-white/15 bg-[#0e0e12]/95 shadow-[0_16px_36px_rgba(0,0,0,0.8),0_0_20px_rgba(139,92,246,0.06)]">
+              <div className="flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-black shadow-xs">
+                  <HiOutlineQrCode className="text-lg" />
+                </div>
+                <div className="text-left">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-bold text-white">
+                      Verified Member Pass
+                    </span>
+                    <HiOutlineCheckCircle className="text-violet-400 text-xs" />
+                  </div>
+                  <p className="text-[10px] font-mono text-neutral-400">
+                    #BC-2026-904 • Active
+                  </p>
+                </div>
               </div>
-              <p className="text-[10px] font-mono text-neutral-400">
-                #BC-2026-904 • Active
-              </p>
-            </div>
+            </SpotlightCard>
           </div>
 
-          {/* Floating Badge 2: Bottom-Left Live Activity */}
-          <div className="hidden lg:flex absolute -bottom-6 -left-6 z-20 items-center gap-3 rounded-2xl border border-white/15 bg-[#0e0e12]/90 p-3 shadow-[0_16px_36px_rgba(0,0,0,0.8)] backdrop-blur-2xl">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.05] text-white">
-              <HiOutlineBolt className="text-lg text-white" />
-            </div>
-            <div className="text-left">
-              <p className="text-xs font-bold text-white">Live Campus Activity</p>
-              <p className="text-[10px] text-neutral-400">
-                50+ Clubs • 3,800+ Students Active
-              </p>
-            </div>
+          {/* Skipper Spotlight Badge 2: Bottom-Left Live Activity */}
+          <div className="hidden lg:block absolute -bottom-6 -left-6 z-20">
+            <SpotlightCard className="p-3 rounded-2xl border-white/15 bg-[#0e0e12]/95 shadow-[0_16px_36px_rgba(0,0,0,0.8)]">
+              <div className="flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.05] text-white">
+                  <HiOutlineBolt className="text-lg text-white" />
+                </div>
+                <div className="text-left">
+                  <p className="text-xs font-bold text-white">Live Campus Activity</p>
+                  <p className="text-[10px] text-neutral-400">
+                    50+ Clubs • 3,800+ Students Active
+                  </p>
+                </div>
+              </div>
+            </SpotlightCard>
           </div>
 
           {/* Floating Badge 3: Top-Left Leadership Signoff */}
@@ -180,10 +190,9 @@ export default function Hero() {
           </div>
 
           {/* Main Glass Product Dashboard Container */}
-          <div className="relative rounded-2xl sm:rounded-3xl border border-white/12 bg-[#0b0b0e]/85 backdrop-blur-2xl shadow-[0_24px_64px_rgba(0,0,0,0.8)] overflow-hidden text-left">
+          <div className="hero-mockup-window relative rounded-2xl sm:rounded-3xl border border-white/12 bg-[#0b0b0e]/85 backdrop-blur-2xl shadow-[0_24px_64px_rgba(0,0,0,0.8)] overflow-hidden text-left">
             {/* Window Titlebar */}
-            <div className="flex items-center justify-between border-b border-white/8 px-4 sm:px-6 py-3 bg-white/[0.02]">
-              {/* Window Controls */}
+            <div className="mockup-header-bar flex items-center justify-between border-b border-white/8 px-4 sm:px-6 py-3 bg-white/[0.02]">
               <div className="flex items-center gap-2">
                 <span className="h-3 w-3 rounded-full bg-neutral-700/80" />
                 <span className="h-3 w-3 rounded-full bg-neutral-700/80" />
@@ -194,7 +203,7 @@ export default function Hero() {
               </div>
 
               {/* Miniature Search / Filter Input */}
-              <div className="flex items-center gap-2 rounded-xl border border-white/8 bg-white/[0.03] px-3 py-1.5 text-xs text-neutral-400 w-48 sm:w-72 transition-colors focus-within:border-violet-500/40 focus-within:bg-white/[0.05]">
+              <div className="hero-mockup-input flex items-center gap-2 rounded-xl border border-white/8 bg-white/[0.03] px-3 py-1.5 text-xs text-neutral-400 w-48 sm:w-72 transition-colors focus-within:border-violet-500/40 focus-within:bg-white/[0.05]">
                 <HiOutlineMagnifyingGlass className="text-sm shrink-0" />
                 <input
                   type="text"
@@ -208,7 +217,6 @@ export default function Hero() {
                 </span>
               </div>
 
-              {/* Status Indicator */}
               <div className="hidden sm:flex items-center gap-2">
                 <span className="flex h-2 w-2 rounded-full bg-violet-400" />
                 <span className="text-[11px] font-mono text-neutral-400">
@@ -240,7 +248,7 @@ export default function Hero() {
                   {filteredClubs.map((club) => (
                     <div
                       key={club.id}
-                      className="group rounded-xl border border-white/6 bg-white/[0.02] hover:bg-white/[0.05] hover:border-violet-500/30 p-3.5 sm:p-4 transition-all duration-200"
+                      className="mockup-card group rounded-xl border border-white/6 bg-white/[0.02] hover:bg-white/[0.05] hover:border-violet-500/30 p-3.5 sm:p-4 transition-all duration-200"
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex items-start gap-3">
@@ -262,7 +270,6 @@ export default function Hero() {
                           </div>
                         </div>
 
-                        {/* Status Tag */}
                         <div className="shrink-0 text-right">
                           <span className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-0.5 text-[10px] font-mono font-medium text-neutral-300 group-hover:border-violet-500/20">
                             <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
@@ -292,7 +299,6 @@ export default function Hero() {
                   <span className="flex h-2 w-2 rounded-full bg-violet-400 animate-pulse" />
                 </div>
 
-                {/* Events Preview Cards */}
                 <div className="space-y-2.5">
                   {mockEvents.map((event, idx) => (
                     <div
@@ -326,7 +332,6 @@ export default function Hero() {
                   ))}
                 </div>
 
-                {/* Broadcast Banner */}
                 <div className="rounded-xl border border-white/10 bg-white/[0.04] p-3 flex items-start gap-3">
                   <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white text-black shrink-0">
                     <HiOutlineBell className="text-sm" />

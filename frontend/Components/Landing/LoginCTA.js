@@ -7,6 +7,7 @@ import {
   HiOutlineShieldCheck,
   HiOutlineArrowRight,
 } from "react-icons/hi2";
+import SpotlightCard from "@/Components/ui/SpotlightCard";
 
 export default function LoginCTA() {
   return (
@@ -14,7 +15,7 @@ export default function LoginCTA() {
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 text-xs text-neutral-300">
+          <div className="eyebrow-pill inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 text-xs text-neutral-300">
             <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
             <span className="font-mono text-[11px] uppercase tracking-wider text-neutral-300">
               02 / Role-Based Portals
@@ -31,16 +32,20 @@ export default function LoginCTA() {
           </p>
         </div>
 
-        {/* Two Premium Glass Panels */}
+        {/* Two Premium Skipper UI Spotlight Panels */}
         <div className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
           {/* Panel 1: Student / Member */}
-          <div className="group relative rounded-3xl border border-white/12 bg-[#0b0b0e]/90 p-8 sm:p-9 backdrop-blur-2xl shadow-[0_16px_40px_rgba(0,0,0,0.6)] flex flex-col justify-between transition-all duration-300 hover:border-white/25 hover:bg-[#101014] hover:-translate-y-1">
+          <SpotlightCard
+            spotlightColor="rgba(255, 255, 255, 0.06)"
+            borderColor="rgba(255, 255, 255, 0.25)"
+            className="p-8 sm:p-9 shadow-[0_16px_40px_rgba(0,0,0,0.6)] flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300"
+          >
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-black shadow-xs">
                   <HiOutlineAcademicCap className="text-2xl" />
                 </div>
-                <span className="font-mono text-xs text-neutral-400 uppercase tracking-widest bg-white/[0.04] border border-white/8 px-3 py-1 rounded-full">
+                <span className="badge-pill font-mono text-xs text-neutral-400 uppercase tracking-widest bg-white/[0.04] border border-white/8 px-3 py-1 rounded-full">
                   Student Portal
                 </span>
               </div>
@@ -90,10 +95,14 @@ export default function LoginCTA() {
                 </Link>
               </div>
             </div>
-          </div>
+          </SpotlightCard>
 
           {/* Panel 2: Club President / Leadership */}
-          <div className="group relative rounded-3xl border border-white/12 bg-[#0b0b0e]/90 p-8 sm:p-9 backdrop-blur-2xl shadow-[0_16px_40px_rgba(0,0,0,0.6)] flex flex-col justify-between transition-all duration-300 hover:border-violet-500/30 hover:bg-[#101014] hover:-translate-y-1">
+          <SpotlightCard
+            spotlightColor="rgba(139, 92, 246, 0.12)"
+            borderColor="rgba(139, 92, 246, 0.4)"
+            className="p-8 sm:p-9 shadow-[0_16px_40px_rgba(0,0,0,0.6)] flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300"
+          >
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-violet-500/30 bg-violet-500/[0.08] text-violet-300">
@@ -146,7 +155,7 @@ export default function LoginCTA() {
                 </span>
               </div>
             </div>
-          </div>
+          </SpotlightCard>
         </div>
       </div>
     </section>

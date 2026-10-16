@@ -12,6 +12,7 @@ import {
   HiOutlineArrowTopRightOnSquare,
 } from "react-icons/hi2";
 import { getStoredUser, clearAuthToken } from "@/lib/api";
+import ThemeToggle from "@/Components/ui/ThemeToggle";
 
 export default function LandingNavbar() {
   const router = useRouter();
@@ -46,7 +47,7 @@ export default function LandingNavbar() {
   return (
     <header className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4 sm:px-6 pointer-events-none">
       <div
-        className={`pointer-events-auto w-full max-w-5xl transition-all duration-300 rounded-2xl border ${
+        className={`navbar-glass pointer-events-auto w-full max-w-5xl transition-all duration-300 rounded-2xl border ${
           scrolled
             ? "bg-[#09090b]/85 border-white/12 shadow-[0_12px_36px_rgba(0,0,0,0.7),0_0_24px_rgba(139,92,246,0.04)] backdrop-blur-2xl"
             : "bg-[#0c0c0e]/65 border-white/8 shadow-[0_8px_24px_rgba(0,0,0,0.4)] backdrop-blur-xl"
@@ -110,8 +111,11 @@ export default function LandingNavbar() {
             </a>
           </nav>
 
-          {/* Right: Auth Buttons */}
+          {/* Right: Theme Toggle & Auth Buttons */}
           <div className="hidden sm:flex items-center gap-2.5">
+            {/* Skipper UI Theme Toggle */}
+            <ThemeToggle />
+
             {user ? (
               <div className="flex items-center gap-2">
                 <Link
@@ -157,8 +161,10 @@ export default function LandingNavbar() {
             )}
           </div>
 
-          {/* Mobile Menu Trigger */}
+          {/* Mobile Menu Trigger & Theme Toggle */}
           <div className="flex md:hidden items-center gap-2">
+            <ThemeToggle />
+
             {!user && (
               <Link
                 href="/Login"

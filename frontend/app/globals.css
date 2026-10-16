@@ -88,3 +88,359 @@ body {
   background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255, 255, 255, 0.08), transparent 70%);
 }
 
+@keyframes text-shine {
+  0% {
+    background-position: 150% 0;
+  }
+  100% {
+    background-position: -150% 0;
+  }
+}
+
+.animate-text-shine {
+  animation: text-shine 7s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   GLOBAL THEME TRANSITION
+   ========================================================================== */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *:before,
+html.theme-transition *:after {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, fill 0.25s ease !important;
+  transition-delay: 0s !important;
+}
+
+/* ==========================================================================
+   LIGHT MODE OVERRIDES FOR BROCLUBS (White Background + Black & Grey Typography)
+   ========================================================================== */
+[data-theme="light"],
+html.light,
+html[data-theme="light"] {
+  --background: #faf9f6;
+  --foreground: #09090b;
+  color-scheme: light;
+}
+
+[data-theme="light"] body,
+html.light body,
+html[data-theme="light"] body {
+  background-color: #faf9f6 !important;
+  color: #09090b !important;
+}
+
+/* Landing Page Root Container */
+[data-theme="light"] .landing-wrapper,
+html.light .landing-wrapper,
+html[data-theme="light"] .landing-wrapper {
+  background-color: #faf9f6 !important;
+  color: #09090b !important;
+}
+
+/* Background Grids & Glows */
+[data-theme="light"] .bg-dot-grid,
+html.light .bg-dot-grid,
+html[data-theme="light"] .bg-dot-grid {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.08) 1px, transparent 1px) !important;
+}
+
+[data-theme="light"] .bg-subtle-glow,
+html.light .bg-subtle-glow,
+html[data-theme="light"] .bg-subtle-glow {
+  background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(237, 228, 211, 0.55), transparent 70%) !important;
+}
+
+/* --------------------------------------------------------------------------
+   1. PRIMARY TEXT & HEADINGS -> DEEP BLACK (#09090b)
+   -------------------------------------------------------------------------- */
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4,
+[data-theme="light"] h5,
+[data-theme="light"] h6,
+html.light h1,
+html.light h2,
+html.light h3,
+html.light h4,
+html.light h5,
+html.light h6,
+html[data-theme="light"] h1,
+html[data-theme="light"] h2,
+html[data-theme="light"] h3,
+html[data-theme="light"] h4,
+html[data-theme="light"] h5,
+html[data-theme="light"] h6 {
+  color: #09090b !important;
+}
+
+[data-theme="light"] .text-white,
+[data-theme="light"] .text-neutral-100,
+[data-theme="light"] .text-neutral-200,
+html.light .text-white,
+html.light .text-neutral-100,
+html.light .text-neutral-200,
+html[data-theme="light"] .text-white,
+html[data-theme="light"] .text-neutral-100,
+html[data-theme="light"] .text-neutral-200 {
+  color: #09090b !important;
+}
+
+/* --------------------------------------------------------------------------
+   2. SECONDARY TEXT & SUBTITLES -> GREY (#52525b & #71717a)
+   -------------------------------------------------------------------------- */
+[data-theme="light"] .text-neutral-300,
+[data-theme="light"] .text-neutral-400,
+html.light .text-neutral-300,
+html.light .text-neutral-400,
+html[data-theme="light"] .text-neutral-300,
+html[data-theme="light"] .text-neutral-400 {
+  color: #52525b !important;
+}
+
+[data-theme="light"] .text-neutral-500,
+[data-theme="light"] .text-neutral-600,
+html.light .text-neutral-500,
+html.light .text-neutral-600,
+html[data-theme="light"] .text-neutral-500,
+html[data-theme="light"] .text-neutral-600 {
+  color: #71717a !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. HERO: ROLLING TEXT "Next-Gen OS" & GRADIENT HEADLINE
+   -------------------------------------------------------------------------- */
+/* The rolling text in Light Mode is black with no white glow */
+[data-theme="light"] [aria-label="Next-Gen OS"],
+[data-theme="light"] [aria-label="Next-Gen OS"] span,
+html.light [aria-label="Next-Gen OS"],
+html.light [aria-label="Next-Gen OS"] span,
+html[data-theme="light"] [aria-label="Next-Gen OS"],
+html[data-theme="light"] [aria-label="Next-Gen OS"] span {
+  color: #09090b !important;
+  filter: none !important;
+  text-shadow: none !important;
+}
+
+/* Rolling text underline subtle cream accent */
+[data-theme="light"] .hero-rolling-underline,
+html.light .hero-rolling-underline,
+html[data-theme="light"] .hero-rolling-underline {
+  border-color: rgba(180, 160, 120, 0.45) !important;
+}
+
+/* Hero gradient text: transitions from Black via Charcoal to Slate Grey */
+[data-theme="light"] .hero-gradient-text,
+html.light .hero-gradient-text,
+html[data-theme="light"] .hero-gradient-text {
+  background: linear-gradient(180deg, #09090b 0%, #27272a 55%, #52525b 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. NAVBAR IN LIGHT MODE
+   -------------------------------------------------------------------------- */
+[data-theme="light"] header > div,
+html.light header > div,
+html[data-theme="light"] header > div,
+[data-theme="light"] .navbar-glass,
+html.light .navbar-glass,
+html[data-theme="light"] .navbar-glass {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06) !important;
+}
+
+[data-theme="light"] header nav a,
+html.light header nav a,
+html[data-theme="light"] header nav a {
+  color: #52525b !important;
+}
+
+[data-theme="light"] header nav a:hover,
+html.light header nav a:hover,
+html[data-theme="light"] header nav a:hover {
+  color: #09090b !important;
+}
+
+[data-theme="light"] .mobile-drawer,
+html.light .mobile-drawer,
+html[data-theme="light"] .mobile-drawer {
+  background-color: rgba(255, 255, 255, 0.98) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. GLASS CARDS & SURFACES (SpotlightCard, Mockup, Accordion)
+   -------------------------------------------------------------------------- */
+[data-theme="light"] .spotlight-card,
+html.light .spotlight-card,
+html[data-theme="light"] .spotlight-card,
+[data-theme="light"] .hero-mockup-window,
+html.light .hero-mockup-window,
+html[data-theme="light"] .hero-mockup-window,
+[data-theme="light"] .bouncy-accordion-item,
+html.light .bouncy-accordion-item,
+html[data-theme="light"] .bouncy-accordion-item {
+  background-color: rgba(255, 255, 255, 0.94) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+}
+
+/* Mockup Header Bar & Inner Cards */
+[data-theme="light"] .mockup-header-bar,
+html.light .mockup-header-bar,
+html[data-theme="light"] .mockup-header-bar {
+  background-color: rgba(244, 243, 240, 0.9) !important;
+  border-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+[data-theme="light"] .mockup-card,
+html.light .mockup-card,
+html[data-theme="light"] .mockup-card {
+  background-color: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Mockup Search Input */
+[data-theme="light"] .hero-mockup-input,
+html.light .hero-mockup-input,
+html[data-theme="light"] .hero-mockup-input {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="light"] .hero-mockup-input input,
+html.light .hero-mockup-input input,
+html[data-theme="light"] .hero-mockup-input input {
+  color: #09090b !important;
+}
+
+[data-theme="light"] .hero-mockup-input input::placeholder,
+html.light .hero-mockup-input input::placeholder,
+html[data-theme="light"] .hero-mockup-input input::placeholder {
+  color: #71717a !important;
+}
+
+/* --------------------------------------------------------------------------
+   6. CREAM ACCENT PILLS & BADGES
+   -------------------------------------------------------------------------- */
+[data-theme="light"] .badge-pill,
+[data-theme="light"] .eyebrow-pill,
+html.light .badge-pill,
+html.light .eyebrow-pill,
+html[data-theme="light"] .badge-pill,
+html[data-theme="light"] .eyebrow-pill {
+  background-color: #f5f0e8 !important;
+  color: #574d3b !important;
+  border-color: rgba(180, 160, 120, 0.35) !important;
+}
+
+[data-theme="light"] .badge-pill span,
+[data-theme="light"] .eyebrow-pill span,
+html.light .badge-pill span,
+html.light .eyebrow-pill span,
+html[data-theme="light"] .badge-pill span,
+html[data-theme="light"] .eyebrow-pill span {
+  color: #574d3b !important;
+}
+
+/* --------------------------------------------------------------------------
+   7. BUTTONS IN LIGHT MODE
+   -------------------------------------------------------------------------- */
+/* Primary Action Button -> Deep Black */
+[data-theme="light"] .btn-primary,
+html.light .btn-primary,
+html[data-theme="light"] .btn-primary {
+  background-color: #09090b !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+}
+
+[data-theme="light"] .btn-primary *,
+html.light .btn-primary *,
+html[data-theme="light"] .btn-primary * {
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .btn-primary:hover,
+html.light .btn-primary:hover,
+html[data-theme="light"] .btn-primary:hover {
+  background-color: #27272a !important;
+}
+
+/* Secondary Button -> Subtle border & Dark text */
+[data-theme="light"] .btn-secondary,
+html.light .btn-secondary,
+html[data-theme="light"] .btn-secondary {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  color: #09090b !important;
+}
+
+[data-theme="light"] .btn-secondary:hover,
+html.light .btn-secondary:hover,
+html[data-theme="light"] .btn-secondary:hover {
+  background-color: rgba(0, 0, 0, 0.08) !important;
+  border-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* --------------------------------------------------------------------------
+   8. INPUTS, TEXTAREAS & SELECTS
+   -------------------------------------------------------------------------- */
+[data-theme="light"] input,
+[data-theme="light"] textarea,
+[data-theme="light"] select,
+html.light input,
+html.light textarea,
+html.light select,
+html[data-theme="light"] input,
+html[data-theme="light"] textarea,
+html[data-theme="light"] select {
+  background-color: #ffffff !important;
+  color: #09090b !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea::placeholder,
+html.light input::placeholder,
+html.light textarea::placeholder,
+html[data-theme="light"] input::placeholder,
+html[data-theme="light"] textarea::placeholder {
+  color: #71717a !important;
+}
+
+/* --------------------------------------------------------------------------
+   9. FOOTER IN LIGHT MODE
+   -------------------------------------------------------------------------- */
+[data-theme="light"] footer,
+html.light footer,
+html[data-theme="light"] footer {
+  background-color: #f4f2ec !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="light"] footer p,
+[data-theme="light"] footer a,
+[data-theme="light"] footer span,
+html.light footer p,
+html.light footer a,
+html.light footer span,
+html[data-theme="light"] footer p,
+html[data-theme="light"] footer a,
+html[data-theme="light"] footer span {
+  color: #52525b !important;
+}
+
+[data-theme="light"] footer a:hover,
+html.light footer a:hover,
+html[data-theme="light"] footer a:hover {
+  color: #09090b !important;
+}
+

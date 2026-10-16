@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { HiOutlinePlus, HiOutlineMinus } from "react-icons/hi2";
+import React from "react";
+import BouncyAccordion from "@/Components/ui/BouncyAccordion";
 
 const faqData = [
   {
@@ -37,18 +37,12 @@ const faqData = [
 ];
 
 export default function Faq() {
-  const [openIndex, setOpenIndex] = useState(null);
-
-  const toggleFaq = (index) => {
-    setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
-  };
-
   return (
     <section id="faq" className="relative py-20 sm:py-28 text-left w-full">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 text-xs text-neutral-300">
+          <div className="eyebrow-pill inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 text-xs text-neutral-300">
             <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
             <span className="font-mono text-[11px] uppercase tracking-wider text-neutral-300">
               03 / FAQ
@@ -64,60 +58,9 @@ export default function Faq() {
           </p>
         </div>
 
-        {/* Vertically Stacked Accordion */}
-        <div className="max-w-3xl mx-auto space-y-3">
-          {faqData.map((item, index) => {
-            const isOpen = openIndex === index;
-
-            return (
-              <div
-                key={item.id}
-                className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
-                  isOpen
-                    ? "border-violet-500/30 bg-[#0e0e13]/90 shadow-[0_8px_30px_rgba(0,0,0,0.5),0_0_20px_rgba(139,92,246,0.06)]"
-                    : "border-white/8 bg-[#0b0b0e]/70 hover:border-white/15 hover:bg-[#0f0f14]/80"
-                } backdrop-blur-xl`}
-              >
-                <button
-                  type="button"
-                  onClick={() => toggleFaq(index)}
-                  aria-expanded={isOpen}
-                  className="w-full flex items-center justify-between p-5 sm:p-6 text-left cursor-pointer transition-colors duration-200"
-                >
-                  <span className="text-sm sm:text-base font-semibold text-white tracking-tight pr-4">
-                    {item.question}
-                  </span>
-                  <div
-                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border transition-all duration-300 ${
-                      isOpen
-                        ? "border-violet-500/40 bg-violet-500/10 text-violet-300 rotate-180"
-                        : "border-white/10 bg-white/[0.04] text-neutral-400"
-                    }`}
-                  >
-                    {isOpen ? (
-                      <HiOutlineMinus className="text-sm" />
-                    ) : (
-                      <HiOutlinePlus className="text-sm" />
-                    )}
-                  </div>
-                </button>
-
-                <div
-                  className={`grid transition-all duration-300 ease-in-out ${
-                    isOpen
-                      ? "grid-rows-[1fr] opacity-100"
-                      : "grid-rows-[0fr] opacity-0"
-                  }`}
-                >
-                  <div className="overflow-hidden">
-                    <p className="px-5 sm:px-6 pb-5 sm:pb-6 text-xs sm:text-sm text-neutral-400 leading-relaxed font-normal border-t border-white/5 pt-4">
-                      {item.answer}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+        {/* Skipper UI Skiper103 Spring Accordion */}
+        <div className="max-w-3xl mx-auto">
+          <BouncyAccordion items={faqData} allowMultiple={false} />
         </div>
       </div>
     </section>
