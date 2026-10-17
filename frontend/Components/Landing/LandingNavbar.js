@@ -67,9 +67,7 @@ export default function LandingNavbar() {
                 <span className="text-base sm:text-lg font-bold tracking-tight text-white">
                   BroClubs
                 </span>
-                <span className="hidden sm:inline-block rounded-full border border-violet-500/20 bg-violet-500/[0.06] px-2 py-0.5 text-[10px] font-mono font-medium text-violet-300">
-                  Campus OS
-                </span>
+                
               </div>
             </div>
           </Link>

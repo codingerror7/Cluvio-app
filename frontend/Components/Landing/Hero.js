@@ -83,17 +83,7 @@ export default function Hero() {
       <BackgroundBeam />
 
       <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col items-center">
-        {/* Eyebrow Pill with subtle violet indicator */}
-        <div className="eyebrow-pill inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 text-xs text-neutral-300 backdrop-blur-md shadow-[0_2px_12px_rgba(0,0,0,0.4)] mb-6 transition-all hover:border-violet-500/30">
-          <span className="flex h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse" />
-          <span className="font-mono text-[11px] uppercase tracking-wider text-neutral-300">
-            A BroCodes Technologies Product
-          </span>
-          <span className="text-neutral-600">•</span>
-          <span className="text-neutral-400 font-medium text-[11px]">
-            Campus Club OS
-          </span>
-        </div>
+        
 
         {/* Hero Headline with Skipper UI RollingText on "Next-Gen OS" */}
         <h1 className="max-w-4xl text-4xl sm:text-6xl lg:text-[4.25rem] font-black tracking-tight text-white leading-[1.1] sm:leading-[1.08]">
