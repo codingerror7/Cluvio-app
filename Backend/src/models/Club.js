@@ -5,8 +5,12 @@ const clubSchema = new mongoose.Schema(
     name: {
       type: String,
       required: [true, "Club name is required"],
-      unique: true,
       trim: true,
+    },
+    college: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "College",
+      required: [true, "College reference is required"],
     },
     collegeName: {
       type: String,
@@ -33,6 +37,18 @@ const clubSchema = new mongoose.Schema(
       ],
       default: "Technical",
       required: true,
+    },
+    sector: {
+      type: String,
+      default: "Technical & Innovation",
+    },
+    tags: {
+      type: [String],
+      default: [],
+    },
+    coverImage: {
+      type: String,
+      default: "",
     },
     logo: {
       type: String,
@@ -81,8 +97,16 @@ const clubSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Active", "Pending", "Inactive", "Suspended"],
-      default: "Active",
+      enum: ["Active", "Pending", "Rejected", "Inactive", "Suspended", "Archived"],
+      default: "Pending",
+    },
+    rejectionReason: {
+      type: String,
+      default: "",
+    },
+    pendingChanges: {
+      type: mongoose.Schema.Types.Mixed,
+      default: null,
     },
     recruitmentOpen: {
       type: Boolean,
@@ -97,6 +121,20 @@ const clubSchema = new mongoose.Schema(
         "Operations & Logistics",
         "Content & Editorial",
       ],
+    },
+    deletedAt: {
+      type: Date,
+    },
+    deletedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    approvedAt: {
+      type: Date,
+    },
+    approvedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     announcements: [
       {
@@ -139,6 +177,8 @@ const clubSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+clubSchema.index({ name: 1, college: 1 }, { unique: true });
 
 const Club = mongoose.model("Club", clubSchema);
 export default Club;

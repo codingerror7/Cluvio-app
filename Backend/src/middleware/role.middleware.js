@@ -1,9 +1,8 @@
-import { isValidRole, ALLOWED_ROLES } from "../constants/roles.js";
+import { isValidRole } from "../constants/roles.js";
 
 /**
- * Role-Based Authorization Middleware
- * Strictly enforces access control for the two valid roles: 'student' and 'club_president'.
- * No aliases, no third roles.
+ * Role-Based Access Control Middleware
+ * Supports: 'student', 'club_president', 'college_admin', 'platform_admin'
  */
 export const authorize = (...roles) => {
   return (req, res, next) => {
@@ -16,7 +15,6 @@ export const authorize = (...roles) => {
 
     const userRole = req.user.role;
 
-    // Reject users with invalid or deprecated roles
     if (!isValidRole(userRole)) {
       return res.status(403).json({
         success: false,

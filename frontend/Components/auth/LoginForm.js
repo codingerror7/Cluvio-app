@@ -11,15 +11,16 @@ import {
   HiOutlineEyeSlash,
   HiOutlineShieldCheck,
   HiOutlineAcademicCap,
+  HiOutlineIdentification,
+  HiOutlineKey,
 } from "react-icons/hi2";
 import { api, setAuthToken, setStoredUser } from "@/lib/api";
-import { UserRole, ROLE_LABELS, ROLE_HOME_ROUTES } from "@/lib/roles";
+import { UserRole, ROLE_HOME_ROUTES } from "@/lib/roles";
 
 export default function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Selected role: strictly UserRole.STUDENT ("student") or UserRole.CLUB_PRESIDENT ("club_president")
   const initialRoleParam = searchParams.get("role");
   const isInitiallyPresident =
     initialRoleParam === "president" ||
@@ -32,8 +33,9 @@ export default function LoginForm() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [enrollmentNumber, setEnrollmentNumber] = useState("");
+  const [presidentCode, setPresidentCode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -59,8 +61,11 @@ export default function LoginForm() {
     if (role === UserRole.STUDENT) {
       setEmail("student@campus.edu");
       setPassword("Student@123");
+      setEnrollmentNumber("STU-2026-0142");
     } else {
       setEmail("president@campus.edu");
+      setEnrollmentNumber("PRES-2024-DEMO");
+      setPresidentCode("482910");
       setPassword("President@123");
     }
   };
@@ -71,14 +76,25 @@ export default function LoginForm() {
     setLoading(true);
 
     try {
-      const response = await api.auth.login({
-        email: email.trim(),
-        password,
-        role: selectedRole,
-      });
+      let response;
+      if (selectedRole === UserRole.CLUB_PRESIDENT) {
+        // Authenticate with Email + Enrollment Number + 6-digit President Code
+        response = await api.auth.presidentLogin({
+          email: email.trim(),
+          enrollmentNumber: enrollmentNumber.trim(),
+          code: presidentCode.trim(),
+          password: password || undefined,
+        });
+      } else {
+        // Student login
+        response = await api.auth.login({
+          email: email.trim(),
+          password,
+          role: UserRole.STUDENT,
+        });
+      }
 
       if (response.success && response.user) {
-        // Enforce redirection strictly based on authenticated user's actual role
         const userRole = response.user.role;
         const targetRoute =
           ROLE_HOME_ROUTES[userRole] ||
@@ -87,42 +103,9 @@ export default function LoginForm() {
         router.push(targetRoute);
       }
     } catch (err) {
-      // In offline / mock development fallback, provide smooth navigation with mock identity
-      if (
-        err.message?.includes("Failed to fetch") ||
-        err.message?.includes("NetworkError") ||
-        err.message?.includes("404")
-      ) {
-        const mockUser =
-          selectedRole === UserRole.CLUB_PRESIDENT
-            ? {
-                id: "pres-demo",
-                name: "Arjun Mehta",
-                email: email || "president@campus.edu",
-                role: UserRole.CLUB_PRESIDENT,
-                department: "Robotics & Automation",
-                studentId: "STU-2025-0089",
-              }
-            : {
-                id: "stu-demo",
-                name: "Aarav Sharma",
-                email: email || "student@campus.edu",
-                role: UserRole.STUDENT,
-                department: "Computer Science",
-                studentId: "STU-2026-0142",
-              };
-
-        setAuthToken("demo-mock-token-2026");
-        setStoredUser(mockUser);
-
-        const targetRoute = ROLE_HOME_ROUTES[selectedRole] || "/student";
-        router.push(targetRoute);
-        return;
-      }
-
       setError(
         err.message ||
-          "Invalid credentials. Please verify your email and password."
+          "Authentication failed. Please check your credentials and try again."
       );
     } finally {
       setLoading(false);
@@ -148,12 +131,12 @@ export default function LoginForm() {
 
         <p className="text-xs sm:text-sm text-neutral-400 font-normal leading-relaxed">
           {isPresident
-            ? "Sign in to manage your club charter, activities, and members."
+            ? "Sign in with your Email, Enrollment Number, and 6-digit President Code."
             : "Sign in to access your clubs, event passes, and campus activity."}
         </p>
       </div>
 
-      {/* Role Selection Tabs (Student vs Club President ONLY) */}
+      {/* Role Selection Tabs */}
       <div className="mb-6 space-y-2">
         <label className="text-[11px] font-mono uppercase tracking-wider text-neutral-400 block">
           Login as
@@ -196,7 +179,7 @@ export default function LoginForm() {
       {/* 1-Click Demo Fill Bar */}
       <div className="mb-5 flex items-center justify-between rounded-xl border border-white/8 bg-white/[0.02] px-3 py-1.5 text-xs">
         <span className="text-[11px] font-mono text-neutral-400">
-          Demo login:
+          Demo quick-fill:
         </span>
         <div className="flex gap-1.5">
           <button
@@ -219,7 +202,7 @@ export default function LoginForm() {
                 : "border-white/10 bg-white/[0.04] text-neutral-300 hover:bg-white/[0.08]"
             }`}
           >
-            👑 President
+            👑 President (Code: 482910)
           </button>
         </div>
       </div>
@@ -241,86 +224,99 @@ export default function LoginForm() {
           </label>
           <input
             type="email"
-            required
-            autoComplete="email"
-            placeholder={
-              isPresident
-                ? "president@campus.edu"
-                : "student@campus.edu"
-            }
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-xs text-white placeholder-neutral-500 transition-colors focus:border-white/30 focus:outline-none"
+            placeholder="you@campus.edu"
+            required
+            className="w-full rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder-neutral-500 focus:border-white/40 focus:outline-hidden transition-colors"
           />
         </div>
 
-        {/* Password */}
-        <div className="space-y-1.5">
-          <div className="flex items-center justify-between">
+        {/* President: Enrollment Number */}
+        {isPresident && (
+          <div className="space-y-1.5">
             <label className="text-xs font-medium text-neutral-300 flex items-center gap-1.5">
-              <HiOutlineLockClosed className="text-neutral-400 text-sm" />
-              <span>Password</span>
+              <HiOutlineIdentification className="text-neutral-400 text-sm" />
+              <span>Enrollment Number</span>
             </label>
-            <span className="text-[11px] text-neutral-500 font-mono">
-              Min 6 characters
-            </span>
-          </div>
-          <div className="relative">
             <input
-              type={showPassword ? "text" : "password"}
+              type="text"
+              value={enrollmentNumber}
+              onChange={(e) => setEnrollmentNumber(e.target.value)}
+              placeholder="e.g. PRES-2024-DEMO"
               required
-              autoComplete="current-password"
-              placeholder="••••••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2.5 pr-10 text-xs text-white placeholder-neutral-500 transition-colors focus:border-white/30 focus:outline-none"
+              className="w-full rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder-neutral-500 focus:border-white/40 focus:outline-hidden transition-colors font-mono"
             />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white"
-            >
-              {showPassword ? (
-                <HiOutlineEyeSlash className="text-sm" />
-              ) : (
-                <HiOutlineEye className="text-sm" />
-              )}
-            </button>
           </div>
-        </div>
+        )}
 
-        {/* Remember Me */}
-        <div className="flex items-center justify-between pt-1 text-xs">
-          <label className="flex items-center gap-2 cursor-pointer text-neutral-400 hover:text-neutral-300">
+        {/* President: 6-Digit Code */}
+        {isPresident && (
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-medium text-neutral-300 flex items-center gap-1.5">
+                <HiOutlineKey className="text-neutral-400 text-sm" />
+                <span>6-Digit President Code</span>
+              </label>
+              <span className="text-[11px] text-neutral-400 font-mono">Issued by College Admin</span>
+            </div>
             <input
-              type="checkbox"
-              checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)}
-              className="h-3.5 w-3.5 rounded border-white/20 bg-white/5 text-white focus:ring-0"
+              type="text"
+              maxLength={6}
+              value={presidentCode}
+              onChange={(e) => setPresidentCode(e.target.value.replace(/\D/g, ""))}
+              placeholder="e.g. 482910"
+              required
+              className="w-full rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder-neutral-500 focus:border-white/40 focus:outline-hidden transition-colors font-mono text-center tracking-widest text-lg font-bold"
             />
-            <span>Keep session active</span>
-          </label>
-        </div>
+          </div>
+        )}
+
+        {/* Password (Required for students, optional for president activation) */}
+        {!isPresident && (
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-medium text-neutral-300 flex items-center gap-1.5">
+                <HiOutlineLockClosed className="text-neutral-400 text-sm" />
+                <span>Password</span>
+              </label>
+            </div>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+                className="w-full rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 pr-11 text-sm text-white placeholder-neutral-500 focus:border-white/40 focus:outline-hidden transition-colors"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white transition-colors cursor-pointer"
+              >
+                {showPassword ? <HiOutlineEyeSlash className="text-base" /> : <HiOutlineEye className="text-base" />}
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Submit Button */}
         <button
           type="submit"
           disabled={loading}
-          className="group flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-white font-semibold text-xs text-black shadow-xs transition-all hover:bg-neutral-200 active:scale-95 disabled:opacity-50 cursor-pointer mt-4"
+          className="w-full mt-2 flex items-center justify-center gap-2 rounded-2xl bg-white px-4 py-3.5 text-sm font-bold text-black hover:bg-neutral-200 transition-colors cursor-pointer disabled:opacity-50"
         >
-          <span>{loading ? "Authenticating..." : `Login as ${ROLE_LABELS[selectedRole]}`}</span>
-          <HiOutlineArrowRight className="text-xs transition-transform group-hover:translate-x-1" />
+          <span>{loading ? "Authenticating..." : isPresident ? "Activate & Sign In" : "Sign In to Cluvio"}</span>
+          <HiOutlineArrowRight className="text-base" />
         </button>
       </form>
 
-      {/* Registration Footer */}
-      <div className="mt-6 border-t border-white/8 pt-5 text-center text-xs text-neutral-400">
-        <span>Don't have an account? </span>
-        <Link
-          href={`/register?role=${selectedRole}`}
-          className="font-medium text-white underline underline-offset-4 hover:text-neutral-200"
-        >
-          Register as {ROLE_LABELS[selectedRole]} →
+      {/* Footer link to register */}
+      <div className="mt-6 text-center text-xs text-neutral-400">
+        New student on campus?{" "}
+        <Link href="/register" className="font-semibold text-white hover:underline">
+          Register student profile
         </Link>
       </div>
     </div>

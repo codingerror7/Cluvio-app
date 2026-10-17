@@ -1,16 +1,11 @@
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
-// 30 Days in Milliseconds: 30 days * 24 hours * 60 minutes * 60 seconds * 1000 ms
 export const SESSION_INACTIVITY_LIMIT_MS = 30 * 24 * 60 * 60 * 1000;
-const SESSION_COOKIE_MAX_AGE_SEC = 30 * 24 * 60 * 60; // 30 days in seconds (2,592,000s)
+const SESSION_COOKIE_MAX_AGE_SEC = 30 * 24 * 60 * 60;
 
 let lastActivityThrottle = 0;
 
-/**
- * Checks if the stored session has expired due to 30 days of inactivity.
- * Returns true if session was found but was expired (> 30 days inactive).
- */
 export const checkSessionExpiry = () => {
   if (typeof window === "undefined") return false;
 
@@ -26,7 +21,6 @@ export const checkSessionExpiry = () => {
 
   const now = Date.now();
 
-  // If no last_active timestamp exists yet for an existing valid session, initialize to now
   if (!lastActiveStr) {
     localStorage.setItem("broclubs_last_active", now.toString());
     localStorage.setItem("broclubs_session_start", now.toString());
@@ -39,9 +33,8 @@ export const checkSessionExpiry = () => {
     return false;
   }
 
-  // Check 30 days of inactivity
   if (now - lastActive > SESSION_INACTIVITY_LIMIT_MS) {
-    console.warn("BroClubs: User session expired after 30 days of inactivity.");
+    console.warn("Cluvio: User session expired after 30 days of inactivity.");
     clearAuthToken();
     return true;
   }
@@ -49,10 +42,6 @@ export const checkSessionExpiry = () => {
   return false;
 };
 
-/**
- * Updates the user's last activity timestamp in localStorage.
- * Throttled to once every 30 seconds to minimize I/O overhead.
- */
 export const updateLastActivity = (force = false) => {
   if (typeof window === "undefined") return;
 
@@ -85,10 +74,10 @@ export const setAuthToken = (token) => {
   if (typeof window !== "undefined") {
     const now = Date.now().toString();
     localStorage.setItem("broclubs_token", token);
+    localStorage.setItem("cluvio_token", token);
     localStorage.setItem("broclubs_last_active", now);
     localStorage.setItem("broclubs_session_start", now);
 
-    // Also persist via 30-day cookie for persistent browser storage
     try {
       document.cookie = `broclubs_token=${encodeURIComponent(
         token
@@ -100,48 +89,41 @@ export const setAuthToken = (token) => {
 export const clearAuthToken = () => {
   if (typeof window !== "undefined") {
     localStorage.removeItem("broclubs_token");
+    localStorage.removeItem("cluvio_token");
     localStorage.removeItem("broclubs_user");
+    localStorage.removeItem("cluvio_user");
     localStorage.removeItem("broclubs_last_active");
     localStorage.removeItem("broclubs_session_start");
-    localStorage.removeItem("cluvio_token");
-    localStorage.removeItem("cluvio_user");
 
     try {
-      document.cookie = "broclubs_token=; path=/; max-age=0; SameSite=Lax";
+      document.cookie =
+        "broclubs_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax";
     } catch (e) {}
   }
 };
 
 export const getStoredUser = () => {
   if (typeof window === "undefined") return null;
-
-  if (checkSessionExpiry()) {
-    return null;
-  }
-
   const user =
     localStorage.getItem("broclubs_user") ||
     localStorage.getItem("cluvio_user");
-  return user ? JSON.parse(user) : null;
+  try {
+    return user ? JSON.parse(user) : null;
+  } catch (e) {
+    return null;
+  }
 };
 
 export const setStoredUser = (user) => {
   if (typeof window !== "undefined") {
-    localStorage.setItem("broclubs_user", JSON.stringify(user));
+    const jsonStr = JSON.stringify(user);
+    localStorage.setItem("broclubs_user", jsonStr);
+    localStorage.setItem("cluvio_user", jsonStr);
   }
 };
 
-async function fetchWithAuth(endpoint, options = {}) {
-  // First check if session is expired due to inactivity
-  if (checkSessionExpiry() && typeof window !== "undefined") {
-    if (
-      window.location.pathname.startsWith("/dashboard") ||
-      window.location.pathname.startsWith("/president")
-    ) {
-      window.location.href = "/Login?reason=inactive";
-    }
-    throw new Error("Session expired due to 30 days of inactivity. Please log in again.");
-  }
+export async function fetchWithAuth(endpoint, options = {}) {
+  updateLastActivity();
 
   const token = getAuthToken();
   const headers = {
@@ -163,19 +145,8 @@ async function fetchWithAuth(endpoint, options = {}) {
   if (!response.ok) {
     if (response.status === 401 && typeof window !== "undefined") {
       clearAuthToken();
-      if (
-        window.location.pathname.startsWith("/dashboard") ||
-        window.location.pathname.startsWith("/president")
-      ) {
-        window.location.href = "/Login?reason=expired";
-      }
     }
     throw new Error(data.message || `Request failed with status ${response.status}`);
-  }
-
-  // Any authenticated successful request counts as fresh user activity
-  if (token) {
-    updateLastActivity();
   }
 
   return data;
@@ -183,17 +154,6 @@ async function fetchWithAuth(endpoint, options = {}) {
 
 export const api = {
   auth: {
-    register: async (userData) => {
-      const data = await fetchWithAuth("/auth/register", {
-        method: "POST",
-        body: JSON.stringify(userData),
-      });
-      if (data.token) {
-        setAuthToken(data.token);
-        setStoredUser(data.user);
-      }
-      return data;
-    },
     login: async (credentials) => {
       const data = await fetchWithAuth("/auth/login", {
         method: "POST",
@@ -205,32 +165,82 @@ export const api = {
       }
       return data;
     },
-    me: async () => {
+    presidentLogin: async (credentials) => {
+      const data = await fetchWithAuth("/auth/president/login", {
+        method: "POST",
+        body: JSON.stringify(credentials),
+      });
+      if (data.token) {
+        setAuthToken(data.token);
+        setStoredUser(data.user);
+      }
+      return data;
+    },
+    register: async (userData) => {
+      const data = await fetchWithAuth("/auth/register", {
+        method: "POST",
+        body: JSON.stringify(userData),
+      });
+      if (data.token) {
+        setAuthToken(data.token);
+        setStoredUser(data.user);
+      }
+      return data;
+    },
+    getMe: async () => {
       return fetchWithAuth("/auth/me");
+    },
+    getColleges: async () => {
+      return fetchWithAuth("/auth/colleges");
     },
     logout: () => {
       clearAuthToken();
     },
   },
-  users: {
+
+  students: {
     getProfile: async () => {
-      return fetchWithAuth("/users/profile");
+      return fetchWithAuth("/students/profile");
     },
-    updateProfile: async (userData) => {
-      const data = await fetchWithAuth("/users/profile", {
+    updateProfile: async (profileData) => {
+      return fetchWithAuth("/students/profile", {
         method: "PUT",
-        body: JSON.stringify(userData),
+        body: JSON.stringify(profileData),
       });
-      if (data.user) {
-        setStoredUser(data.user);
-      }
-      return data;
+    },
+    getMyClubs: async () => {
+      return fetchWithAuth("/students/my-clubs");
+    },
+    getMyEvents: async () => {
+      return fetchWithAuth("/students/my-events");
     },
   },
+
+  presidents: {
+    getProfile: async () => {
+      return fetchWithAuth("/presidents/profile");
+    },
+    updateProfile: async (profileData) => {
+      return fetchWithAuth("/presidents/profile", {
+        method: "PUT",
+        body: JSON.stringify(profileData),
+      });
+    },
+    getMyClub: async () => {
+      return fetchWithAuth("/presidents/my-club");
+    },
+    getMembers: async () => {
+      return fetchWithAuth("/presidents/members");
+    },
+    getAnalytics: async () => {
+      return fetchWithAuth("/presidents/analytics");
+    },
+  },
+
   clubs: {
-    getAll: async (params) => {
-      const query = params ? "?" + new URLSearchParams(params).toString() : "";
-      return fetchWithAuth(`/clubs${query}`);
+    getAll: async (params = {}) => {
+      const query = new URLSearchParams(params).toString();
+      return fetchWithAuth(`/clubs${query ? `?${query}` : ""}`);
     },
     getById: async (id) => {
       return fetchWithAuth(`/clubs/${id}`);
@@ -252,72 +262,86 @@ export const api = {
         method: "DELETE",
       });
     },
-    getMembers: async (id) => {
-      return fetchWithAuth(`/clubs/${id}/members`);
-    },
-    removeMember: async (clubId, studentId) => {
-      return fetchWithAuth(`/clubs/${clubId}/members/${studentId}`, {
-        method: "DELETE",
-      });
-    },
-    addEvent: async (clubId, eventData) => {
-      return fetchWithAuth(`/clubs/${clubId}/events`, {
-        method: "POST",
-        body: JSON.stringify(eventData),
-      });
-    },
-    removeEvent: async (clubId, eventId) => {
-      return fetchWithAuth(`/clubs/${clubId}/events/${eventId}`, {
-        method: "DELETE",
-      });
-    },
-    addAnnouncement: async (clubId, data) => {
-      return fetchWithAuth(`/clubs/${clubId}/announcements`, {
+  },
+
+  memberships: {
+    join: async (data) => {
+      return fetchWithAuth("/memberships/join", {
         method: "POST",
         body: JSON.stringify(data),
       });
     },
-    removeAnnouncement: async (clubId, announcementId) => {
-      return fetchWithAuth(`/clubs/${clubId}/announcements/${announcementId}`, {
-        method: "DELETE",
-      });
+    getMyMemberships: async () => {
+      return fetchWithAuth("/memberships/my-memberships");
     },
-    updateRecruitment: async (clubId, settings) => {
-      return fetchWithAuth(`/clubs/${clubId}/recruitment`, {
-        method: "PUT",
-        body: JSON.stringify(settings),
+    cancel: async (id) => {
+      return fetchWithAuth(`/memberships/${id}`, {
+        method: "DELETE",
       });
     },
   },
-  requests: {
-    submit: async (clubId, applicationData = {}) => {
-      const payload =
-        typeof applicationData === "string"
-          ? { clubId, note: applicationData }
-          : { clubId, ...applicationData };
-      return fetchWithAuth("/requests", {
+
+  events: {
+    getAll: async (params = {}) => {
+      const query = new URLSearchParams(params).toString();
+      return fetchWithAuth(`/events${query ? `?${query}` : ""}`);
+    },
+    create: async (eventData) => {
+      return fetchWithAuth("/events", {
         method: "POST",
-        body: JSON.stringify(payload),
+        body: JSON.stringify(eventData),
       });
     },
-    getMyRequests: async () => {
-      return fetchWithAuth("/requests/my");
-    },
-    cancel: async (id) => {
-      return fetchWithAuth(`/requests/${id}`, {
-        method: "DELETE",
-      });
-    },
-    getClubRequests: async (clubId = "all") => {
-      return fetchWithAuth(`/requests/club/${clubId}`);
-    },
-    review: async (id, reviewData) => {
-      const payload =
-        typeof reviewData === "string" ? { action: reviewData } : reviewData;
-      return fetchWithAuth(`/requests/${id}/review`, {
+    update: async (id, eventData) => {
+      return fetchWithAuth(`/events/${id}`, {
         method: "PUT",
-        body: JSON.stringify(payload),
+        body: JSON.stringify(eventData),
       });
+    },
+  },
+
+  activities: {
+    getAll: async (params = {}) => {
+      const query = new URLSearchParams(params).toString();
+      return fetchWithAuth(`/activities${query ? `?${query}` : ""}`);
+    },
+    create: async (activityData) => {
+      return fetchWithAuth("/activities", {
+        method: "POST",
+        body: JSON.stringify(activityData),
+      });
+    },
+  },
+
+  announcements: {
+    getAll: async (params = {}) => {
+      const query = new URLSearchParams(params).toString();
+      return fetchWithAuth(`/announcements${query ? `?${query}` : ""}`);
+    },
+    create: async (announcementData) => {
+      return fetchWithAuth("/announcements", {
+        method: "POST",
+        body: JSON.stringify(announcementData),
+      });
+    },
+  },
+
+  notifications: {
+    getAll: async () => {
+      return fetchWithAuth("/notifications");
+    },
+    markAsRead: async (id) => {
+      return fetchWithAuth(`/notifications/${id}/read`, {
+        method: "PATCH",
+      });
+    },
+    markAllAsRead: async () => {
+      return fetchWithAuth("/notifications/read-all", {
+        method: "PATCH",
+      });
+    },
+    getUnreadCount: async () => {
+      return fetchWithAuth("/notifications/unread-count");
     },
   },
 };

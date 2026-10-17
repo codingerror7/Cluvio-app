@@ -1,68 +1,89 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   HiOutlineCalendarDays,
   HiOutlineMapPin,
   HiOutlineClock,
-  HiOutlineUserGroup,
   HiOutlinePlus,
-  HiOutlineCheck,
+  HiOutlineCheckCircle,
   HiXMark,
 } from "react-icons/hi2";
-import { PRESIDENT_ACTIVITIES } from "@/lib/mockData";
+import { api } from "@/lib/api";
 
 export default function PresidentActivitiesView() {
-  const [activities, setActivities] = useState(PRESIDENT_ACTIVITIES);
-  const [statusTab, setStatusTab] = useState("Upcoming");
+  const [activities, setActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
 
-  const [newName, setNewName] = useState("");
-  const [newDate, setNewDate] = useState("");
-  const [newLocation, setNewLocation] = useState("");
-  const [newCategory, setNewCategory] = useState("Technical Workshop");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
+  const [location, setLocation] = useState("");
+  const [activityType, setActivityType] = useState("Workshop");
 
-  const filtered = activities.filter((act) => {
-    if (statusTab === "All") return true;
-    return act.status.toLowerCase() === statusTab.toLowerCase();
-  });
+  const loadActivities = async () => {
+    try {
+      setLoading(true);
+      const res = await api.activities.getAll();
+      if (res.success && Array.isArray(res.activities)) {
+        setActivities(res.activities);
+      }
+    } catch (err) {
+      console.warn("Failed to load activities:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const handleCreateActivity = (e) => {
+  useEffect(() => {
+    loadActivities();
+  }, []);
+
+  const handleCreateActivity = async (e) => {
     e.preventDefault();
-    if (!newName) return;
+    if (!title || !date) return;
 
-    const newAct = {
-      id: `act-${Date.now()}`,
-      name: newName,
-      date: newDate || "TBA 2026",
-      time: "03:00 PM",
-      location: newLocation || "Engineering Lab B-204",
-      participants: 0,
-      status: "Upcoming",
-      category: newCategory,
-      description: "New club activity scheduled for current academic semester.",
-    };
+    setSubmitting(true);
+    try {
+      const res = await api.activities.create({
+        title,
+        description,
+        date,
+        location,
+        activityType,
+      });
 
-    setActivities([newAct, ...activities]);
-    setShowModal(false);
-    setNewName("");
-    setNewDate("");
-    setNewLocation("");
-    setToastMsg("Activity scheduled successfully.");
-    setTimeout(() => setToastMsg(""), 2500);
+      if (res.success) {
+        setShowModal(false);
+        setTitle("");
+        setDescription("");
+        setDate("");
+        setLocation("");
+        setToastMsg("Activity proposal submitted for College Admin approval.");
+        setTimeout(() => setToastMsg(""), 3500);
+        await loadActivities();
+      }
+    } catch (err) {
+      alert(err.message || "Failed to propose activity.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-left">
       {/* Toast */}
       {toastMsg && (
-        <div className="fixed bottom-6 right-6 z-50 rounded-xl border border-white/20 bg-black/90 px-4 py-2.5 text-xs text-white shadow-2xl backdrop-blur-md">
-          {toastMsg}
+        <div className="fixed bottom-6 right-6 z-50 rounded-xl border border-emerald-500/30 bg-[#0d0d10] px-4 py-2.5 text-xs text-emerald-200 shadow-2xl backdrop-blur-md flex items-center gap-2">
+          <HiOutlineCheckCircle className="text-base text-emerald-400" />
+          <span>{toastMsg}</span>
         </div>
       )}
 
-      {/* Page Header (Part 26) */}
+      {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/8 pb-6">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
@@ -72,130 +93,84 @@ export default function PresidentActivitiesView() {
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
-            Activities
+            Activities & Workshops
           </h1>
           <p className="text-xs sm:text-sm text-neutral-400">
-            Schedule workshops, field demonstrations, guest lectures, and competitive team challenges.
+            Propose technical sprints, guest lectures, and lab sessions. All activities require College Admin approval.
           </p>
         </div>
 
         <button
           type="button"
           onClick={() => setShowModal(true)}
-          className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-xs font-semibold text-black hover:bg-neutral-200 transition-colors cursor-pointer active:scale-95"
+          className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-xs font-bold text-black hover:bg-neutral-200 transition-colors cursor-pointer active:scale-95"
         >
           <HiOutlinePlus className="text-sm" />
-          <span>New Activity</span>
+          <span>Propose Activity</span>
         </button>
       </div>
 
-      {/* Tabs: Upcoming / Completed / Draft (Part 26) */}
-      <div className="flex items-center gap-2 border-b border-white/8 pb-3 text-xs">
-        {["Upcoming", "Completed", "Draft", "All"].map((tab) => {
-          const isSelected = statusTab === tab;
-          const count = activities.filter((a) =>
-            tab === "All" ? true : a.status.toLowerCase() === tab.toLowerCase()
-          ).length;
-
-          return (
-            <button
-              key={tab}
-              type="button"
-              onClick={() => setStatusTab(tab)}
-              className={`rounded-full px-3.5 py-1.5 font-medium transition-colors cursor-pointer ${
-                isSelected
-                  ? "bg-white text-black font-semibold shadow-xs"
-                  : "border border-white/8 bg-white/[0.02] text-neutral-400 hover:text-white"
-              }`}
-            >
-              {tab} ({count})
-            </button>
-          );
-        })}
-      </div>
-
       {/* Activities Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filtered.map((activity) => (
-          <div
-            key={activity.id}
-            className="flex flex-col justify-between rounded-2xl border border-white/8 bg-[#0d0d10] p-5 transition-all hover:border-white/16 hover:-translate-y-0.5"
-          >
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="rounded-md border border-white/10 bg-white/[0.03] px-2 py-0.5 text-[10px] font-mono text-neutral-300">
-                  {activity.category}
+      {loading ? (
+        <div className="rounded-2xl border border-white/8 bg-[#0d0d10] p-12 text-center text-xs text-neutral-400">
+          Loading scheduled activities...
+        </div>
+      ) : activities.length === 0 ? (
+        <div className="rounded-2xl border border-white/8 bg-[#0d0d10] p-12 text-center text-xs text-neutral-400">
+          No activities proposed yet. Click &ldquo;Propose Activity&rdquo; to submit one for College Admin review.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {activities.map((act) => (
+            <div
+              key={act._id}
+              className="rounded-2xl border border-white/8 bg-[#0d0d10] p-5 space-y-3"
+            >
+              <div className="flex items-start justify-between">
+                <span className="rounded-md border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] font-mono text-neutral-300">
+                  {act.activityType || "Workshop"}
                 </span>
                 <span
-                  className={`rounded-full px-2 py-0.5 text-[10px] font-medium font-mono ${
-                    activity.status === "Upcoming"
-                      ? "bg-white/10 text-white border border-white/20"
-                      : activity.status === "Completed"
-                      ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                      : "bg-white/5 text-neutral-400 border border-white/8"
+                  className={`rounded-full px-2 py-0.5 text-[10px] font-mono border ${
+                    act.status === "Approved"
+                      ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+                      : "border-amber-500/30 bg-amber-500/10 text-amber-300"
                   }`}
                 >
-                  {activity.status}
+                  {act.status}
                 </span>
               </div>
 
-              <div>
-                <h3 className="text-base font-bold tracking-tight text-white">
-                  {activity.name}
-                </h3>
-                <p className="mt-1 line-clamp-2 text-xs text-neutral-400 leading-relaxed">
-                  {activity.description}
-                </p>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-white">{act.title}</h3>
+                {act.description && (
+                  <p className="text-xs text-neutral-400 line-clamp-2">{act.description}</p>
+                )}
               </div>
 
-              <div className="space-y-1.5 border-t border-white/6 pt-3 text-xs text-neutral-400">
-                <div className="flex items-center gap-2">
-                  <HiOutlineCalendarDays className="text-neutral-400 text-sm" />
-                  <span>
-                    {activity.date} • {activity.time}
-                  </span>
+              <div className="border-t border-white/6 pt-3 space-y-1 text-xs text-neutral-400 font-mono">
+                <div className="flex items-center gap-1.5">
+                  <HiOutlineCalendarDays className="text-sm" />
+                  <span>{act.date}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <HiOutlineMapPin className="text-neutral-400 text-sm" />
-                  <span className="truncate">{activity.location}</span>
+                <div className="flex items-center gap-1.5">
+                  <HiOutlineMapPin className="text-sm" />
+                  <span>{act.location || "Campus"}</span>
                 </div>
               </div>
             </div>
-
-            <div className="mt-5 border-t border-white/6 pt-3 flex items-center justify-between text-xs">
-              <div className="flex items-center gap-1.5 text-neutral-400 font-mono">
-                <HiOutlineUserGroup className="text-sm" />
-                <span>{activity.participants} Registered</span>
-              </div>
-              <button
-                type="button"
-                onClick={() => setToastMsg(`Viewing details for ${activity.name}`)}
-                className="rounded-lg border border-white/8 bg-white/[0.02] px-2.5 py-1 text-[11px] text-neutral-300 hover:text-white hover:border-white/16 cursor-pointer"
-              >
-                Manage
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {filtered.length === 0 && (
-        <div className="rounded-2xl border border-white/8 bg-white/[0.01] py-16 text-center text-xs text-neutral-400">
-          No activities found in this status category.
+          ))}
         </div>
       )}
 
-      {/* New Activity Modal (UI Only) */}
+      {/* Proposal Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm"
-            onClick={() => setShowModal(false)}
-          />
-          <div className="relative z-50 w-full max-w-md rounded-2xl border border-white/12 bg-[#0f0f12] p-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-[#0d0d10] p-6 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between border-b border-white/8 pb-3">
-              <h3 className="text-sm font-bold text-white">Create New Activity</h3>
+              <h2 className="text-base font-bold text-white">Propose Club Activity</h2>
               <button
+                type="button"
                 onClick={() => setShowModal(false)}
                 className="text-neutral-400 hover:text-white"
               >
@@ -203,54 +178,82 @@ export default function PresidentActivitiesView() {
               </button>
             </div>
 
-            <form onSubmit={handleCreateActivity} className="mt-4 space-y-4 text-xs">
-              <div>
-                <label className="text-neutral-300 block mb-1">Activity Name</label>
+            <form onSubmit={handleCreateActivity} className="space-y-3">
+              <div className="space-y-1">
+                <label className="text-xs font-medium text-neutral-300">Activity Title</label>
                 <input
                   type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="e.g. ROS2 Navigation Workshop"
                   required
-                  placeholder="e.g. SLAM Mapping Sprint"
-                  value={newName}
-                  onChange={(e) => setNewName(e.target.value)}
-                  className="w-full rounded-xl border border-white/10 bg-white/[0.04] p-2.5 text-white placeholder-neutral-500 focus:outline-none focus:border-white/30"
+                  className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2 text-xs text-white focus:outline-hidden"
                 />
               </div>
 
-              <div>
-                <label className="text-neutral-300 block mb-1">Date</label>
-                <input
-                  type="text"
-                  placeholder="e.g. 15 Nov 2026"
-                  value={newDate}
-                  onChange={(e) => setNewDate(e.target.value)}
-                  className="w-full rounded-xl border border-white/10 bg-white/[0.04] p-2.5 text-white placeholder-neutral-500 focus:outline-none focus:border-white/30"
+              <div className="space-y-1">
+                <label className="text-xs font-medium text-neutral-300">Activity Type</label>
+                <select
+                  value={activityType}
+                  onChange={(e) => setActivityType(e.target.value)}
+                  className="w-full rounded-xl border border-white/10 bg-[#141418] px-3.5 py-2 text-xs text-white focus:outline-hidden"
+                >
+                  <option value="Workshop">Workshop</option>
+                  <option value="Hackathon">Hackathon</option>
+                  <option value="Guest Lecture">Guest Lecture</option>
+                  <option value="Coding Sprint">Coding Sprint</option>
+                  <option value="Field Demo">Field Demo</option>
+                </select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-neutral-300">Date</label>
+                  <input
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    required
+                    className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2 text-xs text-white focus:outline-hidden"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-neutral-300">Location</label>
+                  <input
+                    type="text"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="e.g. CS Lab 3"
+                    className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2 text-xs text-white focus:outline-hidden"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-medium text-neutral-300">Description</label>
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  rows={3}
+                  placeholder="Briefly describe the syllabus, prerequisites, and expected outcomes..."
+                  className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2 text-xs text-white focus:outline-hidden"
                 />
               </div>
 
-              <div>
-                <label className="text-neutral-300 block mb-1">Location</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Lab B-204"
-                  value={newLocation}
-                  onChange={(e) => setNewLocation(e.target.value)}
-                  className="w-full rounded-xl border border-white/10 bg-white/[0.04] p-2.5 text-white placeholder-neutral-500 focus:outline-none focus:border-white/30"
-                />
-              </div>
-
-              <div className="flex justify-end gap-2 pt-2 border-t border-white/8">
+              <div className="flex justify-end gap-2 pt-3">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="rounded-xl border border-white/10 px-3 py-1.5 text-neutral-300 hover:text-white"
+                  className="rounded-xl border border-white/10 px-4 py-2 text-xs text-neutral-300 hover:text-white"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="rounded-xl bg-white px-4 py-1.5 font-semibold text-black hover:bg-neutral-200"
+                  disabled={submitting}
+                  className="rounded-xl bg-white px-4 py-2 text-xs font-bold text-black hover:bg-neutral-200 disabled:opacity-50"
                 >
-                  Save Activity
+                  {submitting ? "Submitting..." : "Submit Proposal"}
                 </button>
               </div>
             </form>

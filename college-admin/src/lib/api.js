@@ -1,5 +1,5 @@
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+  import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
 export const getAuthToken = () => {
   if (typeof window === "undefined") return null;
@@ -70,21 +70,7 @@ export const api = {
         method: "POST",
         body: JSON.stringify({
           ...credentials,
-          role: "college-admin",
-        }),
-      });
-      if (data.token) {
-        setAuthToken(data.token);
-        setStoredUser(data.user);
-      }
-      return data;
-    },
-    register: async (userData) => {
-      const data = await fetchWithAuth("/auth/register", {
-        method: "POST",
-        body: JSON.stringify({
-          ...userData,
-          role: "college-admin",
+          role: "college_admin",
         }),
       });
       if (data.token) {
@@ -107,9 +93,83 @@ export const api = {
       clearAuthToken();
     },
   },
+
+  dashboard: {
+    getStats: async () => {
+      return fetchWithAuth("/college-admin/dashboard");
+    },
+  },
+
+  approvals: {
+    getAll: async (params = {}) => {
+      const query = new URLSearchParams(params).toString();
+      return fetchWithAuth(`/approvals${query ? `?${query}` : ""}`);
+    },
+    getCounts: async () => {
+      return fetchWithAuth("/approvals/counts");
+    },
+    approve: async (id) => {
+      return fetchWithAuth(`/approvals/${id}/approve`, {
+        method: "POST",
+      });
+    },
+    reject: async (id, reason) => {
+      return fetchWithAuth(`/approvals/${id}/reject`, {
+        method: "POST",
+        body: JSON.stringify({ reason }),
+      });
+    },
+  },
+
+  students: {
+    getAll: async (params = {}) => {
+      const query = new URLSearchParams(params).toString();
+      return fetchWithAuth(`/college-admin/students${query ? `?${query}` : ""}`);
+    },
+  },
+
+  presidents: {
+    getAll: async (params = {}) => {
+      const query = new URLSearchParams(params).toString();
+      return fetchWithAuth(`/college-admin/presidents${query ? `?${query}` : ""}`);
+    },
+    generateCode: async (data) => {
+      return fetchWithAuth("/college-admin/presidents/generate-code", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+    },
+    getCodes: async () => {
+      return fetchWithAuth("/college-admin/presidents/codes");
+    },
+    revokeCode: async (id) => {
+      return fetchWithAuth(`/college-admin/presidents/codes/${id}/revoke`, {
+        method: "PATCH",
+      });
+    },
+  },
+
   clubs: {
-    getAll: async () => {
-      return fetchWithAuth("/clubs");
+    getAll: async (params = {}) => {
+      const query = new URLSearchParams(params).toString();
+      return fetchWithAuth(`/clubs${query ? `?${query}` : ""}`);
+    },
+    getById: async (id) => {
+      return fetchWithAuth(`/clubs/${id}`);
+    },
+  },
+
+  events: {
+    getAll: async (params = {}) => {
+      const query = new URLSearchParams(params).toString();
+      return fetchWithAuth(`/events${query ? `?${query}` : ""}`);
+    },
+  },
+
+  auditLogs: {
+    getAll: async (params = {}) => {
+      const query = new URLSearchParams(params).toString();
+      return fetchWithAuth(`/college-admin/audit-logs${query ? `?${query}` : ""}`);
     },
   },
 };

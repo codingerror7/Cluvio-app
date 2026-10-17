@@ -22,7 +22,10 @@ export const protect = async (req, res, next) => {
     const secret = process.env.JWT_SECRET || "cluvio_jwt_secret_college_demo_key_2026";
     const decoded = jwt.verify(token, secret);
 
-    const user = await User.findById(decoded.id).select("-password");
+    const user = await User.findById(decoded.id)
+      .select("-password")
+      .populate("college", "name code address status");
+
     if (!user) {
       return res.status(401).json({
         success: false,

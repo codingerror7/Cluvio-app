@@ -1,16 +1,27 @@
 import Club from "../models/Club.js";
 import User from "../models/User.js";
 import Membership from "../models/Membership.js";
-import MembershipRequest from "../models/MembershipRequest.js";
-import ActivityLog from "../models/ActivityLog.js";
+import Approval from "../models/Approval.js";
+import Notification from "../models/Notification.js";
+import AuditLog from "../models/AuditLog.js";
 import { UserRole } from "../constants/roles.js";
+import { verifyTenantAccess } from "../middleware/tenant.middleware.js";
 
 export const getAllClubs = async (req, res) => {
   try {
     const { search, category, status } = req.query;
     const filter = {};
 
-    if (status && status !== "all") {
+    // Multi-tenant isolation: strictly filter by college if available
+    if (req.collegeId) {
+      filter.college = req.collegeId;
+    }
+
+    // Role-based visibility: regular students can ONLY discover Active clubs
+    const isCollegeAdmin = req.user && (req.user.role === UserRole.COLLEGE_ADMIN || req.user.role === UserRole.PLATFORM_ADMIN);
+    if (!isCollegeAdmin) {
+      filter.status = "Active";
+    } else if (status && status !== "all") {
       filter.status = status;
     }
 
@@ -27,30 +38,35 @@ export const getAllClubs = async (req, res) => {
 
     const clubs = await Club.find(filter)
       .populate("president", "name email avatar department year")
+      .populate("college", "name code")
       .sort({ createdAt: -1 });
 
-    // If user is authenticated, check their membership & request status
+    // If user is authenticated, determine membership & request status
     let userMemberships = new Set();
-    let userRequests = new Map();
+    let userPendingRequests = new Set();
 
     if (req.user) {
       const memberships = await Membership.find({ student: req.user._id });
-      memberships.forEach((m) => userMemberships.add(m.club.toString()));
-
-      const requests = await MembershipRequest.find({ student: req.user._id });
-      requests.forEach((r) => userRequests.set(r.club.toString(), r.status));
+      memberships.forEach((m) => {
+        if (m.status === "Active") {
+          userMemberships.add(m.club.toString());
+        } else if (m.status === "Pending") {
+          userPendingRequests.add(m.club.toString());
+        }
+      });
     }
 
     const formatted = clubs.map((c) => {
       const clubObj = c.toObject();
       const clubId = c._id.toString();
+      const isMember = userMemberships.has(clubId);
+      const isPending = userPendingRequests.has(clubId);
+
       return {
         ...clubObj,
         id: c._id,
-        isMember: userMemberships.has(clubId),
-        membershipStatus: userMemberships.has(clubId)
-          ? "Member"
-          : userRequests.get(clubId) || "Not Joined",
+        isMember,
+        membershipStatus: isMember ? "Member" : isPending ? "Pending" : "Not Joined",
       };
     });
 
@@ -71,17 +87,21 @@ export const getAllClubs = async (req, res) => {
 export const getClubById = async (req, res) => {
   try {
     const { id } = req.params;
-    const club = await Club.findById(id).populate(
-      "president",
-      "name email avatar department year enrollmentNumber studentId"
-    );
+    const club = await Club.findById(id)
+      .populate("president", "name email avatar department year enrollmentNumber studentId phone")
+      .populate("college", "name code");
 
     if (!club) {
       return res.status(404).json({ success: false, message: "Club not found." });
     }
 
-    // Get active members for detail view
-    const memberships = await Membership.find({ club: club._id })
+    // Tenant check
+    if (req.user && !verifyTenantAccess(club.college, req)) {
+      return res.status(403).json({ success: false, message: "Forbidden: Access to another college's club is not permitted." });
+    }
+
+    // Active members
+    const memberships = await Membership.find({ club: club._id, status: "Active" })
       .populate("student", "name email avatar department year studentId enrollmentNumber")
       .sort({ createdAt: -1 });
 
@@ -91,45 +111,30 @@ export const getClubById = async (req, res) => {
       email: m.student?.email || "",
       department: m.student?.department || "General",
       year: m.student?.year || "1st Year",
-      joinedDate: m.joinedDate ? new Date(m.joinedDate).toLocaleDateString("en-GB", { day: '2-digit', month: 'short', year: 'numeric' }) : "",
-      avatar: m.student?.avatar || "",
+      joinedDate: m.approvedAt || m.createdAt,
+      avatar: m.student?.avatar || "/avatars/avatar-1.svg",
       role: m.role,
     }));
 
-    // Check current user status if authenticated
     let userStatus = "Not Joined";
     if (req.user) {
-      const isMember = memberships.some(
-        (m) => m.student?._id?.toString() === req.user._id.toString()
-      );
-      if (isMember) {
-        userStatus = "Member";
-      } else {
-        const reqDoc = await MembershipRequest.findOne({
-          club: club._id,
-          student: req.user._id,
-        }).sort({ createdAt: -1 });
-        if (reqDoc) userStatus = reqDoc.status;
+      const myMembership = await Membership.findOne({ club: club._id, student: req.user._id });
+      if (myMembership) {
+        userStatus = myMembership.status === "Active" ? "Member" : myMembership.status;
       }
     }
 
-    const clubObj = club.toObject();
     return res.status(200).json({
       success: true,
       club: {
-        ...clubObj,
+        ...club.toObject(),
         id: club._id,
-        membersCount: memberships.length,
-        recentMembers,
         userStatus,
+        recentMembers,
       },
     });
   } catch (error) {
-    console.error("Get club by ID error:", error);
-    return res.status(500).json({
-      success: false,
-      message: error.message || "Failed to retrieve club details.",
-    });
+    return res.status(500).json({ success: false, message: "Failed to fetch club details." });
   }
 };
 
@@ -139,12 +144,16 @@ export const createClub = async (req, res) => {
       name,
       description,
       category,
+      sector,
+      tags,
+      coverImage,
       logo,
       objectives,
       activities,
       meetingSchedule,
+      budgetAllocated,
       maxMembers,
-      presidentId,
+      hiringDomains,
     } = req.body;
 
     if (!name || !description) {
@@ -154,63 +163,109 @@ export const createClub = async (req, res) => {
       });
     }
 
-    // Check duplicate name
-    const existing = await Club.findOne({ name: { $regex: `^${name.trim()}$`, $options: "i" } });
-    if (existing) {
+    const collegeId = req.collegeId;
+
+    // Check duplicate name within the same college
+    const existingClub = await Club.findOne({
+      name: { $regex: new RegExp(`^${name.trim()}$`, "i") },
+      college: collegeId,
+    });
+    if (existingClub) {
       return res.status(409).json({
         success: false,
-        message: "A club with this name already exists.",
+        message: "A club with this name already exists in your college.",
       });
     }
 
-    const assignedPresidentId = req.user._id;
-
-    const club = await Club.create({
+    // Club creation requires College Admin approval: status starts as Pending
+    const newClub = await Club.create({
       name: name.trim(),
+      college: collegeId,
+      collegeName: req.user.collegeName || "",
       description: description.trim(),
       category: category || "Technical",
+      sector: sector || "Technical & Innovation",
+      tags: Array.isArray(tags) ? tags : ["Tech", "Engineering"],
+      coverImage: coverImage || "",
       logo: logo || "💻",
-      president: assignedPresidentId,
+      president: req.user._id,
       objectives: objectives || "",
       activities: activities || "",
-      meetingSchedule: meetingSchedule || "Weekly on Wednesdays",
-      maxMembers: maxMembers ? Number(maxMembers) : 500,
+      meetingSchedule: meetingSchedule || "Weekly meetups",
+      budgetAllocated: budgetAllocated || 25000,
+      maxMembers: maxMembers || 500,
       membersCount: 1,
-      status: "Active",
+      hiringDomains: Array.isArray(hiringDomains) ? hiringDomains : ["Technical & Coding"],
+      status: "Pending",
     });
 
-    // Add president as first member
-    try {
-      await Membership.create({
-        student: assignedPresidentId,
-        club: club._id,
-        role: "Core Team",
+    // Automatically create creator's President membership
+    await Membership.create({
+      college: collegeId,
+      student: req.user._id,
+      club: newClub._id,
+      role: "Club President",
+      status: "Active",
+      approvedAt: new Date(),
+    });
+
+    // Create approval item for College Admin
+    await Approval.create({
+      college: collegeId,
+      requestedBy: req.user._id,
+      actionType: "CLUB_CREATE",
+      resourceType: "Club",
+      resourceId: newClub._id,
+      status: "Pending",
+      metadata: {
+        name: newClub.name,
+        category: newClub.category,
+        description: newClub.description,
+        president: req.user.name,
+      },
+    });
+
+    // Notify College Admin(s)
+    const collegeAdmins = await User.find({
+      college: collegeId,
+      role: UserRole.COLLEGE_ADMIN,
+    });
+
+    for (const admin of collegeAdmins) {
+      await Notification.create({
+        recipient: admin._id,
+        college: collegeId,
+        title: "New Club Charter Request",
+        message: `Club President ${req.user.name} submitted "${newClub.name}" for charter approval.`,
+        type: "approval",
+        relatedResource: {
+          resourceType: "Club",
+          resourceId: newClub._id,
+        },
       });
-    } catch (e) {
-      // ignore duplicate
     }
 
-    // Activity log
-    await ActivityLog.create({
-      title: "New Club Chartered",
-      description: `${club.name} (${club.category}) was created and chartered.`,
+    // Audit Log
+    await AuditLog.create({
+      actorId: req.user._id,
+      actorName: req.user.name,
+      actorEmail: req.user.email,
+      actorRole: req.user.role,
+      college: collegeId,
+      collegeName: req.user.collegeName,
+      action: "CLUB_CREATED",
+      title: "New Club Created (Pending Approval)",
+      description: `${req.user.name} created club "${newClub.name}". Status is Pending College Admin review.`,
+      resourceType: "Club",
+      resourceId: newClub._id,
       type: "club",
-      club: club._id,
-      user: req.user._id,
+      status: "Pending",
     });
-
-    const populated = await Club.findById(club._id).populate(
-      "president",
-      "name email avatar department year"
-    );
 
     return res.status(201).json({
       success: true,
-      message: "Club chartered successfully.",
-      club: {
-        ...populated.toObject(),
-        id: populated._id,
-      },
+      message: "Club charter submitted successfully and is pending College Admin approval.",
+      club: newClub,
     });
   } catch (error) {
     console.error("Create club error:", error);
@@ -230,8 +285,14 @@ export const updateClub = async (req, res) => {
       return res.status(404).json({ success: false, message: "Club not found." });
     }
 
-    // Role check: Only assigned president
-    if (club.president.toString() !== req.user._id.toString()) {
+    if (!verifyTenantAccess(club.college, req)) {
+      return res.status(403).json({ success: false, message: "Forbidden: Cross-tenant modification denied." });
+    }
+
+    const isPresidentOfThisClub = club.president.toString() === req.user._id.toString();
+    const isCollegeAdmin = req.user.role === UserRole.COLLEGE_ADMIN || req.user.role === UserRole.PLATFORM_ADMIN;
+
+    if (!isPresidentOfThisClub && !isCollegeAdmin) {
       return res.status(403).json({
         success: false,
         message: "Forbidden: You are not authorized to edit this club.",
@@ -242,62 +303,120 @@ export const updateClub = async (req, res) => {
       name,
       description,
       category,
+      sector,
+      tags,
+      coverImage,
       logo,
       objectives,
       activities,
       meetingSchedule,
-      maxMembers,
-      status,
-      presidentId,
+      recruitmentOpen,
     } = req.body;
 
-    if (name && name.trim() !== club.name) {
-      const duplicate = await Club.findOne({
-        _id: { $ne: club._id },
-        name: { $regex: `^${name.trim()}$`, $options: "i" },
+    const requestedChanges = {};
+    if (name) requestedChanges.name = name.trim();
+    if (description) requestedChanges.description = description.trim();
+    if (category) requestedChanges.category = category;
+    if (sector) requestedChanges.sector = sector;
+    if (Array.isArray(tags)) requestedChanges.tags = tags;
+    if (coverImage !== undefined) requestedChanges.coverImage = coverImage;
+    if (logo) requestedChanges.logo = logo;
+    if (objectives !== undefined) requestedChanges.objectives = objectives;
+    if (activities !== undefined) requestedChanges.activities = activities;
+    if (meetingSchedule) requestedChanges.meetingSchedule = meetingSchedule;
+    if (recruitmentOpen !== undefined) requestedChanges.recruitmentOpen = recruitmentOpen;
+
+    // If College Admin edits directly, apply immediately
+    if (isCollegeAdmin) {
+      Object.assign(club, requestedChanges);
+      await club.save();
+
+      await AuditLog.create({
+        actorId: req.user._id,
+        actorName: req.user.name,
+        actorEmail: req.user.email,
+        actorRole: req.user.role,
+        college: club.college,
+        action: "CLUB_UPDATED",
+        title: "Club Updated by Admin",
+        description: `College Admin updated details for "${club.name}".`,
+        resourceType: "Club",
+        resourceId: club._id,
+        type: "club",
+        status: "Success",
       });
-      if (duplicate) {
-        return res.status(409).json({
-          success: false,
-          message: "Another club is already using this name.",
-        });
-      }
-      club.name = name.trim();
+
+      return res.status(200).json({
+        success: true,
+        message: "Club updated successfully by College Admin.",
+        club,
+      });
     }
 
-    if (description) club.description = description.trim();
-    if (category) club.category = category;
-    if (logo) club.logo = logo;
-    if (objectives !== undefined) club.objectives = objectives;
-    if (activities !== undefined) club.activities = activities;
-    if (meetingSchedule !== undefined) club.meetingSchedule = meetingSchedule;
-    if (maxMembers) club.maxMembers = Number(maxMembers);
-    if (status) club.status = status;
-
-
-
+    // When President edits: DO NOT overwrite active approved club data! Store into pendingChanges
+    club.pendingChanges = requestedChanges;
     await club.save();
 
-    await ActivityLog.create({
-      title: "Club Details Updated",
-      description: `${club.name} details were updated by ${req.user.name}.`,
-      type: "club",
-      club: club._id,
-      user: req.user._id,
+    // Create approval item
+    await Approval.create({
+      college: club.college,
+      requestedBy: req.user._id,
+      actionType: "CLUB_UPDATE",
+      resourceType: "Club",
+      resourceId: club._id,
+      status: "Pending",
+      metadata: {
+        clubName: club.name,
+        previous: {
+          name: club.name,
+          description: club.description,
+          category: club.category,
+          sector: club.sector,
+        },
+        requested: requestedChanges,
+      },
     });
 
-    const populated = await Club.findById(club._id).populate(
-      "president",
-      "name email avatar department year"
-    );
+    // Notify College Admin
+    const collegeAdmins = await User.find({
+      college: club.college,
+      role: UserRole.COLLEGE_ADMIN,
+    });
+
+    for (const admin of collegeAdmins) {
+      await Notification.create({
+        recipient: admin._id,
+        college: club.college,
+        title: "Club Information Update Request",
+        message: `Club President ${req.user.name} submitted changes for "${club.name}". Awaiting review.`,
+        type: "approval",
+        relatedResource: {
+          resourceType: "Club",
+          resourceId: club._id,
+        },
+      });
+    }
+
+    // Audit Log
+    await AuditLog.create({
+      actorId: req.user._id,
+      actorName: req.user.name,
+      actorEmail: req.user.email,
+      actorRole: req.user.role,
+      college: club.college,
+      action: "CLUB_UPDATE_REQUESTED",
+      title: "Club Edit Submitted for Approval",
+      description: `${req.user.name} submitted edits for "${club.name}". Public data preserved pending approval.`,
+      resourceType: "Club",
+      resourceId: club._id,
+      type: "club",
+      status: "Pending",
+    });
 
     return res.status(200).json({
       success: true,
-      message: "Club updated successfully.",
-      club: {
-        ...populated.toObject(),
-        id: populated._id,
-      },
+      message: "Club edits submitted for College Admin approval. The currently approved version remains visible.",
+      club,
     });
   } catch (error) {
     console.error("Update club error:", error);
@@ -317,308 +436,49 @@ export const deleteClub = async (req, res) => {
       return res.status(404).json({ success: false, message: "Club not found." });
     }
 
-    // Role check: Only assigned president
-    if (club.president.toString() !== req.user._id.toString()) {
-      return res.status(403).json({
-        success: false,
-        message: "Forbidden: You are not authorized to delete this club.",
-      });
+    if (!verifyTenantAccess(club.college, req)) {
+      return res.status(403).json({ success: false, message: "Forbidden: Cross-tenant action denied." });
     }
 
-    const clubName = club.name;
-
-    // Clean up memberships and requests associated with this club
-    await Membership.deleteMany({ club: club._id });
-    await MembershipRequest.deleteMany({ club: club._id });
-    await Club.findByIdAndDelete(club._id);
-
-    await ActivityLog.create({
-      title: "Club Dissolved",
-      description: `${clubName} was permanently dissolved and removed.`,
-      type: "alert",
-      user: req.user._id,
+    // Create approval item for club deletion
+    await Approval.create({
+      college: club.college,
+      requestedBy: req.user._id,
+      actionType: "CLUB_DELETE",
+      resourceType: "Club",
+      resourceId: club._id,
+      status: "Pending",
+      metadata: {
+        clubName: club.name,
+        membersCount: club.membersCount,
+      },
     });
+
+    // Notify College Admin
+    const collegeAdmins = await User.find({
+      college: club.college,
+      role: UserRole.COLLEGE_ADMIN,
+    });
+
+    for (const admin of collegeAdmins) {
+      await Notification.create({
+        recipient: admin._id,
+        college: club.college,
+        title: "Club Deletion Request",
+        message: `Club President ${req.user.name} requested deletion of "${club.name}".`,
+        type: "approval",
+        relatedResource: {
+          resourceType: "Club",
+          resourceId: club._id,
+        },
+      });
+    }
 
     return res.status(200).json({
       success: true,
-      message: `Club '${clubName}' was deleted successfully.`,
+      message: "Club deletion request submitted for College Admin approval.",
     });
   } catch (error) {
-    console.error("Delete club error:", error);
-    return res.status(500).json({
-      success: false,
-      message: error.message || "Failed to delete club.",
-    });
+    return res.status(500).json({ success: false, message: "Failed to request club deletion." });
   }
 };
-
-export const getClubMembers = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const memberships = await Membership.find({ club: id })
-      .populate("student", "name email avatar department year studentId enrollmentNumber")
-      .sort({ createdAt: -1 });
-
-    const members = memberships.map((m) => ({
-      id: m.student?._id,
-      membershipId: m._id,
-      name: m.student?.name || "Student",
-      email: m.student?.email || "",
-      department: m.student?.department || "General",
-      year: m.student?.year || "1st Year",
-      studentId: m.student?.studentId || m.student?.enrollmentNumber || "",
-      avatar: m.student?.avatar || "",
-      role: m.role,
-      joinedDate: m.joinedDate,
-    }));
-
-    return res.status(200).json({
-      success: true,
-      count: members.length,
-      members,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message || "Failed to fetch club members.",
-    });
-  }
-};
-
-export const removeMember = async (req, res) => {
-  try {
-    const { id, studentId } = req.params;
-    const club = await Club.findById(id);
-
-    if (!club) {
-      return res.status(404).json({ success: false, message: "Club not found." });
-    }
-
-    if (club.president.toString() !== req.user._id.toString()) {
-      return res.status(403).json({
-        success: false,
-        message: "Forbidden: You are not authorized to manage members of this club.",
-      });
-    }
-
-    // Remove membership
-    const deleted = await Membership.findOneAndDelete({
-      club: club._id,
-      student: studentId,
-    });
-
-    if (!deleted) {
-      return res.status(404).json({
-        success: false,
-        message: "Membership record not found.",
-      });
-    }
-
-    // Update count
-    const remainingCount = await Membership.countDocuments({ club: club._id });
-    club.membersCount = remainingCount;
-    await club.save();
-
-    return res.status(200).json({
-      success: true,
-      message: "Member removed from club successfully.",
-      membersCount: remainingCount,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message || "Failed to remove member.",
-    });
-  }
-};
-
-export const addEvent = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { title, date, time, location, description, status } = req.body;
-
-    if (!title) {
-      return res.status(400).json({ success: false, message: "Event title is required." });
-    }
-
-    const club = await Club.findById(id);
-    if (!club) {
-      return res.status(404).json({ success: false, message: "Club not found." });
-    }
-
-    if (club.president.toString() !== req.user._id.toString()) {
-      return res.status(403).json({
-        success: false,
-        message: "Forbidden: You are not authorized to manage events for this club.",
-      });
-    }
-
-    const newEvent = {
-      title: title.trim(),
-      date: date || new Date().toISOString().split("T")[0],
-      time: time || "5:00 PM",
-      location: location || "Campus Center",
-      description: description || "",
-      status: status || "Upcoming",
-      attendees: 0,
-    };
-
-    club.recentEvents.unshift(newEvent);
-    club.eventsCount = club.recentEvents.length;
-    await club.save();
-
-    return res.status(201).json({
-      success: true,
-      message: "Activity event added successfully.",
-      event: club.recentEvents[0],
-      events: club.recentEvents,
-    });
-  } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-export const removeEvent = async (req, res) => {
-  try {
-    const { id, eventId } = req.params;
-    const club = await Club.findById(id);
-    if (!club) {
-      return res.status(404).json({ success: false, message: "Club not found." });
-    }
-
-    if (club.president.toString() !== req.user._id.toString()) {
-      return res.status(403).json({
-        success: false,
-        message: "Forbidden: You are not authorized to manage events for this club.",
-      });
-    }
-
-    club.recentEvents = club.recentEvents.filter(
-      (e) => e._id.toString() !== eventId
-    );
-    club.eventsCount = club.recentEvents.length;
-    await club.save();
-
-    return res.status(200).json({
-      success: true,
-      message: "Event removed successfully.",
-      events: club.recentEvents,
-    });
-  } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-export const addAnnouncement = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { title, message, priority } = req.body;
-
-    if (!title || !message) {
-      return res.status(400).json({
-        success: false,
-        message: "Title and message are required for announcement.",
-      });
-    }
-
-    const club = await Club.findById(id);
-    if (!club) {
-      return res.status(404).json({ success: false, message: "Club not found." });
-    }
-
-    if (club.president.toString() !== req.user._id.toString()) {
-      return res.status(403).json({
-        success: false,
-        message: "Forbidden: You are not authorized to post announcements for this club.",
-      });
-    }
-
-    const announcement = {
-      title: title.trim(),
-      message: message.trim(),
-      priority: priority || "Normal",
-      date: new Date().toLocaleDateString("en-GB"),
-      createdAt: new Date(),
-    };
-
-    club.announcements.unshift(announcement);
-    await club.save();
-
-    return res.status(201).json({
-      success: true,
-      message: "Announcement posted successfully.",
-      announcement: club.announcements[0],
-      announcements: club.announcements,
-    });
-  } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-export const removeAnnouncement = async (req, res) => {
-  try {
-    const { id, announcementId } = req.params;
-    const club = await Club.findById(id);
-    if (!club) {
-      return res.status(404).json({ success: false, message: "Club not found." });
-    }
-
-    if (club.president.toString() !== req.user._id.toString()) {
-      return res.status(403).json({
-        success: false,
-        message: "Forbidden: You are not authorized to delete announcements for this club.",
-      });
-    }
-
-    club.announcements = club.announcements.filter(
-      (a) => a._id.toString() !== announcementId
-    );
-    await club.save();
-
-    return res.status(200).json({
-      success: true,
-      message: "Announcement removed.",
-      announcements: club.announcements,
-    });
-  } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-export const updateRecruitmentSettings = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { recruitmentOpen, hiringDomains } = req.body;
-
-    const club = await Club.findById(id);
-    if (!club) {
-      return res.status(404).json({ success: false, message: "Club not found." });
-    }
-
-    if (club.president.toString() !== req.user._id.toString()) {
-      return res.status(403).json({
-        success: false,
-        message: "Forbidden: You are not authorized to update settings for this club.",
-      });
-    }
-
-    if (typeof recruitmentOpen === "boolean") {
-      club.recruitmentOpen = recruitmentOpen;
-    }
-    if (Array.isArray(hiringDomains)) {
-      club.hiringDomains = hiringDomains;
-    }
-
-    await club.save();
-
-    return res.status(200).json({
-      success: true,
-      message: "Recruitment settings updated successfully.",
-      recruitmentOpen: club.recruitmentOpen,
-      hiringDomains: club.hiringDomains,
-    });
-  } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
-  }
-};
-

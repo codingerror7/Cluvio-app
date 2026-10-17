@@ -6,32 +6,41 @@ import ClubCard from "./ClubCard";
 
 const SECTORS = [
   "All",
-  "Technology",
-  "Arts",
-  "Sports",
+  "Technical",
+  "Engineering",
+  "Creative",
   "Cultural",
-  "Academic",
+  "Sports",
+  "Literary",
   "Social",
 ];
 
-export default function ClubGrid({ clubs = [] }) {
+export default function ClubGrid({ clubs = [], onActionSuccess }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSector, setSelectedSector] = useState("All");
 
   const filteredClubs = useMemo(() => {
     return clubs.filter((club) => {
-      const matchesSearch =
-        club.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        club.tags.some((t) =>
-          t.toLowerCase().includes(searchQuery.toLowerCase())
-        ) ||
-        club.president.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (club.description &&
-          club.description.toLowerCase().includes(searchQuery.toLowerCase()));
+      const q = searchQuery.toLowerCase().trim();
+      const clubName = club.name?.toLowerCase() || "";
+      const clubDesc = club.description?.toLowerCase() || "";
+      const presName =
+        typeof club.president === "object"
+          ? club.president?.name?.toLowerCase() || ""
+          : (club.president || "").toLowerCase();
 
+      const tags = Array.isArray(club.tags) ? club.tags : [];
+      const matchesSearch =
+        !q ||
+        clubName.includes(q) ||
+        clubDesc.includes(q) ||
+        presName.includes(q) ||
+        tags.some((t) => (t || "").toLowerCase().includes(q));
+
+      const clubCategory = (club.category || club.sector || "").toLowerCase();
       const matchesSector =
         selectedSector === "All" ||
-        club.sector.toLowerCase() === selectedSector.toLowerCase();
+        clubCategory.includes(selectedSector.toLowerCase());
 
       return matchesSearch && matchesSector;
     });
@@ -49,7 +58,7 @@ export default function ClubGrid({ clubs = [] }) {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search clubs, tags, presidents..."
-            className="w-full rounded-xl border border-white/10 bg-white/[0.03] py-2 pl-9 pr-8 text-xs text-white placeholder-neutral-500 transition-colors focus:border-white/30 focus:outline-none"
+            className="w-full rounded-xl border border-white/10 bg-white/[0.03] py-2 pl-9 pr-8 text-xs text-white placeholder-neutral-500 transition-colors focus:border-white/30 focus:outline-hidden"
           />
           {searchQuery && (
             <button
@@ -86,7 +95,7 @@ export default function ClubGrid({ clubs = [] }) {
       {/* Clubs Count & Active Filter Indicator */}
       <div className="flex items-center justify-between text-xs text-neutral-400 border-b border-white/6 pb-3">
         <span>
-          Showing <span className="text-white font-medium">{filteredClubs.length}</span> of {clubs.length} clubs
+          Showing <span className="text-white font-medium">{filteredClubs.length}</span> of {clubs.length} approved clubs
         </span>
         {selectedSector !== "All" && (
           <span className="text-neutral-400">
@@ -95,16 +104,20 @@ export default function ClubGrid({ clubs = [] }) {
         )}
       </div>
 
-      {/* Responsive Grid: 3 cards on desktop, 2 on tablet, 1 on mobile */}
+      {/* Responsive Grid */}
       {filteredClubs.length > 0 ? (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredClubs.map((club) => (
-            <ClubCard key={club.id} club={club} />
+            <ClubCard
+              key={club._id || club.id}
+              club={club}
+              onJoinSuccess={onActionSuccess}
+            />
           ))}
         </div>
       ) : (
         <div className="rounded-2xl border border-white/8 bg-white/[0.01] py-16 text-center">
-          <p className="text-sm font-medium text-white">No clubs found</p>
+          <p className="text-sm font-medium text-white">No matching clubs found</p>
           <p className="mt-1 text-xs text-neutral-400">
             Try adjusting your search query or switching sector filters.
           </p>
@@ -114,7 +127,7 @@ export default function ClubGrid({ clubs = [] }) {
               setSearchQuery("");
               setSelectedSector("All");
             }}
-            className="mt-4 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-1.5 text-xs text-neutral-300 hover:text-white"
+            className="mt-4 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-1.5 text-xs text-neutral-300 hover:text-white cursor-pointer"
           >
             Reset Filters
           </button>

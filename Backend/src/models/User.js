@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema(
       default: UserRole.STUDENT,
       required: true,
     },
+    college: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "College",
+    },
     collegeName: {
       type: String,
       trim: true,
@@ -66,15 +70,32 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "Computer Science",
     },
+    course: {
+      type: String,
+      default: "B.Tech",
+    },
     year: {
       type: String,
       default: "1st Year",
+    },
+    phone: {
+      type: String,
+      default: "",
     },
     favouriteGenres: {
       type: [String],
       default: [],
     },
     avatar: {
+      type: String,
+      default: "/avatars/avatar-1.svg",
+    },
+    profileStatus: {
+      type: String,
+      enum: ["Pending", "Approved", "Rejected"],
+      default: "Pending",
+    },
+    profileRejectionReason: {
       type: String,
       default: "",
     },

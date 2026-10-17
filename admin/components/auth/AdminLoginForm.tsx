@@ -21,9 +21,10 @@ export const AdminLoginForm: React.FC = () => {
 
     try {
       const response = await api.auth.login({ email, password });
-      if (response.user.role !== 'admin') {
+      const role = response.user?.role;
+      if (role !== 'platform_admin' && role !== 'admin') {
         api.auth.logout();
-        setError('Forbidden: This account does not possess administrator credentials.');
+        setError('Forbidden: This account does not possess Platform Administrator credentials.');
         setLoading(false);
         return;
       }
@@ -36,8 +37,8 @@ export const AdminLoginForm: React.FC = () => {
   };
 
   const handleFillDemo = () => {
-    setEmail('admin@cluvio.edu');
-    setPassword('Admin@123');
+    setEmail('platform.admin@cluvio.internal');
+    setPassword('PlatformAdmin@123');
     setError(null);
   };
 

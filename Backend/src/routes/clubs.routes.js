@@ -1,87 +1,56 @@
 import express from "express";
-import jwt from "jsonwebtoken";
-import User from "../models/User.js";
 import {
   getAllClubs,
   getClubById,
   createClub,
   updateClub,
   deleteClub,
-  getClubMembers,
-  removeMember,
-  addEvent,
-  removeEvent,
-  addAnnouncement,
-  removeAnnouncement,
-  updateRecruitmentSettings,
 } from "../controller/clubs.controller.js";
 import { protect } from "../middleware/auth.middleware.js";
 import { authorize } from "../middleware/role.middleware.js";
+import { requireTenant } from "../middleware/tenant.middleware.js";
 import { UserRole } from "../constants/roles.js";
 
 const router = express.Router();
 
-// Optional auth middleware so public can view clubs, but logged-in user gets their membership status
-const optionalProtect = async (req, res, next) => {
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer ")
-  ) {
-    try {
-      const token = req.headers.authorization.split(" ")[1];
-      const secret =
-        process.env.JWT_SECRET || "cluvio_jwt_secret_college_demo_key_2026";
-      const decoded = jwt.verify(token, secret);
-      req.user = await User.findById(decoded.id).select("-password");
-    } catch (e) {
-      // ignore
-    }
+// Optional auth for discovery (to attach membership status if logged in)
+router.get("/", (req, res, next) => {
+  if (req.headers.authorization) {
+    return protect(req, res, next);
   }
   next();
-};
+}, getAllClubs);
 
-router.get("/", optionalProtect, getAllClubs);
-router.get("/:id", optionalProtect, getClubById);
-router.post("/", protect, authorize(UserRole.CLUB_PRESIDENT), createClub);
-router.put("/:id", protect, authorize(UserRole.CLUB_PRESIDENT), updateClub);
-router.delete("/:id", protect, authorize(UserRole.CLUB_PRESIDENT), deleteClub);
-router.get("/:id/members", protect, getClubMembers);
-router.delete(
-  "/:id/members/:studentId",
-  protect,
-  authorize(UserRole.CLUB_PRESIDENT),
-  removeMember
-);
+router.get("/:id", (req, res, next) => {
+  if (req.headers.authorization) {
+    return protect(req, res, next);
+  }
+  next();
+}, getClubById);
 
-// Activities & Events Management
-router.post("/:id/events", protect, authorize(UserRole.CLUB_PRESIDENT), addEvent);
-router.delete(
-  "/:id/events/:eventId",
-  protect,
-  authorize(UserRole.CLUB_PRESIDENT),
-  removeEvent
-);
-
-// Announcements Management
+// Protected mutation routes
 router.post(
-  "/:id/announcements",
+  "/",
   protect,
-  authorize(UserRole.CLUB_PRESIDENT),
-  addAnnouncement
-);
-router.delete(
-  "/:id/announcements/:announcementId",
-  protect,
-  authorize(UserRole.CLUB_PRESIDENT),
-  removeAnnouncement
+  authorize(UserRole.CLUB_PRESIDENT, UserRole.COLLEGE_ADMIN, UserRole.PLATFORM_ADMIN),
+  requireTenant,
+  createClub
 );
 
-// Recruitment Settings Management
 router.put(
-  "/:id/recruitment",
+  "/:id",
   protect,
-  authorize(UserRole.CLUB_PRESIDENT),
-  updateRecruitmentSettings
+  authorize(UserRole.CLUB_PRESIDENT, UserRole.COLLEGE_ADMIN, UserRole.PLATFORM_ADMIN),
+  requireTenant,
+  updateClub
+);
+
+router.delete(
+  "/:id",
+  protect,
+  authorize(UserRole.CLUB_PRESIDENT, UserRole.COLLEGE_ADMIN, UserRole.PLATFORM_ADMIN),
+  requireTenant,
+  deleteClub
 );
 
 export default router;
