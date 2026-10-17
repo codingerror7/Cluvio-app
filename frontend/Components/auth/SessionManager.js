@@ -18,27 +18,8 @@ export default function SessionManager() {
 
   useEffect(() => {
     // 1. Initial check on mount / route change
-    const isProtected =
-      pathname?.startsWith("/dashboard") ||
-      pathname?.startsWith("/president");
-
-    const hasToken = !!getAuthToken();
-
-    if (hasToken) {
-      const expired = checkSessionExpiry();
-      if (expired) {
-        if (isProtected) {
-          router.push("/Login?reason=inactive");
-        }
-        return;
-      }
-      // Valid session, mark initial activity
-      updateLastActivity(true);
-    } else if (isProtected) {
-      // No token on protected route
-      router.push("/Login");
-      return;
-    }
+    // In UI demonstration mode, /student and /president are accessible without backend authentication
+    const isProtected = pathname?.startsWith("/dashboard/legacy");
 
     // 2. Track user interactions to update last active timestamp
     const activityEvents = ["mousedown", "keydown", "scroll", "touchstart", "click"];

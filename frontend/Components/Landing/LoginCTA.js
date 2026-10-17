@@ -79,10 +79,10 @@ export default function LoginCTA() {
             {/* Actions */}
             <div className="mt-8 pt-6 border-t border-white/8 space-y-3">
               <Link
-                href="/Login?role=student"
+                href="/student"
                 className="group/btn flex h-12 w-full items-center justify-center gap-2 rounded-full bg-white text-black font-semibold text-xs sm:text-sm transition-all hover:bg-neutral-200 hover:shadow-[0_0_24px_rgba(255,255,255,0.2)] active:scale-95 cursor-pointer shadow-xs"
               >
-                <span>Login as Student</span>
+                <span>Enter Student Portal</span>
                 <HiOutlineArrowRight className="text-xs transition-transform group-hover/btn:translate-x-1" />
               </Link>
 
@@ -142,10 +142,10 @@ export default function LoginCTA() {
             {/* Actions */}
             <div className="mt-8 pt-6 border-t border-white/8 space-y-3">
               <Link
-                href="/Login?role=president"
+                href="/president"
                 className="group/btn flex h-12 w-full items-center justify-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/[0.06] text-white font-semibold text-xs sm:text-sm transition-all hover:bg-violet-500/[0.12] hover:border-violet-500/50 hover:shadow-[0_0_24px_rgba(139,92,246,0.15)] active:scale-95 cursor-pointer backdrop-blur-md"
               >
-                <span>Login as President</span>
+                <span>Enter President Portal</span>
                 <HiOutlineArrowRight className="text-xs transition-transform group-hover/btn:translate-x-1" />
               </Link>
 

@@ -144,17 +144,17 @@ export default function LandingNavbar() {
             ) : (
               <>
                 <Link
-                  href="/Login"
+                  href="/student"
                   className="rounded-full border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/20 px-3.5 py-1.5 text-xs font-medium text-neutral-300 hover:text-white transition-all cursor-pointer"
                 >
-                  Student Login
+                  Student Portal
                 </Link>
 
                 <Link
-                  href="/Login?role=president"
+                  href="/president"
                   className="flex items-center gap-1.5 rounded-full bg-white hover:bg-neutral-200 px-4 py-1.5 text-xs font-semibold text-black transition-all cursor-pointer shadow-xs hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] active:scale-95"
                 >
-                  <span>President Login</span>
+                  <span>President Portal</span>
                   <HiOutlineArrowRight className="text-xs" />
                 </Link>
               </>
