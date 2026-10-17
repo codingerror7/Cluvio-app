@@ -7,7 +7,6 @@ import authRoutes from "./src/routes/auth.routes.js";
 import usersRoutes from "./src/routes/users.routes.js";
 import clubsRoutes from "./src/routes/clubs.routes.js";
 import requestsRoutes from "./src/routes/requests.routes.js";
-import adminRoutes from "./src/routes/admin.routes.js";
 
 dotenv.config();
 
@@ -24,12 +23,11 @@ app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "healthy", timestamp: new Date().toISOString() });
 });
 
-// Routes
+// Routes - Student and Club President APIs
 app.use("/api/auth", authRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/clubs", clubsRoutes);
 app.use("/api/requests", requestsRoutes);
-app.use("/api/admin", adminRoutes);
 
 // Global Error Handler
 app.use((err, req, res, next) => {

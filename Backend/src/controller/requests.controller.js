@@ -3,6 +3,7 @@ import Membership from "../models/Membership.js";
 import Club from "../models/Club.js";
 import User from "../models/User.js";
 import ActivityLog from "../models/ActivityLog.js";
+import { UserRole } from "../constants/roles.js";
 
 export const submitRequest = async (req, res) => {
   try {
@@ -181,26 +182,21 @@ export const getClubRequests = async (req, res) => {
           .json({ success: false, message: "Club not found." });
       }
 
-      if (
-        req.user.role !== "admin" &&
-        club.president.toString() !== req.user._id.toString()
-      ) {
+      if (club.president.toString() !== req.user._id.toString()) {
         return res.status(403).json({
           success: false,
-          message: "Forbidden: You are not the head of this club.",
+          message: "Forbidden: You are not the president of this club.",
         });
       }
 
       filter.club = club._id;
     } else {
-      // Find all clubs owned by this head / president
-      if (req.user.role !== "admin") {
-        const ownedClubs = await Club.find({ president: req.user._id }).select(
-          "_id"
-        );
-        const clubIds = ownedClubs.map((c) => c._id);
-        filter.club = { $in: clubIds };
-      }
+      // Find all clubs owned by this president
+      const ownedClubs = await Club.find({ president: req.user._id }).select(
+        "_id"
+      );
+      const clubIds = ownedClubs.map((c) => c._id);
+      filter.club = { $in: clubIds };
     }
 
     const requests = await MembershipRequest.find(filter)
@@ -268,11 +264,8 @@ export const reviewRequest = async (req, res) => {
       });
     }
 
-    // Role check: Only assigned president/club head or admin
-    if (
-      req.user.role !== "admin" &&
-      request.club.president.toString() !== req.user._id.toString()
-    ) {
+    // Role check: Only assigned club president
+    if (request.club.president.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
         message: "Forbidden: You are not authorized to review this request.",
@@ -303,14 +296,9 @@ export const reviewRequest = async (req, res) => {
         { upsert: true, new: true }
       );
 
-      // 2. CONVERT STUDENT ROLE TO "club member" IF THEY WERE "student"
-      const studentUser = await User.findById(request.student._id);
-      if (studentUser && studentUser.role === "student") {
-        studentUser.role = "club member";
-        await studentUser.save();
-      }
+      // Student retains role: 'student' - no role conversion
 
-      // 3. Recalculate membersCount for the club
+      // 2. Recalculate membersCount for the club
       const totalMembers = await Membership.countDocuments({
         club: request.club._id,
       });

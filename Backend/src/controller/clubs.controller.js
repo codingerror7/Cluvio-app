@@ -3,6 +3,7 @@ import User from "../models/User.js";
 import Membership from "../models/Membership.js";
 import MembershipRequest from "../models/MembershipRequest.js";
 import ActivityLog from "../models/ActivityLog.js";
+import { UserRole } from "../constants/roles.js";
 
 export const getAllClubs = async (req, res) => {
   try {
@@ -162,19 +163,7 @@ export const createClub = async (req, res) => {
       });
     }
 
-    let assignedPresidentId = req.user._id;
-
-    // Admin can specify a different president
-    if (req.user.role === "admin" && presidentId) {
-      const presUser = await User.findById(presidentId);
-      if (!presUser) {
-        return res.status(404).json({
-          success: false,
-          message: "Designated president user was not found.",
-        });
-      }
-      assignedPresidentId = presUser._id;
-    }
+    const assignedPresidentId = req.user._id;
 
     const club = await Club.create({
       name: name.trim(),
@@ -241,11 +230,8 @@ export const updateClub = async (req, res) => {
       return res.status(404).json({ success: false, message: "Club not found." });
     }
 
-    // Role check: Only assigned president or admin
-    if (
-      req.user.role !== "admin" &&
-      club.president.toString() !== req.user._id.toString()
-    ) {
+    // Role check: Only assigned president
+    if (club.president.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
         message: "Forbidden: You are not authorized to edit this club.",
@@ -288,13 +274,7 @@ export const updateClub = async (req, res) => {
     if (maxMembers) club.maxMembers = Number(maxMembers);
     if (status) club.status = status;
 
-    // Admin can reassign president
-    if (req.user.role === "admin" && presidentId) {
-      const newPres = await User.findById(presidentId);
-      if (newPres) {
-        club.president = newPres._id;
-      }
-    }
+
 
     await club.save();
 
@@ -337,11 +317,8 @@ export const deleteClub = async (req, res) => {
       return res.status(404).json({ success: false, message: "Club not found." });
     }
 
-    // Role check: Only assigned president or admin
-    if (
-      req.user.role !== "admin" &&
-      club.president.toString() !== req.user._id.toString()
-    ) {
+    // Role check: Only assigned president
+    if (club.president.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
         message: "Forbidden: You are not authorized to delete this club.",
@@ -417,10 +394,7 @@ export const removeMember = async (req, res) => {
       return res.status(404).json({ success: false, message: "Club not found." });
     }
 
-    if (
-      req.user.role !== "admin" &&
-      club.president.toString() !== req.user._id.toString()
-    ) {
+    if (club.president.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
         message: "Forbidden: You are not authorized to manage members of this club.",
@@ -472,10 +446,7 @@ export const addEvent = async (req, res) => {
       return res.status(404).json({ success: false, message: "Club not found." });
     }
 
-    if (
-      req.user.role !== "admin" &&
-      club.president.toString() !== req.user._id.toString()
-    ) {
+    if (club.president.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
         message: "Forbidden: You are not authorized to manage events for this club.",
@@ -515,10 +486,7 @@ export const removeEvent = async (req, res) => {
       return res.status(404).json({ success: false, message: "Club not found." });
     }
 
-    if (
-      req.user.role !== "admin" &&
-      club.president.toString() !== req.user._id.toString()
-    ) {
+    if (club.president.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
         message: "Forbidden: You are not authorized to manage events for this club.",
@@ -558,10 +526,7 @@ export const addAnnouncement = async (req, res) => {
       return res.status(404).json({ success: false, message: "Club not found." });
     }
 
-    if (
-      req.user.role !== "admin" &&
-      club.president.toString() !== req.user._id.toString()
-    ) {
+    if (club.president.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
         message: "Forbidden: You are not authorized to post announcements for this club.",
@@ -598,10 +563,7 @@ export const removeAnnouncement = async (req, res) => {
       return res.status(404).json({ success: false, message: "Club not found." });
     }
 
-    if (
-      req.user.role !== "admin" &&
-      club.president.toString() !== req.user._id.toString()
-    ) {
+    if (club.president.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
         message: "Forbidden: You are not authorized to delete announcements for this club.",
@@ -633,10 +595,7 @@ export const updateRecruitmentSettings = async (req, res) => {
       return res.status(404).json({ success: false, message: "Club not found." });
     }
 
-    if (
-      req.user.role !== "admin" &&
-      club.president.toString() !== req.user._id.toString()
-    ) {
+    if (club.president.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
         message: "Forbidden: You are not authorized to update settings for this club.",

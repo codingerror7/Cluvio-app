@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import Membership from "../models/Membership.js";
 import MembershipRequest from "../models/MembershipRequest.js";
 import Club from "../models/Club.js";
+import { UserRole } from "../constants/roles.js";
 
 export const getProfile = async (req, res) => {
   try {
@@ -12,7 +13,7 @@ export const getProfile = async (req, res) => {
 
     let extraData = {};
 
-    if (user.role === "student" || user.role === "club member") {
+    if (user.role === UserRole.STUDENT) {
       const memberships = await Membership.find({ student: user._id })
         .populate("club", "name description category logo status meetingSchedule")
         .sort({ createdAt: -1 });
@@ -57,7 +58,7 @@ export const getProfile = async (req, res) => {
           (r) => r.status === "Pending" || r.status === "Interview Scheduled"
         ).length,
       };
-    } else if (user.role === "president" || user.role === "club head") {
+    } else if (user.role === UserRole.CLUB_PRESIDENT) {
       const ownedClubs = await Club.find({ president: user._id });
       extraData = {
         ownedClubs,

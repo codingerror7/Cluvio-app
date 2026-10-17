@@ -1,10 +1,11 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import ActivityLog from "../models/ActivityLog.js";
+import { UserRole, ALLOWED_ROLES, isValidRole } from "../constants/roles.js";
 
-const generateToken = (id) => {
+const generateToken = (id, role) => {
   const secret = process.env.JWT_SECRET || "cluvio_jwt_secret_college_demo_key_2026";
-  return jwt.sign({ id }, secret, { expiresIn: "30d" });
+  return jwt.sign({ id, role }, secret, { expiresIn: "30d" });
 };
 
 export const register = async (req, res) => {
@@ -14,8 +15,7 @@ export const register = async (req, res) => {
       email,
       password,
       confirmPassword,
-      role = "student",
-      secretKey,
+      role = UserRole.STUDENT,
       enrollmentNumber,
       studentId,
       age,
@@ -23,9 +23,6 @@ export const register = async (req, res) => {
       favouriteGenres,
       department,
       year,
-      collegeName,
-      collegeCode,
-      designation,
     } = req.body;
 
     // Validation
@@ -50,41 +47,12 @@ export const register = async (req, res) => {
       });
     }
 
-    // Role safety: Public registration allows student, club member, club head, president, or college-admin
-    const validRoles = [
-      "student",
-      "club member",
-      "club head",
-      "president",
-      "college-admin",
-      "college admin",
-    ];
-    if (!validRoles.includes(role)) {
+    // Role validation: Strictly allow ONLY 'student' and 'club_president'
+    if (!isValidRole(role)) {
       return res.status(400).json({
         success: false,
-        message: "Invalid role specified.",
+        message: "Invalid user role. Allowed roles: student, club_president.",
       });
-    }
-
-    // Mandatory college name validation for college admin
-    const isCollegeAdmin = role === "college-admin" || role === "college admin";
-    if (isCollegeAdmin && (!collegeName || !collegeName.trim())) {
-      return res.status(400).json({
-        success: false,
-        message: "College Name is strictly required for College Admin registration.",
-      });
-    }
-
-    // Secret Key validation for club member and club head
-    if (role === "club member" || role === "club head") {
-      if (!secretKey || secretKey.trim() !== "admin123") {
-        return res.status(400).json({
-          success: false,
-          message: `Invalid secret key. Authorized secret key is required for ${
-            role === "club head" ? "Club Head" : "Club Member"
-          }.`,
-        });
-      }
     }
 
     // Email format check
@@ -97,7 +65,7 @@ export const register = async (req, res) => {
     }
 
     // Check duplicate email
-    const existingUser = await User.findOne({ email: email.toLowerCase() });
+    const existingUser = await User.findOne({ email: email.toLowerCase().trim() });
     if (existingUser) {
       return res.status(409).json({
         success: false,
@@ -119,56 +87,42 @@ export const register = async (req, res) => {
       }
     }
 
+    // Determine avatar based on role
+    const defaultAvatar =
+      role === UserRole.CLUB_PRESIDENT
+        ? "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80"
+        : "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80";
+
     // Create user
     const user = await User.create({
       name: name.trim(),
       email: email.toLowerCase().trim(),
       password,
       role,
-      collegeName: collegeName ? collegeName.trim() : "",
-      collegeCode: collegeCode ? collegeCode.trim().toUpperCase() : "",
-      designation: designation ? designation.trim() : (isCollegeAdmin ? "College Administrator" : ""),
       enrollmentNumber: enroll || "",
       studentId: enroll || "",
       age: age ? Number(age) : undefined,
       bio: bio ? bio.trim() : "",
       favouriteGenres: Array.isArray(favouriteGenres) ? favouriteGenres : [],
-      department: department || (isCollegeAdmin ? "Administration" : role === "student" ? "Computer Science" : "General"),
-      year: year || (isCollegeAdmin ? "Faculty / Authority" : "1st Year"),
-      avatar:
-        isCollegeAdmin
-          ? "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop&q=80"
-          : role === "president" || role === "club head"
-          ? "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
-          : role === "club member"
-          ? "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80"
-          : "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      department: department || (role === UserRole.CLUB_PRESIDENT ? "Robotics & Automation" : "Computer Science"),
+      year: year || (role === UserRole.CLUB_PRESIDENT ? "3rd Year" : "1st Year"),
+      avatar: defaultAvatar,
+      status: "Active",
     });
 
     // Record activity
     try {
-      const isLead = role === "president" || role === "club head";
       await ActivityLog.create({
-        title: isCollegeAdmin
-          ? "New College Admin Registered"
-          : isLead
-          ? "New Club Head Registered"
-          : role === "club member"
-          ? "New Club Member Registered"
-          : "New Student Registered",
-        description: isCollegeAdmin
-          ? `${user.name} registered as College Administrator (${user.collegeName})`
-          : `${user.name} registered as ${
-              isLead ? "Club Head" : role === "club member" ? "Club Member" : "Student"
-            } (${user.department})`,
-        type: isCollegeAdmin ? "admin" : isLead ? "president" : "student",
+        title: role === UserRole.CLUB_PRESIDENT ? "New Club President Registered" : "New Student Registered",
+        description: `${user.name} registered as ${role === UserRole.CLUB_PRESIDENT ? "Club President" : "Student"} (${user.department})`,
+        type: role === UserRole.CLUB_PRESIDENT ? "president" : "student",
         user: user._id,
       });
     } catch (e) {
-      // Non-blocking log error
+      // Non-blocking log
     }
 
-    const token = generateToken(user._id);
+    const token = generateToken(user._id, user.role);
 
     return res.status(201).json({
       success: true,
@@ -180,9 +134,6 @@ export const register = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        collegeName: user.collegeName,
-        collegeCode: user.collegeCode,
-        designation: user.designation,
         enrollmentNumber: user.enrollmentNumber,
         studentId: user.studentId,
         age: user.age,
@@ -191,6 +142,7 @@ export const register = async (req, res) => {
         year: user.year,
         favouriteGenres: user.favouriteGenres,
         avatar: user.avatar,
+        status: user.status,
       },
     });
   } catch (error) {
@@ -204,12 +156,20 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const { email, password, role, secretKey } = req.body;
+    const { email, password, role } = req.body;
 
     if (!email || !password) {
       return res.status(400).json({
         success: false,
         message: "Email and password are required.",
+      });
+    }
+
+    // Role validation if role is specified in login request
+    if (role && !isValidRole(role)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user role. Allowed roles: student, club_president.",
       });
     }
 
@@ -232,50 +192,21 @@ export const login = async (req, res) => {
     if (user.status === "Suspended") {
       return res.status(403).json({
         success: false,
-        message: "Your account has been suspended. Please contact the administrator.",
+        message: "Your account has been suspended. Please contact campus authority.",
       });
     }
 
-    // Role check if user explicitly selected a role
-    if (role) {
-      const isLeadCompatible =
-        (role === "club head" || role === "president") &&
-        (user.role === "club head" || user.role === "president");
-      const isMemberCompatible =
-        (role === "club member" || role === "student") &&
-        (user.role === "club member" || user.role === "student");
-      const isCollegeAdminCompatible =
-        (role === "college-admin" || role === "college admin") &&
-        (user.role === "college-admin" || user.role === "college admin" || user.role === "admin");
-
-      if (
-        role !== user.role &&
-        !isLeadCompatible &&
-        !isMemberCompatible &&
-        !isCollegeAdminCompatible &&
-        user.role !== "admin"
-      ) {
-        return res.status(400).json({
-          success: false,
-          message: `This account is registered as '${user.role}'. Please select the appropriate portal to sign in.`,
-        });
-      }
+    // Role safety check: Ensure user role matches selected role portal
+    if (role && user.role !== role) {
+      const friendlyCurrentRole = user.role === UserRole.CLUB_PRESIDENT ? "Club President" : "Student";
+      const friendlySelectedRole = role === UserRole.CLUB_PRESIDENT ? "Club President" : "Student";
+      return res.status(400).json({
+        success: false,
+        message: `This account is registered as ${friendlyCurrentRole}. Please select the ${friendlyCurrentRole} portal to sign in.`,
+      });
     }
 
-    // Secret Key validation for club member and club head
-    const targetRole = role || user.role;
-    if (targetRole === "club member" || targetRole === "club head") {
-      if (!secretKey || secretKey.trim() !== "admin123") {
-        return res.status(400).json({
-          success: false,
-          message: `Invalid secret key. Authorized secret key is required for ${
-            targetRole === "club head" ? "Club Head" : "Club Member"
-          }.`,
-        });
-      }
-    }
-
-    const token = generateToken(user._id);
+    const token = generateToken(user._id, user.role);
 
     return res.status(200).json({
       success: true,
@@ -287,9 +218,6 @@ export const login = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        collegeName: user.collegeName || "",
-        collegeCode: user.collegeCode || "",
-        designation: user.designation || "",
         enrollmentNumber: user.enrollmentNumber,
         studentId: user.studentId,
         age: user.age,
@@ -320,23 +248,6 @@ export const getMe = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: error.message || "Failed to retrieve user profile.",
-    });
-  }
-};
-
-export const getColleges = async (req, res) => {
-  try {
-    const colleges = await User.distinct("collegeName", {
-      collegeName: { $exists: true, $ne: "" },
-    });
-    return res.status(200).json({
-      success: true,
-      colleges,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message || "Failed to retrieve colleges list.",
     });
   }
 };

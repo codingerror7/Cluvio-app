@@ -17,6 +17,7 @@ import {
 } from "../controller/clubs.controller.js";
 import { protect } from "../middleware/auth.middleware.js";
 import { authorize } from "../middleware/role.middleware.js";
+import { UserRole } from "../constants/roles.js";
 
 const router = express.Router();
 
@@ -41,23 +42,23 @@ const optionalProtect = async (req, res, next) => {
 
 router.get("/", optionalProtect, getAllClubs);
 router.get("/:id", optionalProtect, getClubById);
-router.post("/", protect, authorize("president", "admin"), createClub);
-router.put("/:id", protect, authorize("president", "admin"), updateClub);
-router.delete("/:id", protect, authorize("president", "admin"), deleteClub);
+router.post("/", protect, authorize(UserRole.CLUB_PRESIDENT), createClub);
+router.put("/:id", protect, authorize(UserRole.CLUB_PRESIDENT), updateClub);
+router.delete("/:id", protect, authorize(UserRole.CLUB_PRESIDENT), deleteClub);
 router.get("/:id/members", protect, getClubMembers);
 router.delete(
   "/:id/members/:studentId",
   protect,
-  authorize("president", "admin"),
+  authorize(UserRole.CLUB_PRESIDENT),
   removeMember
 );
 
 // Activities & Events Management
-router.post("/:id/events", protect, authorize("president", "admin"), addEvent);
+router.post("/:id/events", protect, authorize(UserRole.CLUB_PRESIDENT), addEvent);
 router.delete(
   "/:id/events/:eventId",
   protect,
-  authorize("president", "admin"),
+  authorize(UserRole.CLUB_PRESIDENT),
   removeEvent
 );
 
@@ -65,13 +66,13 @@ router.delete(
 router.post(
   "/:id/announcements",
   protect,
-  authorize("president", "admin"),
+  authorize(UserRole.CLUB_PRESIDENT),
   addAnnouncement
 );
 router.delete(
   "/:id/announcements/:announcementId",
   protect,
-  authorize("president", "admin"),
+  authorize(UserRole.CLUB_PRESIDENT),
   removeAnnouncement
 );
 
@@ -79,7 +80,7 @@ router.delete(
 router.put(
   "/:id/recruitment",
   protect,
-  authorize("president", "admin"),
+  authorize(UserRole.CLUB_PRESIDENT),
   updateRecruitmentSettings
 );
 

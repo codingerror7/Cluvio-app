@@ -6,60 +6,22 @@ import Club from "./models/Club.js";
 import Membership from "./models/Membership.js";
 import MembershipRequest from "./models/MembershipRequest.js";
 import ActivityLog from "./models/ActivityLog.js";
+import { UserRole } from "./constants/roles.js";
 
 dotenv.config();
 
 const seed = async () => {
   try {
-    console.log("Connecting to database for seeding...");
+    console.log("Connecting to database for seeding (Two-Role Architecture)...");
     await connectDB();
 
-    // 1. Check or create Admin
-    let admin = await User.findOne({ email: "admin@cluvio.edu" });
-    if (!admin) {
-      admin = await User.create({
-        name: "Campus Administrator",
-        email: "admin@cluvio.edu",
-        password: "Admin@123",
-        role: "admin",
-        department: "Dean of Student Affairs",
-        year: "Faculty / Admin",
-        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80",
-        status: "Active",
-      });
-      console.log("Created initial Admin account: admin@cluvio.edu / Admin@123");
-    } else {
-      console.log("Admin account already exists.");
-    }
-
-    // 1b. Check or create College Admin
-    let collegeAdmin = await User.findOne({ email: "collegeadmin@dtu.ac.in" });
-    if (!collegeAdmin) {
-      collegeAdmin = await User.create({
-        name: "Dr. Rajesh K. Sharma",
-        email: "collegeadmin@dtu.ac.in",
-        password: "Admin@123",
-        role: "college-admin",
-        collegeName: "Delhi Technological University (DTU)",
-        collegeCode: "DTU",
-        designation: "Dean of Student Welfare & Clubs",
-        department: "Student Affairs",
-        year: "Faculty / Administration",
-        avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop&q=80",
-        status: "Active",
-      });
-      console.log("Created initial College Admin account: collegeadmin@dtu.ac.in / Admin@123");
-    } else {
-      console.log("College Admin account already exists.");
-    }
-
-  // 2. Check or create Presidents / Club Heads
+    // 1. Seed Club Presidents (role: 'club_president')
     const presidentsData = [
       {
         name: "Rahul Sharma",
         email: "rahul.sharma@campus.edu",
         password: "President@123",
-        role: "club head",
+        role: UserRole.CLUB_PRESIDENT,
         studentId: "PRES-2024-001",
         enrollmentNumber: "PRES-2024-001",
         department: "Computer Science",
@@ -68,22 +30,22 @@ const seed = async () => {
         status: "Active",
       },
       {
-        name: "Club Head Demo",
-        email: "clubhead@campus.edu",
-        password: "Head@123",
-        role: "club head",
-        studentId: "HEAD-2024-001",
-        enrollmentNumber: "HEAD-2024-001",
-        department: "Computer Science",
-        year: "3rd Year",
-        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+        name: "Arjun Mehta",
+        email: "president@campus.edu",
+        password: "President@123",
+        role: UserRole.CLUB_PRESIDENT,
+        studentId: "PRES-2024-DEMO",
+        enrollmentNumber: "PRES-2024-DEMO",
+        department: "Robotics & Automation",
+        year: "4th Year",
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
         status: "Active",
       },
       {
         name: "Priya Patel",
         email: "priya.patel@campus.edu",
         password: "President@123",
-        role: "president",
+        role: UserRole.CLUB_PRESIDENT,
         studentId: "PRES-2024-002",
         enrollmentNumber: "PRES-2024-002",
         department: "Mechanical Engineering",
@@ -95,7 +57,7 @@ const seed = async () => {
         name: "Devansh Mehta",
         email: "devansh.m@campus.edu",
         password: "President@123",
-        role: "president",
+        role: UserRole.CLUB_PRESIDENT,
         studentId: "PRES-2024-003",
         enrollmentNumber: "PRES-2024-003",
         department: "Data Science & AI",
@@ -107,7 +69,7 @@ const seed = async () => {
         name: "Ananya Verma",
         email: "ananya.v@campus.edu",
         password: "President@123",
-        role: "president",
+        role: UserRole.CLUB_PRESIDENT,
         studentId: "PRES-2024-004",
         enrollmentNumber: "PRES-2024-004",
         department: "Design & Visual Arts",
@@ -122,12 +84,15 @@ const seed = async () => {
       let pres = await User.findOne({ email: p.email });
       if (!pres) {
         pres = await User.create(p);
+      } else if (pres.role !== UserRole.CLUB_PRESIDENT) {
+        pres.role = UserRole.CLUB_PRESIDENT;
+        await pres.save();
       }
       createdPresidents.push(pres);
     }
-    console.log(`Verified ${createdPresidents.length} president accounts.`);
+    console.log(`Verified ${createdPresidents.length} club president accounts.`);
 
-    // 3. Check or create Clubs
+    // 2. Seed Clubs
     const clubsData = [
       {
         name: "Coding Club",
@@ -138,92 +103,82 @@ const seed = async () => {
         president: createdPresidents[0]._id,
         objectives: "Hands-on engineering, national hackathon wins, and peer mentoring.",
         activities: "Weekly algorithmic challenges, full-stack workshops, open source sprints.",
-        meetingSchedule: "Wednesdays & Fridays at 5:30 PM (CS Lab 3)",
-        budgetAllocated: 45000,
-        budgetSpent: 38200,
-        engagementRate: 94,
-        eventsCount: 18,
+        meetingSchedule: "Wednesdays at 5:00 PM • CS Lab 3",
+        membersCount: 42,
+        eventsCount: 3,
         status: "Active",
+        recruitmentOpen: true,
+        hiringDomains: [
+          { domainName: "Technical & Coding", slotsAvailable: 10, isHiring: true },
+          { domainName: "Design & UI/UX", slotsAvailable: 4, isHiring: true },
+          { domainName: "PR & Social Media", slotsAvailable: 2, isHiring: false },
+        ],
+        recentEvents: [
+          {
+            title: "Campus Hackathon 2026",
+            date: "2026-10-25",
+            time: "10:00 AM",
+            location: "Auditorium A",
+            description: "24-hour sprint building real-world campus tools.",
+            attendees: 120,
+            status: "Upcoming",
+          },
+          {
+            title: "Open Source Git Masterclass",
+            date: "2026-10-12",
+            time: "4:00 PM",
+            location: "CS Lab 1",
+            description: "Branching strategies, CI/CD pipelines, and pull request reviews.",
+            attendees: 65,
+            status: "Completed",
+          },
+        ],
+        announcements: [
+          {
+            title: "Hackathon Registrations Open",
+            message: "Submit team proposals by Oct 20 for early review.",
+            priority: "High",
+            date: "14/10/2026",
+          },
+        ],
       },
       {
-        name: "Robotics Club",
+        name: "Robotics Society",
         description:
-          "Hardware prototyping, autonomous systems, ROS2 programming, and robotic combat tournaments.",
+          "Designing competitive autonomous rovers, drones, and embedded IoT systems for collegiate leagues.",
         category: "Engineering",
         logo: "🤖",
         president: createdPresidents[1]._id,
-        objectives: "Design autonomous bots and participate in national championships.",
-        activities: "Embedded C bootcamps, RoboWars, drone assembly workshops.",
-        meetingSchedule: "Tuesdays & Thursdays at 6:00 PM (Robotics Lab)",
-        budgetAllocated: 60000,
-        budgetSpent: 52000,
-        engagementRate: 91,
-        eventsCount: 14,
+        objectives: "ROS2 robotics excellence and national championship podiums.",
+        activities: "Microcontroller hacking, circuit soldering, simulation.",
+        meetingSchedule: "Thursdays at 4:30 PM • Robotics Lab B-204",
+        membersCount: 28,
+        eventsCount: 2,
         status: "Active",
-      },
-      {
-        name: "AI & ML Community",
-        description:
-          "Deep learning research, LLM application development, Kaggle competitions, and computer vision workshops.",
-        category: "Technical",
-        logo: "🧠",
-        president: createdPresidents[2]._id,
-        objectives: "Research paper publications and building state-of-the-art AI systems.",
-        activities: "Fine-tuning workshops, paper discussions, Kaggle team challenges.",
-        meetingSchedule: "Mondays at 5:00 PM (AI Research Lab)",
-        budgetAllocated: 50000,
-        budgetSpent: 34000,
-        engagementRate: 89,
-        eventsCount: 16,
-        status: "Active",
-      },
-      {
-        name: "Photography Club",
-        description:
-          "Visual storytelling, darkroom printing, digital post-production, campus media coverage, and photo walks.",
-        category: "Creative",
-        logo: "📸",
-        president: createdPresidents[3]._id,
-        objectives: "Campus storytelling through fine arts and digital photography.",
-        activities: "Weekend photo walks, Lightroom tutorials, annual photo exhibition.",
-        meetingSchedule: "Saturdays at 7:00 AM (Outdoor/Amphitheatre)",
-        budgetAllocated: 30000,
-        budgetSpent: 22000,
-        engagementRate: 86,
-        eventsCount: 11,
-        status: "Active",
-      },
-      {
-        name: "Drama Society",
-        description:
-          "Street play, stage drama, scriptwriting, voice modulation, and inter-collegiate theatre festivals.",
-        category: "Cultural",
-        logo: "🎭",
-        president: createdPresidents[0]._id,
-        objectives: "Performing arts excellence and thought-provoking street theatre.",
-        activities: "Rehearsals, scriptwriting labs, one-act play competitions.",
-        meetingSchedule: "Daily at 6:30 PM (Amphitheatre Stage)",
-        budgetAllocated: 35000,
-        budgetSpent: 31000,
-        engagementRate: 82,
-        eventsCount: 9,
-        status: "Active",
-      },
-      {
-        name: "Entrepreneurship Cell",
-        description:
-          "Pitch startup ideas, network with founders, venture incubation, and angel investor summits.",
-        category: "Entrepreneurship",
-        logo: "🚀",
-        president: createdPresidents[1]._id,
-        objectives: "Nurturing student-led ventures and campus startups.",
-        activities: "E-Summit, Pitch Fest, Founder AMA sessions.",
-        meetingSchedule: "Fridays at 4:00 PM (Incubation Center)",
-        budgetAllocated: 75000,
-        budgetSpent: 40000,
-        engagementRate: 95,
-        eventsCount: 12,
-        status: "Active",
+        recruitmentOpen: true,
+        hiringDomains: [
+          { domainName: "Hardware & Embedded", slotsAvailable: 8, isHiring: true },
+          { domainName: "Operations & Logistics", slotsAvailable: 3, isHiring: true },
+        ],
+        recentEvents: [
+          {
+            title: "Autonomous Quadcopter Flight Demo",
+            date: "2026-10-28",
+            time: "2:30 PM",
+            location: "North Campus Quad",
+            description: "Outdoor GPS waypoint flight test of student drone.",
+            attendees: 45,
+            status: "Upcoming",
+          },
+        ],
+        announcements: [
+          {
+            title: "Lab Access Hours Extended",
+            message: "Lab B-204 open till 9 PM on sprint nights.",
+            priority: "Normal",
+            date: "15/10/2026",
+          },
+        ],
       },
     ];
 
@@ -235,60 +190,30 @@ const seed = async () => {
       }
       createdClubs.push(club);
     }
-    console.log(`Verified ${createdClubs.length} clubs.`);
+    console.log(`Verified ${createdClubs.length} active campus clubs.`);
 
-    // 4. Check or create Students & Club Members
+    // 3. Seed Students (role: 'student')
     const studentsData = [
       {
-        name: "Student Demo",
+        name: "Aarav Sharma",
         email: "student@campus.edu",
         password: "Student@123",
-        role: "student",
-        studentId: "STU-2024-DEMO",
-        enrollmentNumber: "STU-2024-DEMO",
+        role: UserRole.STUDENT,
+        studentId: "STU-2026-0142",
+        enrollmentNumber: "STU-2026-0142",
         department: "Computer Science",
-        year: "1st Year",
-        age: 19,
+        year: "3rd Year",
+        age: 20,
         bio: "Exploring student clubs and eager to participate in campus events.",
         favouriteGenres: ["Technical", "Engineering", "Creative"],
-        avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
-        status: "Active",
-      },
-      {
-        name: "Club Member Demo",
-        email: "member@campus.edu",
-        password: "Member@123",
-        role: "club member",
-        studentId: "MEM-2024-DEMO",
-        enrollmentNumber: "MEM-2024-DEMO",
-        department: "Computer Science",
-        year: "2nd Year",
-        age: 20,
-        bio: "Active club member participating in workshops, hackathons and tech talks.",
-        favouriteGenres: ["Technical", "AI & ML"],
-        avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80",
-        status: "Active",
-      },
-      {
-        name: "Aarav Sharma",
-        email: "aarav.s@campus.edu",
-        password: "Student@123",
-        role: "student",
-        studentId: "STU-2024-001",
-        enrollmentNumber: "STU-2024-001",
-        department: "Computer Science",
-        year: "2nd Year",
-        age: 20,
-        bio: "Passionate full-stack developer and open source enthusiast.",
-        favouriteGenres: ["Technical", "Engineering"],
-        avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
         status: "Active",
       },
       {
         name: "Sneha Roy",
         email: "sneha.r@campus.edu",
         password: "Student@123",
-        role: "student",
+        role: UserRole.STUDENT,
         studentId: "STU-2024-002",
         enrollmentNumber: "STU-2024-002",
         department: "Electronics & Communication",
@@ -303,7 +228,7 @@ const seed = async () => {
         name: "Rohan Mehra",
         email: "rohan.m@campus.edu",
         password: "Student@123",
-        role: "student",
+        role: UserRole.STUDENT,
         studentId: "STU-2024-003",
         enrollmentNumber: "STU-2024-003",
         department: "Mechanical Engineering",
@@ -318,14 +243,14 @@ const seed = async () => {
         name: "Ishita Gupta",
         email: "ishita.g@campus.edu",
         password: "Student@123",
-        role: "student",
+        role: UserRole.STUDENT,
         studentId: "STU-2024-004",
         enrollmentNumber: "STU-2024-004",
         department: "Business Administration",
         year: "3rd Year",
         age: 21,
         bio: "Startup operator, community organizer, and public speaker.",
-        favouriteGenres: ["Entrepreneurship", "Social"],
+        favouriteGenres: ["Social"],
         avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&auto=format&fit=crop&q=80",
         status: "Active",
       },
@@ -333,87 +258,21 @@ const seed = async () => {
 
     const createdStudents = [];
     for (const s of studentsData) {
-      let stu = await User.findOne({ email: s.email });
-      if (!stu) {
-        stu = await User.create(s);
+      let student = await User.findOne({ email: s.email });
+      if (!student) {
+        student = await User.create(s);
+      } else if (student.role !== UserRole.STUDENT) {
+        student.role = UserRole.STUDENT;
+        await student.save();
       }
-      createdStudents.push(stu);
+      createdStudents.push(student);
     }
     console.log(`Verified ${createdStudents.length} student accounts.`);
 
-    // 5. Seed some initial memberships
-    const codingClub = createdClubs[0];
-    const roboticsClub = createdClubs[1];
-    const aimlClub = createdClubs[2];
-
-    if (codingClub && createdStudents[0]) {
-      await Membership.findOneAndUpdate(
-        { student: createdStudents[0]._id, club: codingClub._id },
-        { student: createdStudents[0]._id, club: codingClub._id, role: "Core Team", status: "Active" },
-        { upsert: true }
-      );
-    }
-
-    if (roboticsClub && createdStudents[1]) {
-      await Membership.findOneAndUpdate(
-        { student: createdStudents[1]._id, club: roboticsClub._id },
-        { student: createdStudents[1]._id, club: roboticsClub._id, role: "General Member", status: "Active" },
-        { upsert: true }
-      );
-    }
-
-    // 6. Seed a pending request for demonstration
-    if (codingClub && createdStudents[2]) {
-      await MembershipRequest.findOneAndUpdate(
-        { student: createdStudents[2]._id, club: codingClub._id },
-        {
-          student: createdStudents[2]._id,
-          club: codingClub._id,
-          status: "Pending",
-          note: "Eager to contribute to web projects and learn React!",
-          requestDate: new Date(),
-        },
-        { upsert: true }
-      );
-    }
-
-    // 7. Seed activity log entries
-    const logs = [
-      {
-        title: "Coding Club Semester Sprints",
-        description: "Coding Club finalized the HackSprint 2026 hackathon guidelines.",
-        type: "club",
-      },
-      {
-        title: "President Verified",
-        description: "Rahul Sharma confirmed as Coding Club President.",
-        type: "president",
-      },
-      {
-        title: "Student Membership Request",
-        description: "Rohan Mehra requested to join Coding Club.",
-        type: "student",
-      },
-    ];
-
-    for (const l of logs) {
-      const existing = await ActivityLog.findOne({ title: l.title });
-      if (!existing) {
-        await ActivityLog.create(l);
-      }
-    }
-
-    // Update membersCount on clubs
-    for (const club of createdClubs) {
-      const count = await Membership.countDocuments({ club: club._id });
-      club.membersCount = Math.max(count, 1);
-      await club.save();
-    }
-
-    console.log("Seeding complete! Platform is ready for demo.");
+    console.log("Two-Role Seeding completed successfully.");
     process.exit(0);
   } catch (error) {
-    console.error("Seeding failed:", error);
+    console.error("Seeding error:", error);
     process.exit(1);
   }
 };

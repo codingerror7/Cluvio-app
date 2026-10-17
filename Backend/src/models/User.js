@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import { UserRole, ALLOWED_ROLES } from "../constants/roles.js";
 
 const userSchema = new mongoose.Schema(
   {
@@ -22,8 +23,8 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["student", "club member", "club head", "president", "admin", "college-admin", "college admin"],
-      default: "student",
+      enum: ALLOWED_ROLES,
+      default: UserRole.STUDENT,
       required: true,
     },
     collegeName: {

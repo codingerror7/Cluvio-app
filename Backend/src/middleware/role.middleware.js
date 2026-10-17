@@ -1,3 +1,10 @@
+import { isValidRole, ALLOWED_ROLES } from "../constants/roles.js";
+
+/**
+ * Role-Based Authorization Middleware
+ * Strictly enforces access control for the two valid roles: 'student' and 'club_president'.
+ * No aliases, no third roles.
+ */
 export const authorize = (...roles) => {
   return (req, res, next) => {
     if (!req.user) {
@@ -8,15 +15,16 @@ export const authorize = (...roles) => {
     }
 
     const userRole = req.user.role;
-    const userRoleAliases = [userRole];
-    if (userRole === "club head" || userRole === "president") {
-      userRoleAliases.push("president", "club head");
-    }
-    if (userRole === "club member" || userRole === "student") {
-      userRoleAliases.push("student", "club member");
+
+    // Reject users with invalid or deprecated roles
+    if (!isValidRole(userRole)) {
+      return res.status(403).json({
+        success: false,
+        message: "Forbidden: Account has an invalid user role.",
+      });
     }
 
-    const hasPermission = roles.some((r) => userRoleAliases.includes(r));
+    const hasPermission = roles.includes(userRole);
 
     if (!hasPermission) {
       return res.status(403).json({
