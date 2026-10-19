@@ -52,7 +52,7 @@ export default function AppTopbar({
           <button
             type="button"
             onClick={onMenuToggle}
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] text-neutral-300 md:hidden hover:text-white"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] text-neutral-300 md:hidden hover:text-white transition-colors cursor-pointer touch-manipulation"
             aria-label="Toggle navigation menu"
           >
             {isMobileMenuOpen ? (
@@ -64,16 +64,16 @@ export default function AppTopbar({
 
           <Link
             href="/"
-            className="group flex items-center gap-2.5 transition-opacity hover:opacity-90"
+            className="group flex items-center gap-2 sm:gap-2.5 transition-opacity hover:opacity-90 min-h-[44px]"
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-black shadow-xs transition-transform group-hover:scale-105">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-black shadow-xs transition-transform group-hover:scale-105 shrink-0">
               <HiOutlineSquares2X2 className="text-lg font-bold" />
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-base sm:text-lg font-bold tracking-tight text-white">
+            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+              <span className="text-base sm:text-lg font-bold tracking-tight text-white truncate">
                 BroClubs
               </span>
-              <span className="hidden sm:inline-block rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[10px] font-mono font-medium text-neutral-400">
+              <span className="hidden sm:inline-block rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[10px] font-mono font-medium text-neutral-400 shrink-0">
                 {role === "president" ? "Club Console" : "Student Hub"}
               </span>
             </div>
@@ -81,7 +81,7 @@ export default function AppTopbar({
         </div>
 
         {/* Right Section: Contact Us, Role Switcher, Theme Toggle, Profile */}
-        <div className="flex items-center gap-2 sm:gap-4">
+        <div className="flex items-center gap-1.5 sm:gap-3">
           {/* Quick Role Switcher for seamless evaluation */}
           <div className="hidden sm:block">
             <RoleSwitcher />
@@ -97,18 +97,20 @@ export default function AppTopbar({
           </Link>
 
           {/* Theme Toggle */}
-          <ThemeToggle />
+          <div className="shrink-0">
+            <ThemeToggle />
+          </div>
 
           {/* Profile Dropdown */}
-          <div className="relative" ref={dropdownRef}>
+          <div className="relative shrink-0" ref={dropdownRef}>
             <button
               type="button"
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.03] p-1.5 pr-3 text-xs font-medium text-neutral-200 transition-all hover:border-white/20 hover:bg-white/[0.06] focus:outline-none cursor-pointer"
+              className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] p-1.5 sm:pr-3 text-xs font-medium text-neutral-200 transition-all hover:border-white/20 hover:bg-white/[0.06] focus:outline-none cursor-pointer min-h-[40px] touch-manipulation"
               aria-expanded={dropdownOpen}
               aria-haspopup="true"
             >
-              <div className="relative h-7 w-7 overflow-hidden rounded-full border border-white/20 bg-neutral-800">
+              <div className="relative h-7 w-7 overflow-hidden rounded-full border border-white/20 bg-neutral-800 shrink-0">
                 {user?.avatar ? (
                   <img
                     src={user.avatar}
@@ -133,7 +135,7 @@ export default function AppTopbar({
 
             {/* Dropdown Menu */}
             {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-56 rounded-2xl border border-white/10 bg-[#0f0f12] p-1.5 shadow-[0_12px_36px_rgba(0,0,0,0.6)] backdrop-blur-xl animate-in fade-in zoom-in-95 duration-150 z-50">
+              <div className="absolute right-0 mt-2 w-56 max-w-[calc(100vw-2rem)] rounded-2xl border border-white/10 bg-[#0f0f12] p-1.5 shadow-[0_12px_36px_rgba(0,0,0,0.6)] backdrop-blur-xl animate-in fade-in zoom-in-95 duration-150 z-50">
                 <div className="border-b border-white/8 px-3 py-2.5">
                   <p className="text-xs font-semibold text-white truncate">
                     {user?.name}
@@ -150,17 +152,17 @@ export default function AppTopbar({
                   <Link
                     href={profileHref}
                     onClick={() => setDropdownOpen(false)}
-                    className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-xs text-neutral-300 transition-colors hover:bg-white/[0.06] hover:text-white"
+                    className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-xs text-neutral-300 transition-colors hover:bg-white/[0.06] hover:text-white min-h-[44px]"
                   >
-                    <HiOutlineUser className="text-sm" />
+                    <HiOutlineUser className="text-base" />
                     <span>View Profile</span>
                   </Link>
                   <Link
                     href="/Contact"
                     onClick={() => setDropdownOpen(false)}
-                    className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-xs text-neutral-300 transition-colors hover:bg-white/[0.06] hover:text-white sm:hidden"
+                    className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-xs text-neutral-300 transition-colors hover:bg-white/[0.06] hover:text-white sm:hidden min-h-[44px]"
                   >
-                    <HiOutlineEnvelope className="text-sm" />
+                    <HiOutlineEnvelope className="text-base" />
                     <span>Contact Us</span>
                   </Link>
                 </div>
@@ -169,9 +171,9 @@ export default function AppTopbar({
                   <button
                     type="button"
                     onClick={handleLogout}
-                    className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-xs text-neutral-400 transition-colors hover:bg-white/[0.06] hover:text-white cursor-pointer"
+                    className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-xs text-neutral-400 transition-colors hover:bg-white/[0.06] hover:text-white cursor-pointer min-h-[44px]"
                   >
-                    <HiOutlineArrowLeftOnRectangle className="text-sm" />
+                    <HiOutlineArrowLeftOnRectangle className="text-base" />
                     <span>Log Out</span>
                   </button>
                 </div>

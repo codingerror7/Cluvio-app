@@ -1,6 +1,12 @@
 import "./globals.css";
 import SessionManager from "@/Components/auth/SessionManager";
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export const metadata = {
   title: "BroClubs - Campus Club Platform | A BroCodes Technologies Product",
   description:

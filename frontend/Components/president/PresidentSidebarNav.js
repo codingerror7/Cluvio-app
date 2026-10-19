@@ -92,7 +92,7 @@ export default function PresidentSidebarNav({ onNavigate, className = "" }) {
           </p>
         </div>
 
-        <nav className="flex flex-col gap-1">
+        <nav className="flex flex-col gap-1.5">
           {navItems.map((item) => {
             const isActive = item.exact
               ? pathname === "/president" || pathname === "/president/dashboard"
@@ -105,7 +105,7 @@ export default function PresidentSidebarNav({ onNavigate, className = "" }) {
                 key={item.href}
                 href={item.href}
                 onClick={onNavigate}
-                className={`group relative flex items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-medium transition-all ${
+                className={`group relative flex items-center justify-between rounded-xl px-3.5 py-3 text-xs font-medium transition-all min-h-[44px] touch-manipulation ${
                   isActive
                     ? "bg-white/[0.08] text-white font-semibold shadow-xs"
                     : "text-neutral-400 hover:bg-white/[0.04] hover:text-white"
@@ -118,7 +118,7 @@ export default function PresidentSidebarNav({ onNavigate, className = "" }) {
 
                 <div className="flex items-center gap-3">
                   <Icon
-                    className={`text-base transition-colors ${
+                    className={`text-lg transition-colors shrink-0 ${
                       isActive ? "text-white" : "text-neutral-400 group-hover:text-white"
                     }`}
                   />
@@ -127,7 +127,7 @@ export default function PresidentSidebarNav({ onNavigate, className = "" }) {
 
                 {item.badge && (
                   <span
-                    className={`inline-flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-[11px] font-mono font-medium ${
+                    className={`inline-flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-[11px] font-mono font-medium shrink-0 ${
                       isActive
                         ? "bg-white text-black"
                         : "bg-white/10 text-neutral-300 border border-white/10"
@@ -156,9 +156,9 @@ export default function PresidentSidebarNav({ onNavigate, className = "" }) {
         <button
           type="button"
           onClick={handleLogout}
-          className="group flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-medium text-neutral-400 transition-colors hover:bg-white/[0.05] hover:text-white cursor-pointer"
+          className="group flex w-full items-center gap-3 rounded-xl px-3.5 py-3 text-xs font-medium text-neutral-400 transition-colors hover:bg-white/[0.05] hover:text-white cursor-pointer min-h-[44px] touch-manipulation"
         >
-          <HiOutlineArrowLeftOnRectangle className="text-base text-neutral-400 group-hover:text-white" />
+          <HiOutlineArrowLeftOnRectangle className="text-lg text-neutral-400 group-hover:text-white shrink-0" />
           <span>Logout</span>
         </button>
       </div>

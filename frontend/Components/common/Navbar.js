@@ -29,20 +29,20 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#070B13]/85 backdrop-blur-xl transition-all">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-16 sm:h-20 max-w-7xl items-center justify-between px-3.5 sm:px-6 lg:px-8">
         {/* Brand */}
-        <Link href="/" className="group flex items-center gap-3 transition-opacity hover:opacity-90">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[var(--accent)]/10 ring-1 ring-[var(--accent)]/30 transition-transform group-hover:scale-105">
-            <HiOutlineSquares2X2 className="text-2xl text-[var(--accent)]" />
+        <Link href="/" className="group flex items-center gap-2.5 sm:gap-3 transition-opacity hover:opacity-90 min-h-[44px]">
+          <div className="flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-xl sm:rounded-2xl bg-[var(--accent)]/10 ring-1 ring-[var(--accent)]/30 transition-transform group-hover:scale-105 shrink-0">
+            <HiOutlineSquares2X2 className="text-xl sm:text-2xl text-[var(--accent)]" />
           </div>
-          <div>
+          <div className="min-w-0">
             <div className="flex items-center gap-1.5">
-              <span className="text-xl font-bold tracking-tight text-white">BroClubs</span>
-              <span className="rounded-full bg-[var(--accent)]/15 px-2 py-0.5 text-[10px] font-semibold text-[var(--accent)] uppercase tracking-wider">
+              <span className="text-lg sm:text-xl font-bold tracking-tight text-white truncate">BroClubs</span>
+              <span className="rounded-full bg-[var(--accent)]/15 px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-semibold text-[var(--accent)] uppercase tracking-wider shrink-0">
                 Campus
               </span>
             </div>
-            <p className="text-[11px] text-white/40 font-medium">Club Management Platform</p>
+            <p className="text-[10px] sm:text-[11px] text-white/40 font-medium truncate">Club Management</p>
           </div>
         </Link>
 
@@ -93,7 +93,7 @@ export default function Navbar() {
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-            className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/80 transition hover:bg-white/10 hover:text-white"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/80 transition hover:bg-white/10 hover:text-white cursor-pointer touch-manipulation"
           >
             {mobileMenuOpen ? (
               <HiOutlineXMark className="text-2xl" />
@@ -106,7 +106,7 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-white/10 bg-[#0B1120] px-4 py-6 sm:px-6 shadow-2xl animate-fadeIn">
+        <div className="md:hidden border-b border-white/10 bg-[#0B1120] px-4 py-6 sm:px-6 shadow-2xl animate-in fade-in duration-200">
           <nav className="flex flex-col gap-1.5">
             {navLinks.map((link) => {
               const active = isActive(link.href);
@@ -116,7 +116,7 @@ export default function Navbar() {
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
                   className={`
-                    flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition
+                    flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition min-h-[44px] touch-manipulation
                     ${
                       active
                         ? "bg-white/10 text-white border-l-2 border-[var(--accent)]"
@@ -135,7 +135,7 @@ export default function Navbar() {
             <Link
               href="/Login"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex h-11 w-full items-center justify-center rounded-xl border border-white/10 bg-white/5 text-sm font-medium text-white transition hover:bg-white/10"
+              className="flex h-11 w-full items-center justify-center rounded-xl border border-white/10 bg-white/5 text-sm font-medium text-white transition hover:bg-white/10 min-h-[44px]"
             >
               Sign In
             </Link>
@@ -143,7 +143,7 @@ export default function Navbar() {
             <Link
               href="/register"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[var(--accent)] text-sm font-semibold text-black transition hover:brightness-110"
+              className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[var(--accent)] text-sm font-semibold text-black transition hover:brightness-110 min-h-[44px]"
             >
               <span>Get Started Free</span>
               <HiOutlineArrowRight className="text-xs" />

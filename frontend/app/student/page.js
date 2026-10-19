@@ -31,19 +31,19 @@ export default function StudentHomePage() {
   }, []);
 
   return (
-    <div className="space-y-8 text-left">
+    <div className="space-y-6 sm:space-y-8 text-left">
       {/* Page Header */}
-      <div className="space-y-2 border-b border-white/8 pb-6">
+      <div className="space-y-2 border-b border-white/8 pb-5 sm:pb-6">
         <div className="flex items-center gap-2">
           <span className="h-1.5 w-1.5 rounded-full bg-white" />
-          <span className="font-mono text-[11px] uppercase tracking-wider text-neutral-400">
+          <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-neutral-400">
             Approved University Societies & Chapters
           </span>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+        <h1 className="text-xl sm:text-3xl font-bold tracking-tight text-white">
           Explore Clubs
         </h1>
-        <p className="text-sm text-neutral-400 max-w-2xl leading-relaxed">
+        <p className="text-xs sm:text-sm text-neutral-400 max-w-2xl leading-relaxed">
           Discover approved communities and competitive student chapters. Submit join requests directly to your College Admin for official charter membership.
         </p>
       </div>

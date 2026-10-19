@@ -30,7 +30,7 @@ export default function JoinedClubsPage() {
 
         <Link
           href="/student"
-          className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2 text-xs font-medium text-neutral-200 hover:border-white/20 hover:text-white transition-colors"
+          className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2.5 text-xs font-semibold text-neutral-200 hover:border-white/20 hover:text-white transition-colors min-h-[40px] touch-manipulation self-start sm:self-auto"
         >
           <span>Explore More Clubs</span>
           <HiOutlineArrowRight className="text-xs" />
@@ -39,7 +39,7 @@ export default function JoinedClubsPage() {
 
       {/* Grid of Joined Clubs */}
       {joinedClubs.length > 0 ? (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
           {joinedClubs.map((club) => (
             <ClubCard key={club.id} club={club} showJoinStatus={true} />
           ))}

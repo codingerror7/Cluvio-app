@@ -61,7 +61,7 @@ export default function ClubCard({ club, showJoinStatus = true, onJoinSuccess })
     <div className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-white/8 bg-[#0d0d10] transition-all duration-200 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] text-left">
       <div>
         {/* Cover Image */}
-        <div className="relative h-44 w-full overflow-hidden bg-neutral-900 flex items-center justify-center">
+        <div className="relative h-40 sm:h-44 w-full overflow-hidden bg-neutral-900 flex items-center justify-center">
           {club.coverImage ? (
             <img
               src={club.coverImage}
@@ -71,43 +71,43 @@ export default function ClubCard({ club, showJoinStatus = true, onJoinSuccess })
             />
           ) : (
             <div className="flex flex-col items-center justify-center gap-2 text-neutral-600">
-              <span className="text-4xl">{club.logo || "💻"}</span>
+              <span className="text-3xl sm:text-4xl">{club.logo || "💻"}</span>
               <span className="text-xs font-mono">{club.category || "Chartered"}</span>
             </div>
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d10] via-transparent to-transparent opacity-80" />
 
           {/* Sector Badge */}
-          <div className="absolute top-3 left-3">
-            <span className="rounded-md border border-white/12 bg-black/70 px-2.5 py-1 text-[10px] font-mono font-medium uppercase tracking-wider text-neutral-200 backdrop-blur-md">
+          <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 max-w-[48%]">
+            <span className="block truncate rounded-md border border-white/12 bg-black/75 px-2.5 py-1 text-[10px] font-mono font-medium uppercase tracking-wider text-neutral-200 backdrop-blur-md">
               {club.sector || club.category || "Charter"}
             </span>
           </div>
 
           {/* Status Badges */}
           {isMember && (
-            <div className="absolute top-3 right-3">
-              <span className="flex items-center gap-1 rounded-md border border-emerald-500/30 bg-black/80 px-2 py-0.5 text-[10px] font-medium text-emerald-300 backdrop-blur-md">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                Active Member
+            <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 max-w-[48%]">
+              <span className="flex items-center gap-1 rounded-md border border-emerald-500/30 bg-black/80 px-2 py-0.5 text-[10px] font-medium text-emerald-300 backdrop-blur-md truncate">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shrink-0" />
+                <span className="truncate">Active Member</span>
               </span>
             </div>
           )}
 
           {isPending && (
-            <div className="absolute top-3 right-3">
-              <span className="flex items-center gap-1 rounded-md border border-amber-500/30 bg-black/80 px-2 py-0.5 text-[10px] font-medium text-amber-300 backdrop-blur-md">
-                <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
-                Pending Approval
+            <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 max-w-[48%]">
+              <span className="flex items-center gap-1 rounded-md border border-amber-500/30 bg-black/80 px-2 py-0.5 text-[10px] font-medium text-amber-300 backdrop-blur-md truncate">
+                <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse shrink-0" />
+                <span className="truncate">Pending Approval</span>
               </span>
             </div>
           )}
         </div>
 
         {/* Content */}
-        <div className="p-5 flex flex-col gap-3">
+        <div className="p-4 sm:p-5 flex flex-col gap-3">
           <div className="space-y-1">
-            <h3 className="text-lg font-bold tracking-tight text-white transition-colors">
+            <h3 className="text-base sm:text-lg font-bold tracking-tight text-white transition-colors line-clamp-1">
               {club.name}
             </h3>
             {club.description && (
@@ -130,8 +130,8 @@ export default function ClubCard({ club, showJoinStatus = true, onJoinSuccess })
           </div>
 
           {/* President & Members */}
-          <div className="mt-2 border-t border-white/6 pt-3 flex items-center justify-between">
-            <div className="flex items-center gap-2">
+          <div className="mt-2 border-t border-white/6 pt-3 flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 min-w-0">
               <div className="relative h-6 w-6 overflow-hidden rounded-full border border-white/15 bg-neutral-800 shrink-0">
                 {presidentAvatar ? (
                   <img
@@ -145,17 +145,17 @@ export default function ClubCard({ club, showJoinStatus = true, onJoinSuccess })
                   </div>
                 )}
               </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] font-mono text-neutral-400 uppercase tracking-wider">
+              <div className="flex flex-col min-w-0">
+                <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-wider">
                   President
                 </span>
-                <span className="text-xs font-medium text-neutral-200">
+                <span className="text-xs font-medium text-neutral-200 truncate max-w-[110px] sm:max-w-[140px]">
                   {presidentName}
                 </span>
               </div>
             </div>
 
-            <div className="flex items-center gap-1.5 text-xs text-neutral-400 font-mono">
+            <div className="flex items-center gap-1.5 text-xs text-neutral-400 font-mono shrink-0">
               <HiOutlineUserGroup className="text-sm text-neutral-400" />
               <span>{totalMembersCount} Members</span>
             </div>
@@ -165,16 +165,16 @@ export default function ClubCard({ club, showJoinStatus = true, onJoinSuccess })
 
       {/* Card Action Footer */}
       {showJoinStatus && (
-        <div className="border-t border-white/6 bg-white/[0.01] px-5 py-3 flex items-center justify-between">
-          <span className="text-[11px] text-neutral-400">
-            {isMember ? "Official Member" : isPending ? "Review in Progress" : "Open for Membership"}
+        <div className="border-t border-white/6 bg-white/[0.01] px-4 sm:px-5 py-3 flex items-center justify-between gap-2">
+          <span className="text-[11px] text-neutral-400 truncate">
+            {isMember ? "Official Member" : isPending ? "Under Review" : "Open to Join"}
           </span>
 
           <button
             type="button"
             onClick={handleApplyToJoin}
             disabled={submitting || isMember || isPending}
-            className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all cursor-pointer ${
+            className={`rounded-xl px-3.5 py-2 text-xs font-semibold transition-all cursor-pointer min-h-[38px] shrink-0 touch-manipulation ${
               isMember
                 ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 cursor-default"
                 : isPending

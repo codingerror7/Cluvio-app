@@ -47,9 +47,9 @@ export default function ClubGrid({ clubs = [], onActionSuccess }) {
   }, [clubs, searchQuery, selectedSector]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       {/* Search and Sector Filter Controls */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         {/* Search Input */}
         <div className="relative w-full sm:max-w-xs">
           <HiOutlineMagnifyingGlass className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm text-neutral-400" />
@@ -58,20 +58,21 @@ export default function ClubGrid({ clubs = [], onActionSuccess }) {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search clubs, tags, presidents..."
-            className="w-full rounded-xl border border-white/10 bg-white/[0.03] py-2 pl-9 pr-8 text-xs text-white placeholder-neutral-500 transition-colors focus:border-white/30 focus:outline-hidden"
+            className="w-full rounded-xl border border-white/10 bg-white/[0.03] py-2.5 pl-9 pr-8 text-sm text-white placeholder-neutral-500 transition-colors focus:border-white/30 focus:outline-hidden min-h-[42px]"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery("")}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white p-1 cursor-pointer"
+              aria-label="Clear search"
             >
               <HiXMark className="text-sm" />
             </button>
           )}
         </div>
 
-        {/* Sector Pills */}
-        <div className="flex flex-wrap gap-1.5 overflow-x-auto pb-1 text-xs">
+        {/* Sector Pills with horizontal mobile touch scroll */}
+        <div className="flex overflow-x-auto no-scrollbar gap-2 py-1 text-xs -mx-3.5 px-3.5 sm:mx-0 sm:px-0 sm:flex-wrap shrink-0">
           {SECTORS.map((sector) => {
             const isSelected = selectedSector === sector;
             return (
@@ -79,7 +80,7 @@ export default function ClubGrid({ clubs = [], onActionSuccess }) {
                 key={sector}
                 type="button"
                 onClick={() => setSelectedSector(sector)}
-                className={`rounded-full px-3 py-1 font-medium transition-colors cursor-pointer ${
+                className={`rounded-full px-3.5 py-1.5 font-medium transition-colors cursor-pointer shrink-0 min-h-[36px] flex items-center touch-manipulation ${
                   isSelected
                     ? "bg-white text-black font-semibold shadow-xs"
                     : "border border-white/8 bg-white/[0.02] text-neutral-400 hover:border-white/15 hover:text-white"
@@ -106,7 +107,7 @@ export default function ClubGrid({ clubs = [], onActionSuccess }) {
 
       {/* Responsive Grid */}
       {filteredClubs.length > 0 ? (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredClubs.map((club) => (
             <ClubCard
               key={club._id || club.id}

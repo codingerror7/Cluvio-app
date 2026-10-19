@@ -45,35 +45,32 @@ export default function LandingNavbar() {
   };
 
   return (
-    <header className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4 sm:px-6 pointer-events-none">
+    <header className="fixed top-2 sm:top-4 left-0 right-0 z-50 flex justify-center px-2.5 sm:px-6 pointer-events-none">
       <div
         className={`navbar-glass pointer-events-auto w-full max-w-5xl transition-all duration-300 rounded-2xl border ${
           scrolled
             ? "bg-[#09090b]/85 border-white/12 shadow-[0_12px_36px_rgba(0,0,0,0.7),0_0_24px_rgba(139,92,246,0.04)] backdrop-blur-2xl"
             : "bg-[#0c0c0e]/65 border-white/8 shadow-[0_8px_24px_rgba(0,0,0,0.4)] backdrop-blur-xl"
-        } px-4 sm:px-6 py-3`}
+        } px-3 sm:px-6 py-2.5 sm:py-3`}
       >
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-2 sm:gap-4">
           {/* Left: Brand Logo & Wordmark */}
           <Link
             href="/"
-            className="group flex items-center gap-2.5 transition-transform hover:opacity-90"
+            className="group flex items-center gap-2 sm:gap-2.5 transition-transform hover:opacity-90 min-h-[40px]"
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-black shadow-xs transition-transform group-hover:scale-105">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-black shadow-xs transition-transform group-hover:scale-105 shrink-0">
               <HiOutlineSquares2X2 className="text-lg font-bold" />
             </div>
-            <div className="flex flex-col">
-              <div className="flex items-center gap-2">
-                <span className="text-base sm:text-lg font-bold tracking-tight text-white">
-                  BroClubs
-                </span>
-                
-              </div>
+            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+              <span className="text-base sm:text-lg font-bold tracking-tight text-white truncate">
+                BroClubs
+              </span>
             </div>
           </Link>
 
           {/* Center: Minimalist Navigation Links */}
-          <nav className="hidden md:flex items-center gap-7 text-xs sm:text-sm font-medium text-neutral-400">
+          <nav className="hidden md:flex items-center gap-6 lg:gap-7 text-xs sm:text-sm font-medium text-neutral-400">
             <a
               href="#home"
               className="hover:text-white transition-colors duration-150"
@@ -160,21 +157,13 @@ export default function LandingNavbar() {
           </div>
 
           {/* Mobile Menu Trigger & Theme Toggle */}
-          <div className="flex md:hidden items-center gap-2">
+          <div className="flex md:hidden items-center gap-1.5 sm:gap-2">
             <ThemeToggle />
 
-            {!user && (
-              <Link
-                href="/Login"
-                className="rounded-full bg-white/[0.06] border border-white/10 px-3 py-1 text-xs font-medium text-neutral-200"
-              >
-                Login
-              </Link>
-            )}
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-neutral-300 hover:text-white cursor-pointer"
+              className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-neutral-300 hover:text-white cursor-pointer touch-manipulation"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? (
@@ -189,32 +178,32 @@ export default function LandingNavbar() {
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden mt-3 pt-3 border-t border-white/10 flex flex-col space-y-3 pb-2 animate-in fade-in duration-200">
-            <nav className="flex flex-col space-y-2 text-sm font-medium text-neutral-300">
+            <nav className="flex flex-col space-y-1 text-sm font-medium text-neutral-300">
               <a
                 href="#home"
                 onClick={() => setMobileMenuOpen(false)}
-                className="py-1 px-2 rounded-lg hover:bg-white/[0.05] hover:text-white transition-colors"
+                className="py-2 px-3 rounded-xl hover:bg-white/[0.05] hover:text-white transition-colors flex items-center min-h-[40px]"
               >
                 Home
               </a>
               <a
                 href="#about"
                 onClick={() => setMobileMenuOpen(false)}
-                className="py-1 px-2 rounded-lg hover:bg-white/[0.05] hover:text-white transition-colors"
+                className="py-2 px-3 rounded-xl hover:bg-white/[0.05] hover:text-white transition-colors flex items-center min-h-[40px]"
               >
                 About BroClubs
               </a>
               <a
                 href="#faq"
                 onClick={() => setMobileMenuOpen(false)}
-                className="py-1 px-2 rounded-lg hover:bg-white/[0.05] hover:text-white transition-colors"
+                className="py-2 px-3 rounded-xl hover:bg-white/[0.05] hover:text-white transition-colors flex items-center min-h-[40px]"
               >
                 FAQ
               </a>
               <a
                 href="#feedback"
                 onClick={() => setMobileMenuOpen(false)}
-                className="py-1 px-2 rounded-lg hover:bg-white/[0.05] hover:text-white transition-colors"
+                className="py-2 px-3 rounded-xl hover:bg-white/[0.05] hover:text-white transition-colors flex items-center min-h-[40px]"
               >
                 Feedback
               </a>
@@ -222,10 +211,10 @@ export default function LandingNavbar() {
                 href="https://brocodestech.in"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="py-1 px-2 rounded-lg hover:bg-white/[0.05] hover:text-white transition-colors flex items-center justify-between"
+                className="py-2 px-3 rounded-xl hover:bg-white/[0.05] hover:text-white transition-colors flex items-center justify-between min-h-[40px]"
               >
                 <span>Built by BroCodes Technologies</span>
-                <HiOutlineArrowTopRightOnSquare className="text-xs" />
+                <HiOutlineArrowTopRightOnSquare className="text-xs opacity-70" />
               </a>
             </nav>
 
@@ -235,7 +224,7 @@ export default function LandingNavbar() {
                   <Link
                     href={getDashboardHref()}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-white text-black font-semibold text-xs"
+                    className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-white text-black font-semibold text-xs touch-manipulation"
                   >
                     <span>Go to {user.role} Dashboard</span>
                     <HiOutlineArrowRight className="text-xs" />
@@ -246,24 +235,24 @@ export default function LandingNavbar() {
                       setMobileMenuOpen(false);
                       handleLogout();
                     }}
-                    className="flex h-9 w-full items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-neutral-300 text-xs"
+                    className="flex h-10 w-full items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-neutral-300 text-xs cursor-pointer touch-manipulation"
                   >
                     Sign Out
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <Link
                     href="/Login"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex h-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-neutral-200 font-medium text-xs hover:bg-white/[0.08]"
+                    className="flex h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-neutral-200 font-medium text-xs hover:bg-white/[0.08] touch-manipulation"
                   >
                     Student Login
                   </Link>
                   <Link
                     href="/Login?role=president"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex h-10 items-center justify-center rounded-xl bg-white text-black font-semibold text-xs hover:bg-neutral-200"
+                    className="flex h-11 items-center justify-center rounded-xl bg-white text-black font-semibold text-xs hover:bg-neutral-200 touch-manipulation"
                   >
                     President Login
                   </Link>

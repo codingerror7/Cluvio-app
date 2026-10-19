@@ -91,11 +91,11 @@ export default function NotificationsList() {
     <div className="space-y-6 max-w-4xl text-left">
       {/* Top Filter & Actions */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/8 pb-4">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <button
             type="button"
             onClick={() => setFilter("all")}
-            className={`rounded-full px-3.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
+            className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors cursor-pointer min-h-[36px] flex items-center touch-manipulation ${
               filter === "all"
                 ? "bg-white text-black font-semibold shadow-xs"
                 : "border border-white/8 bg-white/[0.02] text-neutral-400 hover:text-white"
@@ -106,7 +106,7 @@ export default function NotificationsList() {
           <button
             type="button"
             onClick={() => setFilter("unread")}
-            className={`rounded-full px-3.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
+            className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors cursor-pointer min-h-[36px] flex items-center touch-manipulation ${
               filter === "unread"
                 ? "bg-white text-black font-semibold shadow-xs"
                 : "border border-white/8 bg-white/[0.02] text-neutral-400 hover:text-white"
@@ -120,7 +120,7 @@ export default function NotificationsList() {
           <button
             type="button"
             onClick={handleMarkAllAsRead}
-            className="text-xs text-neutral-400 hover:text-white transition-colors cursor-pointer text-left sm:text-right"
+            className="text-xs text-neutral-400 hover:text-white transition-colors cursor-pointer text-left sm:text-right py-1 min-h-[36px] flex items-center touch-manipulation"
           >
             Mark all as read
           </button>
@@ -134,7 +134,7 @@ export default function NotificationsList() {
             <div
               key={item._id}
               onClick={() => handleMarkAsRead(item._id)}
-              className={`group flex items-start gap-4 rounded-2xl border p-4 sm:p-5 transition-all cursor-pointer ${
+              className={`group flex items-start gap-3 sm:gap-4 rounded-2xl border p-3.5 sm:p-5 transition-all cursor-pointer touch-manipulation ${
                 item.isRead
                   ? "border-white/6 bg-[#0c0c0e] text-neutral-400 hover:border-white/12"
                   : "border-white/15 bg-white/[0.03] text-white hover:border-white/25"
@@ -150,9 +150,9 @@ export default function NotificationsList() {
                 {getIcon(item.type)}
               </div>
 
-              <div className="flex-1 space-y-1">
-                <div className="flex items-center justify-between gap-2">
-                  <h3 className="text-sm font-semibold text-white group-hover:text-neutral-100">
+              <div className="flex-1 space-y-1 min-w-0">
+                <div className="flex flex-col xs:flex-row xs:items-center justify-between gap-1">
+                  <h3 className="text-sm font-semibold text-white group-hover:text-neutral-100 truncate">
                     {item.title}
                   </h3>
                   <span className="font-mono text-[10px] text-neutral-400 shrink-0">

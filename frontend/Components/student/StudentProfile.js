@@ -183,9 +183,9 @@ export default function StudentProfile() {
       )}
 
       {/* 1. Profile Header Card */}
-      <div className="overflow-hidden rounded-2xl border border-white/8 bg-[#0d0d10] p-6 sm:p-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+      <div className="overflow-hidden rounded-2xl border border-white/8 bg-[#0d0d10] p-5 sm:p-8">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left justify-between gap-5 sm:gap-6">
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5">
             {/* Avatar Display */}
             <div className="relative h-20 w-20 sm:h-24 sm:w-24 overflow-hidden rounded-2xl border-2 border-white/15 bg-neutral-800 shadow-md shrink-0">
               <img
@@ -196,49 +196,49 @@ export default function StudentProfile() {
             </div>
 
             <div className="space-y-1.5">
-              <div className="flex flex-wrap items-center gap-2.5">
-                <h1 className="text-2xl font-bold tracking-tight text-white">
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
                   {profile?.name}
                 </h1>
 
                 {/* Status Badges */}
                 {profileStatus === "Approved" && (
-                  <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-mono text-emerald-300">
+                  <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] sm:text-[11px] font-mono text-emerald-300">
                     <HiOutlineCheckCircle className="text-xs" />
                     Verified & Approved
                   </span>
                 )}
                 {profileStatus === "Pending" && (
-                  <span className="inline-flex items-center gap-1 rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-0.5 text-[11px] font-mono text-amber-300">
+                  <span className="inline-flex items-center gap-1 rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-0.5 text-[10px] sm:text-[11px] font-mono text-amber-300">
                     <HiOutlineClock className="text-xs" />
                     Pending Approval
                   </span>
                 )}
                 {profileStatus === "Rejected" && (
-                  <span className="inline-flex items-center gap-1 rounded-full border border-red-500/30 bg-red-500/10 px-2.5 py-0.5 text-[11px] font-mono text-red-300">
+                  <span className="inline-flex items-center gap-1 rounded-full border border-red-500/30 bg-red-500/10 px-2.5 py-0.5 text-[10px] sm:text-[11px] font-mono text-red-300">
                     <HiOutlineXCircle className="text-xs" />
                     Rejected
                   </span>
                 )}
               </div>
 
-              <p className="text-sm text-neutral-400">
+              <p className="text-xs sm:text-sm text-neutral-400">
                 {profile?.course || "B.Tech"} in {profile?.department || "Computer Science"} • {profile?.year || "1st Year"}
               </p>
 
-              <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-neutral-400 font-mono">
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 sm:gap-3 pt-1 text-xs text-neutral-400 font-mono">
                 <span className="flex items-center gap-1">
                   <HiOutlineIdentification className="text-sm" />
                   {profile?.enrollmentNumber || profile?.studentId || "STU-2026"}
                 </span>
-                <span>•</span>
+                <span className="hidden xs:inline">•</span>
                 <span className="flex items-center gap-1">
                   <HiOutlineBuildingLibrary className="text-sm" />
                   {profile?.collegeName || profile?.college?.name || "Campus Ecosystem"}
                 </span>
                 {profile?.phone && (
                   <>
-                    <span>•</span>
+                    <span className="hidden xs:inline">•</span>
                     <span className="flex items-center gap-1">
                       <HiOutlinePhone className="text-sm" />
                       {profile.phone}
@@ -249,18 +249,18 @@ export default function StudentProfile() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-2 sm:gap-3 w-full sm:w-auto">
             <button
               type="button"
               onClick={copyStudentId}
-              className="rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2 text-xs font-medium text-neutral-300 hover:border-white/20 hover:text-white transition-colors cursor-pointer"
+              className="rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-xs font-medium text-neutral-300 hover:border-white/20 hover:text-white transition-colors cursor-pointer min-h-[40px] flex items-center justify-center touch-manipulation"
             >
               {copied ? "ID Copied ✓" : "Copy Student ID"}
             </button>
             <button
               type="button"
               onClick={() => setIsEditing(!isEditing)}
-              className="flex items-center gap-1.5 rounded-xl bg-white px-4 py-2 text-xs font-semibold text-black hover:bg-neutral-200 transition-colors cursor-pointer active:scale-95"
+              className="flex items-center justify-center gap-1.5 rounded-xl bg-white px-4 py-2.5 text-xs font-semibold text-black hover:bg-neutral-200 transition-colors cursor-pointer active:scale-95 min-h-[40px] touch-manipulation"
             >
               <HiOutlinePencilSquare className="text-sm" />
               <span>{isEditing ? "Close Editor" : "Edit Profile"}</span>
@@ -270,7 +270,7 @@ export default function StudentProfile() {
 
         {/* Bio */}
         {profile?.bio && (
-          <div className="mt-6 border-t border-white/6 pt-4">
+          <div className="mt-5 border-t border-white/6 pt-4 text-center sm:text-left">
             <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed">
               {profile.bio}
             </p>
@@ -280,9 +280,9 @@ export default function StudentProfile() {
 
       {/* Edit Profile Form Modal / Inline Panel */}
       {isEditing && (
-        <form onSubmit={handleSaveProfile} className="rounded-2xl border border-white/10 bg-[#0d0d10] p-6 sm:p-8 space-y-5">
+        <form onSubmit={handleSaveProfile} className="rounded-2xl border border-white/10 bg-[#0d0d10] p-5 sm:p-8 space-y-5 animate-in fade-in duration-200">
           <div className="border-b border-white/8 pb-4">
-            <h2 className="text-lg font-bold text-white">Edit Academic Profile</h2>
+            <h2 className="text-base sm:text-lg font-bold text-white">Edit Academic Profile</h2>
             <p className="text-xs text-neutral-400">
               Select one of the 5 predefined avatar slots and update your information. Changes enter College Admin review.
             </p>
@@ -297,9 +297,9 @@ export default function StudentProfile() {
           {/* 5 Predefined Avatar Slots */}
           <div className="space-y-2">
             <label className="text-xs font-medium text-neutral-300 block">
-              Predefined Avatar Slots (5 Slots)
+              Choose Avatar (5 Predefined Options)
             </label>
-            <div className="grid grid-cols-5 gap-3">
+            <div className="grid grid-cols-5 gap-1.5 sm:gap-3">
               {PREDEFINED_AVATARS.map((av) => {
                 const isSelected = avatar === av.path;
                 return (
@@ -307,21 +307,21 @@ export default function StudentProfile() {
                     key={av.id}
                     type="button"
                     onClick={() => setAvatar(av.path)}
-                    className={`flex flex-col items-center gap-2 p-2.5 rounded-2xl border transition-all cursor-pointer ${
+                    className={`flex flex-col items-center gap-1 sm:gap-2 p-1.5 sm:p-2.5 rounded-xl sm:rounded-2xl border transition-all cursor-pointer min-h-[44px] touch-manipulation ${
                       isSelected
-                        ? "border-white bg-white/10 ring-2 ring-white"
-                        : "border-white/10 bg-white/[0.02] hover:border-white/20"
+                        ? "border-white bg-white/15 ring-2 ring-white shadow-xs"
+                        : "border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.05]"
                     }`}
                   >
-                    <img src={av.path} alt={av.label} className="w-14 h-14 rounded-xl object-cover" />
-                    <span className="text-[11px] font-mono text-neutral-300">{av.label}</span>
+                    <img src={av.path} alt={av.label} className="w-9 h-9 xs:w-11 xs:h-11 sm:w-14 sm:h-14 rounded-lg sm:rounded-xl object-cover" />
+                    <span className="text-[10px] sm:text-[11px] font-mono text-neutral-300">{av.label}</span>
                   </button>
                 );
               })}
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-neutral-300 block">Full Name</label>
               <input
@@ -329,7 +329,7 @@ export default function StudentProfile() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-white focus:border-white/40 focus:outline-hidden"
+                className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-white focus:border-white/40 focus:outline-hidden min-h-[42px]"
               />
             </div>
 
@@ -340,7 +340,7 @@ export default function StudentProfile() {
                 value={department}
                 onChange={(e) => setDepartment(e.target.value)}
                 required
-                className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-white focus:border-white/40 focus:outline-hidden"
+                className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-white focus:border-white/40 focus:outline-hidden min-h-[42px]"
               />
             </div>
 
@@ -351,7 +351,7 @@ export default function StudentProfile() {
                 value={course}
                 onChange={(e) => setCourse(e.target.value)}
                 placeholder="e.g. B.Tech"
-                className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-white focus:border-white/40 focus:outline-hidden"
+                className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-white focus:border-white/40 focus:outline-hidden min-h-[42px]"
               />
             </div>
 
@@ -360,7 +360,7 @@ export default function StudentProfile() {
               <select
                 value={year}
                 onChange={(e) => setYear(e.target.value)}
-                className="w-full rounded-xl border border-white/10 bg-[#141418] px-3.5 py-2.5 text-sm text-white focus:border-white/40 focus:outline-hidden"
+                className="w-full rounded-xl border border-white/10 bg-[#141418] px-3.5 py-2.5 text-sm text-white focus:border-white/40 focus:outline-hidden min-h-[42px]"
               >
                 <option value="1st Year">1st Year</option>
                 <option value="2nd Year">2nd Year</option>
@@ -376,7 +376,7 @@ export default function StudentProfile() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+91 ..."
-                className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-white focus:border-white/40 focus:outline-hidden"
+                className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-white focus:border-white/40 focus:outline-hidden min-h-[42px]"
               />
             </div>
 
@@ -392,18 +392,18 @@ export default function StudentProfile() {
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 pt-2">
+          <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 pt-2">
             <button
               type="button"
               onClick={() => setIsEditing(false)}
-              className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2 text-xs font-semibold text-neutral-300 hover:text-white transition-colors cursor-pointer"
+              className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2.5 text-xs font-semibold text-neutral-300 hover:text-white transition-colors cursor-pointer min-h-[42px] flex items-center justify-center touch-manipulation"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="rounded-xl bg-white px-5 py-2 text-xs font-bold text-black hover:bg-neutral-200 transition-colors cursor-pointer disabled:opacity-50"
+              className="rounded-xl bg-white px-5 py-2.5 text-xs font-bold text-black hover:bg-neutral-200 transition-colors cursor-pointer disabled:opacity-50 min-h-[42px] flex items-center justify-center touch-manipulation"
             >
               {saving ? "Submitting..." : "Save & Submit for Approval"}
             </button>
@@ -415,7 +415,7 @@ export default function StudentProfile() {
       <div className="space-y-4">
         <div className="flex items-center justify-between border-b border-white/8 pb-3">
           <div className="flex items-center gap-2">
-            <h2 className="text-lg font-bold text-white">Your Campus Charters</h2>
+            <h2 className="text-base sm:text-lg font-bold text-white">Your Campus Charters</h2>
             <span className="rounded-full bg-white/10 px-2.5 py-0.5 text-xs font-mono text-neutral-300">
               {joinedClubs.length} Active
             </span>
@@ -439,18 +439,18 @@ export default function StudentProfile() {
               {pendingClubs.map((club) => (
                 <div
                   key={club._id || club.id}
-                  className="rounded-2xl border border-amber-500/25 bg-amber-500/[0.03] p-4 flex items-center justify-between"
+                  className="rounded-2xl border border-amber-500/25 bg-amber-500/[0.03] p-4 flex flex-col xs:flex-row items-start xs:items-center justify-between gap-3"
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">{club.logo || "💻"}</span>
-                    <div>
-                      <h4 className="text-sm font-bold text-white">{club.name}</h4>
-                      <p className="text-[11px] text-amber-300 font-mono">
-                        Application Pending College Admin Review
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className="text-2xl shrink-0">{club.logo || "💻"}</span>
+                    <div className="min-w-0">
+                      <h4 className="text-sm font-bold text-white truncate">{club.name}</h4>
+                      <p className="text-[11px] text-amber-300 font-mono truncate">
+                        Pending College Admin Review
                       </p>
                     </div>
                   </div>
-                  <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[10px] font-mono text-amber-300">
+                  <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[10px] font-mono text-amber-300 shrink-0">
                     Pending
                   </span>
                 </div>
@@ -469,22 +469,22 @@ export default function StudentProfile() {
             and submit a join request.
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
             {joinedClubs.map((club) => (
               <div
                 key={club._id || club.id}
-                className="rounded-2xl border border-white/8 bg-[#0d0d10] p-5 flex items-center justify-between"
+                className="rounded-2xl border border-white/8 bg-[#0d0d10] p-4 sm:p-5 flex flex-col xs:flex-row items-start xs:items-center justify-between gap-3"
               >
-                <div className="flex items-center gap-3">
-                  <span className="text-3xl">{club.logo || "💻"}</span>
-                  <div>
-                    <h3 className="text-sm font-bold text-white">{club.name}</h3>
-                    <p className="text-xs text-neutral-400">
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="text-2xl sm:text-3xl shrink-0">{club.logo || "💻"}</span>
+                  <div className="min-w-0">
+                    <h3 className="text-sm font-bold text-white truncate">{club.name}</h3>
+                    <p className="text-xs text-neutral-400 truncate">
                       {club.category} • {club.role || "General Member"}
                     </p>
                   </div>
                 </div>
-                <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-mono text-emerald-300">
+                <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] sm:text-[11px] font-mono text-emerald-300 shrink-0">
                   Active Member
                 </span>
               </div>
