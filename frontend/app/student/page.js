@@ -66,5 +66,5 @@ export default function StudentHomePage() {
 
       <Footer />
     </div>
-  );
+  )
 }
